@@ -3,6 +3,8 @@
 import sys
 import usb.core
 import usb.util
+import pyaudio
+import wave
 
 # keycode mapping (for a latin american keyboard layout)
 key_pages = [
@@ -48,7 +50,7 @@ class Keyboard:
     keyboard_array = []
 
     @staticmethod
-    def detect_keyboards(vendor_id, product_id):
+    def detect(vendor_id, product_id):
         # find our keyboards
         print 'Detecting keyboards with vendor_id = ' + str(vendor_id) + ' and product_id = ' + str(product_id) + '...'
         keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
@@ -77,7 +79,7 @@ class Keyboard:
             keyboard.reset()
         except usb.core.USBError as e:
             # ... but we can ignore it and we get no problems.
-            print "Error on setting configuration: " + str(e) + ". Continuing anyway."
+            # print "Error on setting configuration: " + str(e) + ". Continuing anyway."
             pass
 
         self._endpoint = keyboard[0][(0,0)][0]
@@ -85,13 +87,23 @@ class Keyboard:
 
 
 
+
+
+
 class Main:
     def __init__(self):
         # Detect the keyboards
-        # (id values found using 'lsusb --vv' command in ubuntu 12.04)
-        Keyboard.detect_keyboards(0x0e8f,0x0022) 
+        #(id values found using 'lsusb --vv' command in ubuntu 12.04)
+        Keyboard.detect(0x0e8f,0x0022)  
         
-        # Display the input
+
+        # Count connected audio devices
+        p = pyaudio.PyAudio()
+        count = p.get_device_count()
+        print str(count - 12) + "audio devices detected"
+
+
+        #Display the keyboard input
         while True:
             for (i,kb) in enumerate(Keyboard.keyboard_array):   # i is the index and kb the Keyboard object
                 try:
@@ -105,8 +117,6 @@ class Main:
                     print "#" + str(i) + " : " + data2
                 except usb.core.USBError as e:
                     pass
-
-
 
 
 if __name__ == "__main__":

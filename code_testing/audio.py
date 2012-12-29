@@ -1,11 +1,10 @@
 import sys
+import os
 import pyaudio
 import wave
 
 
 CHUNK = 1024
-RATE = 48000 # el que soportan las tarjetas
-
 
 p = pyaudio.PyAudio()
 
@@ -21,12 +20,13 @@ for i, dev in enumerate(devices):
 
 output_device_index = int(raw_input('Choose dst: '))
 
-wf = wave.open('/home/esteban/pyprojects/MultiK/audio_files/bell-ringing-04.wav', 'rb')
+audio_file_name = 'bell-ringing-04.wav' # importante: archivo de audio debe ser de 48000 Hz
+audio_file_path = os.path.join( os.path.dirname(os.path.abspath(os.path.dirname(__file__))), 'audio_files', audio_file_name )
+wf = wave.open(audio_file_path, 'rb')
 
 dst = p.open(format = p.get_format_from_width(wf.getsampwidth()),
                 channels = wf.getnchannels(),
-                #rate = wf.getframerate(),
-                rate = RATE,
+                rate = wf.getframerate(),
                 output = True,
                 output_device_index = output_device_index)
 

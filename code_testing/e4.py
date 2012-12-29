@@ -79,7 +79,7 @@ class Keyboard:
             keyboard.reset()
         except usb.core.USBError as e:
             # ... but we can ignore it and we get no problems.
-            # print "Error on setting configuration: " + str(e) + ". Continuing anyway."
+            print "Error on setting configuration: " + str(e) + ". Continuing anyway."
             pass
 
         self._endpoint = keyboard[0][(0,0)][0]
@@ -96,13 +96,6 @@ class Main:
         #(id values found using 'lsusb --vv' command in ubuntu 12.04)
         Keyboard.detect(0x0e8f,0x0022)  
         
-
-        # Count connected audio devices
-        p = pyaudio.PyAudio()
-        count = p.get_device_count()
-        print str(count - 12) + "audio devices detected"
-
-
         #Display the keyboard input
         while True:
             for (i,kb) in enumerate(Keyboard.keyboard_array):   # i is the index and kb the Keyboard object

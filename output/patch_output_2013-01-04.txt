@@ -1,0 +1,26 @@
+andrea@multik-desktop:~/Desktop/patched3$ patch input.c RFC-1-3-input-add-dynamic-minor-allocation-helpers.patch 
+patching file input.c
+andrea@multik-desktop:~/Desktop/patched3$ patch input.h RFC-1-3-2-input-add-dynamic-minor-allocation-helpers.patch 
+patching file input.h
+Hunk #1 succeeded at 1458 (offset -28 lines).
+andrea@multik-desktop:~/Desktop/patched3$ patch input.c RFC-2-3-input-increase-INPUT_DEVICES-to-512-to-allow-dynamic-minors.patch 
+patching file input.c
+andrea@multik-desktop:~/Desktop/patched3$ patch evdev.c RFC-3-3-input-evdev-use-dynamic-minors-if-running-out-of-static-minors.patch 
+patching file evdev.c
+Hunk #2 succeeded at 53 with fuzz 1 (offset -1 lines).
+Hunk #3 succeeded at 278 (offset -11 lines).
+Hunk #4 succeeded at 863 (offset -61 lines).
+Hunk #5 succeeded at 915 (offset -61 lines).
+Hunk #6 succeeded at 956 (offset -61 lines).
+Hunk #7 succeeded at 965 (offset -61 lines).
+andrea@multik-desktop:~/Desktop/patched3$ man patch
+andrea@multik-desktop:~/Desktop/patched3$ man mv
+andrea@multik-desktop:~/Desktop/patched3$ man mv
+andrea@multik-desktop:~/Desktop/patched3$ man mv
+andrea@multik-desktop:~/Desktop/patched3$ sudo mv -T input.c ~/linux-3.2.0/drivers/input
+[sudo] password for andrea: 
+mv: cannot overwrite directory `/home/andrea/linux-3.2.0/drivers/input' with non-directory
+andrea@multik-desktop:~/Desktop/patched3$ sudo mv -T input.c ~/linux-3.2.0/drivers/input/input.c
+andrea@multik-desktop:~/Desktop/patched3$ sudo mv -T evdev.c ~/linux-3.2.0/drivers/input/evdev.c
+andrea@multik-desktop:~/Desktop/patched3$ sudo mv -T input.h ~/linux-3.2.0/include/linux/input.h
+andrea@multik-desktop:~/Desktop/patched3$ sudo mv -T input.h ~/linux-3.2.0/include/linux/input.h

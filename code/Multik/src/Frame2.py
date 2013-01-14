@@ -74,7 +74,8 @@ class Frame2(wx.Frame):
         '''
 
     def __init__(self, parent):
-        e4.Keyboard.detect(0x04D9,0x1603)
+        e4.Keyboard.detect(0x0e8f,0x0022)
+        #e4.Keyboard.detect(0x04D9,0x1603)
         self._init_ctrls(parent)
       
         

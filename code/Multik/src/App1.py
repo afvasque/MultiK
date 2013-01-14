@@ -12,7 +12,8 @@ modules ={u'BasicOperacion': [0, '', u'BasicOperacion'],
 class BoaApp(wx.App):
     def OnInit(self):
         self.main = Frame2.create(None)
-        self.main.Show()
+        self.main.ShowFullScreen(True, style= wx.DEFAULT_FRAME_STYLE | 
+                         wx.NO_FULL_REPAINT_ON_RESIZE | wx.FULLSCREEN_ALL)
         self.SetTopWindow(self.main)
         return True
 

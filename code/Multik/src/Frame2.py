@@ -55,7 +55,7 @@ class Frame2(wx.Frame):
         
             for y in range(x,x+temp):
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
-                      pos=wx.Point(0, 0), size=wx.Size(100, 100),
+                      pos=wx.Point(0, 0), size=wx.Size(10, 10),
                       style=wx.TAB_TRAVERSAL)
                 box_hor.Add(panel1,1,wx.EXPAND)
                 diccionario[y]=panel1

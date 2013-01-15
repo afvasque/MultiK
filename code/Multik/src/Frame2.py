@@ -45,12 +45,12 @@ class Frame2(wx.Frame):
         if math.floor(math.sqrt(keyboardsNum)) < math.sqrt(keyboardsNum):
             line_number+=1
         
-        box_tot = wx.GridSizer(rows=line_number, cols=line_number)
+        box_tot = wx.GridSizer(rows=line_number, cols=line_number, hgap=0, vgap=0)
         
         for x in range(0,keyboardsNum,line_number):
                     
             #box_hor = wx.BoxSizer(wx.HORIZONTAL)
-            box_hor = wx.GridSizer(rows=1, cols=line_number, hgap=0, vgap=0)
+            #box_hor = wx.GridSizer(rows=1, cols=line_number, hgap=0, vgap=0)
             
             temp = keyboardsNum - x
             
@@ -61,11 +61,11 @@ class Frame2(wx.Frame):
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
                       pos=wx.Point(0, 0), size=wx.Size(0, 0),
                       style=wx.NO_BORDER)
-                box_tot.Add(panel1, 0, wx.ALIGN_CENTER|wx.ALL, 5)
+                box_tot.Add(panel1, 0, wx.ALIGN_CENTER, 0)
                 diccionario[y]=panel1
                 
             
-            box_tot.Add(box_hor)
+            #box_tot.Add(box_hor)
         
         '''    
         panel2 = Panel1(id=wxID_FRAME1PANEL2, name='panel2', parent=self,

@@ -13,7 +13,10 @@ class AudioLibrary:
     finished = event.Event('Audio has finished playing.')
 
     def __init__(self, total_internal_cards):
-        total_external_cards = len(alsaaudio.cards()) - total_internal_cards
+        total_cards = len(alsaaudio.cards())
+        print "Detected " + str(total_cards) + " sound cards in total."
+        total_external_cards = total_cards - total_internal_cards
+        print "Assuming " + str(total_external_cards) + " external sound cards in total."
 
         for card in range(total_internal_cards,total_external_cards+1):
             dev = alsaaudio.PCM( card='hw:'+str(card) )
@@ -33,7 +36,9 @@ class AudioLibrary:
         filename_final = filename+ "_final"
 
         # create the wav file
+        # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
         os.system("echo \""+ text_to_speech +"\" | text2wave -F 48000 -o " +filename+ ".wav")
+        # convert to stereo, thus doubling the bitrate
         os.system("sox "+ filename +".wav -c 2 "+ filename_final +".wav")
 
         # play the wav file

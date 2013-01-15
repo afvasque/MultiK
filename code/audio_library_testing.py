@@ -10,7 +10,7 @@ lib.finished += hola
 
 print "Audio tarjeta 1"
 lib.play(0, "Hola tarjeta 1")
-print "Audio tarjeta 2"
-lib.play(1, "Hola tarjeta 2")
-print "Audio tarjeta 3"
-lib.play(2, "Hola tarjeta 3")
+
+for i in range(0,36):
+	print "Audio en tarjeta " + str(i) + "..."
+	lib.play(i, "Hola Eustaquio en tarjeta " + str(i))

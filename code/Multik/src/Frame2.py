@@ -22,31 +22,35 @@ class Frame2(wx.Frame):
     
     @staticmethod
     def Keyboard_event(sender, earg):
-        diccionario[int(earg[0])].textCtrl1.Value+=earg[1]
+        diccionario[int(earg[0])].Keyboard_Pressed(sender,earg)
         print str(earg[0])+"lfsf "+earg[1]
         
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Frame.__init__(self, id=wxID_FRAME2, name='', parent=prnt,
-              pos=wx.Point(0, 0), size=wx.Size(1000, 600),
+              pos=wx.Point(0, 0), size=wx.Size(0, 0),
               style=wx.DEFAULT_FRAME_STYLE, title='Frame2')
         
-        box_tot= wx.BoxSizer(wx.VERTICAL)
-        box_tot.SetDimension(0,0,1000,600)
+        #box_tot= wx.BoxSizer(wx.VERTICAL)
+        
+        #box_tot.SetDimension(0,0,500,200)
         
         lib.keypress += self.Keyboard_event
         keyboardsNum= len(lib.keyboard_array) #len(e4.Keyboard.keyboard_array)
         print "teclados: "+str(keyboardsNum)
+        
         
         line_number= int(math.sqrt(keyboardsNum))
         
         if math.floor(math.sqrt(keyboardsNum)) < math.sqrt(keyboardsNum):
             line_number+=1
         
+        box_tot = wx.GridSizer(rows=line_number, cols=line_number)
         
         for x in range(0,keyboardsNum,line_number):
                     
-            box_hor = wx.BoxSizer(wx.HORIZONTAL)
+            #box_hor = wx.BoxSizer(wx.HORIZONTAL)
+            box_hor = wx.GridSizer(rows=1, cols=line_number, hgap=0, vgap=0)
             
             temp = keyboardsNum - x
             
@@ -55,9 +59,9 @@ class Frame2(wx.Frame):
         
             for y in range(x,x+temp):
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
-                      pos=wx.Point(0, 0), size=wx.Size(10, 10),
-                      style=wx.TAB_TRAVERSAL)
-                box_hor.Add(panel1,1,wx.EXPAND)
+                      pos=wx.Point(0, 0), size=wx.Size(0, 0),
+                      style=wx.NO_BORDER)
+                box_tot.Add(panel1, 0, wx.ALIGN_CENTER|wx.ALL, 5)
                 diccionario[y]=panel1
                 
             
@@ -91,7 +95,6 @@ class Frame2(wx.Frame):
         
         t = ThreadKeyboard()
         t.start()
-                   
         
       
         

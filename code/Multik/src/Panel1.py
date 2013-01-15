@@ -18,8 +18,8 @@ class Panel1(wx.Panel):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PANEL1, name='', parent=prnt,
-              pos=wx.Point(457, 255), size=wx.Size(419, 134),
-              style=wx.TAB_TRAVERSAL)
+              pos=wx.Point(0,0), size=wx.Size(0, 0),
+              style=wx.NO_BORDER)
         #self.SetClientSize(wx.Size(419, 134))
 
         self.staticText1 = wx.StaticText(id=wxID_PANEL1STATICTEXT1,
@@ -58,5 +58,19 @@ class Panel1(wx.Panel):
         if keycode== wx.WXK_RETURN:
             self.tts(self.textCtrl1.Value)            
             self.textCtrl1.Value=""
+
+    def Keyboard_Pressed(self, sender, earg):
+
+      text= str(earg[1])
+
+      if text is "Enter":
+        self.textCtrl1.Value=""
+        return
+
+      if text is '^H': # backspace captura
+        self.textCtrl1.Value= self.textCtrl1.Value[:-1]
+        return
+      self.textCtrl1.Value+=text
+
         
 

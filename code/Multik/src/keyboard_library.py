@@ -95,7 +95,7 @@ class KeyboardLibrary:
         while True:
             for (i,kb) in enumerate(self.keyboard_array):   # i is the index and kb the Keyboard object
                 try:
-                    data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 100) # timeout is the last argument
+                    data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 10) # timeout is the last argument
 
                     # map the input to a character
                     map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]

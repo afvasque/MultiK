@@ -11,6 +11,6 @@ lib.finished += hola
 print "Audio tarjeta 1"
 lib.play(0, "Hola tarjeta 1")
 
-for i in range(0,36):
+for i in range(0,32):
 	print "Audio en tarjeta " + str(i) + "..."
 	lib.play(i, "Hola Eustaquio en tarjeta " + str(i))

@@ -7,6 +7,7 @@ import event
 import time
 import datetime
 import alsaaudio
+import subprocess
 
 class AudioLibrary:
     card_array = []
@@ -20,9 +21,9 @@ class AudioLibrary:
         total_external_cards = total_cards - total_internal_cards
         print "Assuming " + str(total_external_cards) + " external sound cards in total."
 
-        for card in cards:
-            print card
-            dev = alsaaudio.PCM( card=card )
+        for k in self.get_card_names()[total_internal_cards:]:
+            print k
+            dev = alsaaudio.PCM(card=k)
             
             # hard code the values because of the sound card capabilities,
             # audio files to be played have to match these values.
@@ -33,19 +34,23 @@ class AudioLibrary:
 
             self.card_array.append(dev)
 
+    def get_total_cards(self):
+        return len(self.card_array)
+
     def play(self, device_index, text_to_speech):
         timestamp = str(time.mktime(datetime.datetime.now().timetuple()))
         filename = str(device_index) + "_" + timestamp
-        filename_final = filename+ "_final"
 
         # create the wav file
         # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
-        os.system("echo \""+ text_to_speech +"\" | text2wave -F 48000 -o " +filename+ ".wav")
+        os.system("echo \""+ text_to_speech +"\" | text2wave -F 48000 -o " +filename+ ".tmp")
         # convert to stereo, thus doubling the bitrate
-        os.system("sox "+ filename +".wav -c 2 "+ filename_final +".wav")
+        os.system("sox "+ filename +".tmp -c 2 "+ filename +".wav")
+        # remove the temporary file
+        os.remove(filename + ".tmp")
 
         # play the wav file
-        f = wave.open(filename_final + ".wav" , 'rb')
+        f = wave.open(filename + ".wav" , 'rb')
         data = f.readframes(320)
         while data:
             self.card_array[device_index].write(data)
@@ -56,3 +61,13 @@ class AudioLibrary:
         # fire finished event
         values = {"id": str(device_index)}
         self.finished(values)
+
+    def get_card_names(self):
+        command = "cat /proc/asound/cards | grep \"]\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"
+
+        output = subprocess.check_output(command, shell=True) #Popen doesnt work :(
+
+        l = output.split('\n')
+        l.pop() # delete the last (empty) element
+
+        return l

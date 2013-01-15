@@ -13,13 +13,16 @@ class AudioLibrary:
     finished = event.Event('Audio has finished playing.')
 
     def __init__(self, total_internal_cards):
-        total_cards = len(alsaaudio.cards())
+        cards = alsaaudio.cards() # running as sudo helps making it faster
+
+        total_cards = len(cards)
         print "Detected " + str(total_cards) + " sound cards in total."
         total_external_cards = total_cards - total_internal_cards
         print "Assuming " + str(total_external_cards) + " external sound cards in total."
 
-        for card in range(total_internal_cards,total_external_cards+1):
-            dev = alsaaudio.PCM( card='hw:'+str(card) )
+        for card in cards:
+            print card
+            dev = alsaaudio.PCM( card=card )
             
             # hard code the values because of the sound card capabilities,
             # audio files to be played have to match these values.

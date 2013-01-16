@@ -2,10 +2,13 @@
 
 import wx
 import os
+import audio_library
 
 [wxID_PANEL1, wxID_PANEL1STATICBITMAP1, wxID_PANEL1STATICBITMAP2, 
  wxID_PANEL1STATICTEXT1, wxID_PANEL1TEXTCTRL1, 
 ] = [wx.NewId() for _init_ctrls in range(5)]
+
+audio_lib = audio_library.AudioLibrary(total_internal_cards=1)
 
 def scale_bitmap(bitmap, width, height):
     image = wx.ImageFromBitmap(bitmap)
@@ -43,11 +46,12 @@ class Panel1(wx.Panel):
         
         
 
-    def __init__(self, parent, id, pos, size, style, name):
+    def __init__(self, parent, id, pos, size, style, name, number):
         self._init_ctrls(parent)
         self.textCtrl1.Value= ""
         self.staticBitmap1.SetBitmap(scale_bitmap(wx.Bitmap('keyboard.png'), 30, 10))
         self.staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
+        self.number= number
         
     def tts(self,text):
         return os.system("echo "+text+" | festival --tts")
@@ -62,8 +66,10 @@ class Panel1(wx.Panel):
     def Keyboard_Pressed(self, sender, earg):
 
       text= str(earg[1])
+      
 
       if text is "Enter":
+        audio_lib.play(self.number, self.textCtrl1.Value)
         self.textCtrl1.Value=""
         return
 

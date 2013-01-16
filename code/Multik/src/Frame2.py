@@ -6,7 +6,7 @@ import usb.core
 import threading
 import math
 import keyboard_library
-import event
+import Keyboard_event
 
 def create(parent):
     return Frame2(parent)
@@ -59,7 +59,7 @@ class Frame2(wx.Frame):
         
             for y in range(x,x+temp):
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
-                      pos=wx.Point(0, 0), size=wx.Size(0, 0),
+                      pos=wx.Point(0, 0), size=wx.Size(0, 0), number=y,
                       style=wx.NO_BORDER)
                 box_tot.Add(panel1, 0, wx.ALIGN_CENTER, 0)
                 diccionario[y]=panel1

@@ -52,9 +52,7 @@ class Panel1(wx.Panel):
         self.staticBitmap1.SetBitmap(scale_bitmap(wx.Bitmap('keyboard.png'), 30, 10))
         self.staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
         self.number= number
-        
-    def tts(self,text):
-        return os.system("echo "+text+" | festival --tts")
+
 
     def OnTextCtrl1KeyUp(self, event):
         keycode = event.GetKeyCode()

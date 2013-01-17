@@ -9,9 +9,17 @@ import datetime
 import alsaaudio
 import subprocess
 
+import multiprocessing
+
+
 class AudioLibrary:
     card_name_array = [] # array containing the names of the usb sound cards
     finished = event.Event('Audio has finished playing.')
+
+    # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
+    # since our bitrate is 1.54Mbit/s,
+    # 12 / 1.54 = 7.7922 gives us that the limit is 7
+    semaphore = multiprocessing.Semaphore(7)
 
     def __init__(self):
         all_cards = self.get_card_names()
@@ -29,44 +37,54 @@ class AudioLibrary:
     def get_total_usb_cards(self):
         return len(self.card_name_array)
 
+
     def play(self, device_index, text_to_speech):
-        timestamp = str(time.mktime(datetime.datetime.now().timetuple()))
-        filename = str(device_index) + "_" + timestamp
+        timestamp = time.mktime(datetime.datetime.now().timetuple())
+        filename = "%s_%d" % (device_index, timestamp)
 
         # create the wav file
         # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
-        os.system("echo \""+ text_to_speech +"\" | text2wave -F 48000 -o " +filename+ ".tmp")
+        os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
         # convert to stereo, thus doubling the bitrate
-        os.system("sox "+ filename +".tmp -c 2 "+ filename +".wav")
+        os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
         # remove the temporary file
-        os.remove(filename + ".tmp")
+        os.remove("%s.tmp" % filename)
 
-        #open the audio card
-        print "Opening card \"" + self.card_name_array[device_index] + "\" (device_index = " + str(device_index) + ")..."
-        dev = alsaaudio.PCM(card="hw:CARD=" + self.card_name_array[device_index])
-        
-        # hard code the values because of the sound card capabilities,
-        # audio files to be played have to match these values.
-        dev.setchannels(2) # hard-coded 2 channels (stereo).
-        dev.setrate(48000)  # hard-coded sample rate 48000 Hz.
-        dev.setformat(alsaaudio.PCM_FORMAT_S16_LE)
-        dev.setperiodsize(320)
-        
-        # play the wav file
-        f = wave.open(filename + ".wav" , 'rb')
-        data = f.readframes(320)
-        while data:
-            dev.write(data)
+
+        self.semaphore.acquire()
+
+        try:
+            #open the audio card
+            print "Opening card \"%s\" (device_index = %d)..." % (self.card_name_array[device_index], device_index)
+            dev = alsaaudio.PCM(card="hw:CARD=" + self.card_name_array[device_index])
+            
+            # we hard code the values because of our sound card capabilities,
+            # audio files to be played have to match these.
+            dev.setchannels(2) # hard-coded 2 channels (stereo).
+            dev.setrate(48000)  # hard-coded sample rate 48000 Hz.
+            dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
+            dev.setperiodsize(320)
+            
+            # play the wav file
+            f = wave.open(filename + ".wav" , 'rb')
             data = f.readframes(320)
+            while data:
+                dev.write(data)
+                data = f.readframes(320)
 
-        # close the wav file
-        f.close()
+            # close the wav file
+            f.close()
 
-        # remove the played wav file
-        os.remove(filename + ".wav")
+            # close the audio card
+            dev.close()
 
-        # close the audio card
-        dev.close()
+            # remove the played wav file
+            os.remove(filename + ".wav")
+        except Exception:
+            print "Exception!"
+            pass
+
+        self.semaphore.release()
 
         # fire 'finished' event
         values = {"id": str(device_index)}

@@ -21,6 +21,7 @@ class AudioLibrary:
         total_external_cards = total_cards - total_internal_cards
         print "Assuming " + str(total_external_cards) + " external sound cards in total."
 
+        # 
         for k in self.get_card_names()[total_internal_cards:]:
             print k
             dev = alsaaudio.PCM(card=k)
@@ -71,3 +72,28 @@ class AudioLibrary:
         l.pop() # delete the last (empty) element
 
         return l
+
+
+    def convert_intl_characters(self, text):
+        # lower case
+        text = text.replace("á", "'a")
+        text = text.replace("é", "'e")
+        text = text.replace("í", "'i")
+        text = text.replace("ó", "'o")
+        text = text.replace("ú", "'u")
+        text = text.replace("ü", "''u")
+
+        text = text.replace("ñ", "~n")
+
+        # upper case
+        text = text.replace("Á", "'A")
+        text = text.replace("É", "'E")
+        text = text.replace("Í", "'I")
+        text = text.replace("Ó", "'O")
+        text = text.replace("Ú", "'U")
+        text = text.replace("Ü", "''U")
+
+        text = text.replace("Ñ", "~N")
+
+        return text
+

@@ -1,3 +1,4 @@
+# coding=utf-8
 #Boa:Frame:Frame2
 
 import wx
@@ -6,7 +7,7 @@ import usb.core
 import threading
 import math
 import keyboard_library
-import Keyboard_event
+import event
 
 def create(parent):
     return Frame2(parent)
@@ -36,7 +37,7 @@ class Frame2(wx.Frame):
         #box_tot.SetDimension(0,0,500,200)
         
         lib.keypress += self.Keyboard_event
-        keyboardsNum= len(lib.keyboard_array) #len(e4.Keyboard.keyboard_array)
+        keyboardsNum= len(lib.keyboard_array)
         print "teclados: "+str(keyboardsNum)
         
         
@@ -61,7 +62,7 @@ class Frame2(wx.Frame):
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
                       pos=wx.Point(0, 0), size=wx.Size(0, 0), number=y,
                       style=wx.NO_BORDER)
-                box_tot.Add(panel1, 0, wx.ALIGN_CENTER, 0)
+                box_tot.Add(panel1, 0, wx.ALIGN_TOP, 0)
                 diccionario[y]=panel1
                 
             
@@ -110,7 +111,6 @@ class Frame2(wx.Frame):
 class ThreadKeyboard(threading.Thread):
     def run(self):
         lib.start(0x0e8f,0x0022)
-        #e4.Keyboard.detect(0x04D9,0x1603)
         
 
 if __name__ == '__main__':

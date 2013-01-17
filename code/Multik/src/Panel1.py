@@ -8,7 +8,7 @@ import audio_library
  wxID_PANEL1STATICTEXT1, wxID_PANEL1TEXTCTRL1, 
 ] = [wx.NewId() for _init_ctrls in range(5)]
 
-audio_lib = audio_library.AudioLibrary(total_internal_cards=1)
+audio_lib = audio_library.AudioLibrary()
 
 def scale_bitmap(bitmap, width, height):
     image = wx.ImageFromBitmap(bitmap)

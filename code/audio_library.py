@@ -10,32 +10,24 @@ import alsaaudio
 import subprocess
 
 class AudioLibrary:
-    card_array = []
+    card_name_array = [] # array containing the names of the usb sound cards
     finished = event.Event('Audio has finished playing.')
 
-    def __init__(self, total_internal_cards):
-        cards = alsaaudio.cards() # running as sudo helps making it faster
+    def __init__(self):
+        all_cards = self.get_card_names()
+        usb_cards = self.get_usb_card_names()
 
-        total_cards = len(cards)
+        total_cards = len(all_cards)
         print "Detected " + str(total_cards) + " sound cards in total."
-        total_external_cards = total_cards - total_internal_cards
-        print "Assuming " + str(total_external_cards) + " external sound cards in total."
+        total_usb_cards = len(usb_cards)
+        print "Assuming " + str(total_usb_cards) + " USB sound cards in total."
 
-        for k in self.get_card_names()[total_internal_cards:]:
-            print k
-            dev = alsaaudio.PCM(card=k)
-            
-            # hard code the values because of the sound card capabilities,
-            # audio files to be played have to match these values.
-            dev.setchannels(2) # hard-coded 2 channels (stereo).
-            dev.setrate(48000)  # hard-coded sample rate 48000 Hz.
-            dev.setformat(alsaaudio.PCM_FORMAT_S16_LE)
-            dev.setperiodsize(320)
+        self.card_name_array = usb_cards
 
-            self.card_array.append(dev)
 
-    def get_total_cards(self):
-        return len(self.card_array)
+
+    def get_total_usb_cards(self):
+        return len(self.card_name_array)
 
     def play(self, device_index, text_to_speech):
         timestamp = str(time.mktime(datetime.datetime.now().timetuple()))
@@ -49,21 +41,49 @@ class AudioLibrary:
         # remove the temporary file
         os.remove(filename + ".tmp")
 
+        #open the audio card
+        print "Opening card \"" + self.card_name_array[device_index] + "\" (device_index = " + str(device_index) + ")..."
+        dev = alsaaudio.PCM(card="hw:CARD=" + self.card_name_array[device_index])
+        
+        # hard code the values because of the sound card capabilities,
+        # audio files to be played have to match these values.
+        dev.setchannels(2) # hard-coded 2 channels (stereo).
+        dev.setrate(48000)  # hard-coded sample rate 48000 Hz.
+        dev.setformat(alsaaudio.PCM_FORMAT_S16_LE)
+        dev.setperiodsize(320)
+        
         # play the wav file
         f = wave.open(filename + ".wav" , 'rb')
         data = f.readframes(320)
         while data:
-            self.card_array[device_index].write(data)
+            dev.write(data)
             data = f.readframes(320)
 
+        # close the wav file
         f.close()
 
-        # fire finished event
+        # remove the played wav file
+        os.remove(filename + ".wav")
+
+        # close the audio card
+        dev.close()
+
+        # fire 'finished' event
         values = {"id": str(device_index)}
         self.finished(values)
 
     def get_card_names(self):
         command = "cat /proc/asound/cards | grep \"]\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"
+
+        output = subprocess.check_output(command, shell=True) #Popen doesnt work :(
+
+        l = output.split('\n')
+        l.pop() # delete the last (empty) element
+
+        return l
+
+    def get_usb_card_names(self):
+        command = "cat /proc/asound/cards | grep \"USB-Audio\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"
 
         output = subprocess.check_output(command, shell=True) #Popen doesnt work :(
 

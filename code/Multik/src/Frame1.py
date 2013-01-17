@@ -1,3 +1,4 @@
+# coding=utf-8
 #Boa:Frame:Frame1
 
 import wx

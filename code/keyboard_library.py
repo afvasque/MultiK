@@ -3,7 +3,6 @@
 import sys
 import usb.core
 import usb.util
-import pyaudio
 import wave
 import event
 

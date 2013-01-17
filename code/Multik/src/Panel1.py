@@ -1,3 +1,4 @@
+# coding=utf-8
 #Boa:FramePanel:Panel1
 
 import wx
@@ -26,7 +27,7 @@ class Panel1(wx.Panel):
         #self.SetClientSize(wx.Size(419, 134))
 
         self.staticText1 = wx.StaticText(id=wxID_PANEL1STATICTEXT1,
-              label=u'Escribe la letra..', name='staticText1', parent=self,
+              label=u'Escribe la letra...', name='staticText1', parent=self,
               pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
 
         self.textCtrl1 = wx.TextCtrl(id=wxID_PANEL1TEXTCTRL1, name='textCtrl1',
@@ -58,7 +59,7 @@ class Panel1(wx.Panel):
         keycode = event.GetKeyCode()
         
         if keycode== wx.WXK_RETURN:
-            self.tts(self.textCtrl1.Value)            
+            audio_lib.play(self.textCtrl1.Value)            
             self.textCtrl1.Value=""
 
     def Keyboard_Pressed(self, sender, earg):

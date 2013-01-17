@@ -3,8 +3,8 @@
 import sys
 import usb.core
 import usb.util
-import wave
 import event
+import multiprocessing
 
 # keycode mapping (for a latin american keyboard layout)
 key_pages = [
@@ -45,6 +45,7 @@ def chunks(l, n):
 
 class KeyboardLibrary:
     keyboard_array = []
+    keyboard_proc_array = []
     keypress = event.Event('A key has been pressed')
 
     def detect(self,vendor_id, product_id):
@@ -82,6 +83,59 @@ class KeyboardLibrary:
 
             keyboard._endpoint = keyboard[0][(0,0)][0]
 
+    def read_keyboard_input(self, kb):
+        print "AAAAAAAAAAAAAAAAAAAAAAAAAA"
+        print str(kb)
+        #Display the keyboard input
+        while True:
+            try:
+                 #                                             ,
+                 #                                            ,o
+                 #                                            :o
+                 #                   _....._                  `:o
+                 #                 .'       ``-.                \o
+                 #                /  _      _   \                \o
+                 #               :  /*\    /*\   )                ;o
+                 #               |  \_/    \_/   /                ;o
+                 #               (       U      /                 ;o
+                 #                \  (\_____/) /                  /o
+                 #                 \   \_m_/  (                  /o
+                 #                  \         (                ,o:
+                 #                  )          \,           .o;o'           ,o'o'o.
+                 #                ./          /\o;o,,,,,;o;o;''         _,-o,-'''-o:o.
+                 # .             ./o./)        \    'o'o'o''         _,-'o,o'         o
+                 # o           ./o./ /       .o \.              __,-o o,o'
+                 # \o.       ,/o /  /o/)     | o o'-..____,,-o'o o_o-'
+                 # `o:o...-o,o-' ,o,/ |     \   'o.o_o_o_o,o--''
+                 # .,  ``o-o'  ,.oo/   'o /\.o`.
+                 # `o`o-....o'o,-'   /o /   \o \.                       ,o..         o
+                 #   ``o-o.o--      /o /      \o.o--..          ,,,o-o'o.--o:o:o,,..:o
+                 #                 (oo(          `--o.o`o---o'o'o,o,-'''        o'o'o
+                 #                  \ o\              ``-o-o''''
+                 #   ,-o;o           \o \
+                 #  /o/               )o )  Carl Pilcher
+                 # (o(               /o /                |
+                 #  \o\.       ...-o'o /             \   |
+                 #    \o`o`-o'o o,o,--'       ~~~~~~~~\~~|~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 #      ```o--'''                       \| /
+                 #                                       |/
+                 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                 #                                       |
+                 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+                data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 250) # timeout is the last argument
+
+                # map the input to a character
+                map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
+                data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
+
+                # fire the event
+                values = {"id": str(i), "char": data2}
+                self.keypress(values)
+            except usb.core.USBError as e:
+                pass
     
     def start(self,vendor_id, product_id):
         # Detect the keyboards
@@ -89,19 +143,10 @@ class KeyboardLibrary:
         self.detect(vendor_id,product_id)  
         self.configure()
 
-        #Display the keyboard input
-        while True:
-            for (i,kb) in enumerate(self.keyboard_array):   # i is the index and kb the Keyboard object
-                try:
-                    data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 10) # timeout is the last argument
-
-                    # map the input to a character
-                    map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
-                    data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
-
-                    # fire the event
-                    values = {"id": str(i), "char": data2}
-                    self.keypress(values)
-                    #print "#" + str(i) + " : " + data2
-                except usb.core.USBError as e:
-                    pass
+        # Create processes
+        for kb in self.keyboard_array:
+            print "BBBBBBBBBBBBBBBBBBBBBBB"
+            print str(kb)
+            p = multiprocessing.Process(target=self.read_keyboard_input, args=(kb))
+            self.keyboard_proc_array.append(p)
+            p.start()

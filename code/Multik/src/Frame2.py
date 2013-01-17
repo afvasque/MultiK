@@ -24,7 +24,7 @@ class Frame2(wx.Frame):
     @staticmethod
     def Keyboard_event(sender, earg):
         diccionario[int(earg[0])].Keyboard_Pressed(sender,earg)
-        print str(earg[0])+"id: "+earg[1]  # 0: id, 1: teclas
+        print "#%s : %s" % (earg[0], earg[1])  # 0: id, 1: teclas
         
     def _init_ctrls(self, prnt):
         # generated method, don't edit

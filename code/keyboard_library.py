@@ -83,56 +83,20 @@ class KeyboardLibrary:
 
             keyboard._endpoint = keyboard[0][(0,0)][0]
 
-    def read_keyboard_input(self, kb):
-        print "AAAAAAAAAAAAAAAAAAAAAAAAAA"
+    def read_keyboard_input(self, i, kb):
         print str(kb)
         #Display the keyboard input
         while True:
             try:
-                 #                                             ,
-                 #                                            ,o
-                 #                                            :o
-                 #                   _....._                  `:o
-                 #                 .'       ``-.                \o
-                 #                /  _      _   \                \o
-                 #               :  /*\    /*\   )                ;o
-                 #               |  \_/    \_/   /                ;o
-                 #               (       U      /                 ;o
-                 #                \  (\_____/) /                  /o
-                 #                 \   \_m_/  (                  /o
-                 #                  \         (                ,o:
-                 #                  )          \,           .o;o'           ,o'o'o.
-                 #                ./          /\o;o,,,,,;o;o;''         _,-o,-'''-o:o.
-                 # .             ./o./)        \    'o'o'o''         _,-'o,o'         o
-                 # o           ./o./ /       .o \.              __,-o o,o'
-                 # \o.       ,/o /  /o/)     | o o'-..____,,-o'o o_o-'
-                 # `o:o...-o,o-' ,o,/ |     \   'o.o_o_o_o,o--''
-                 # .,  ``o-o'  ,.oo/   'o /\.o`.
-                 # `o`o-....o'o,-'   /o /   \o \.                       ,o..         o
-                 #   ``o-o.o--      /o /      \o.o--..          ,,,o-o'o.--o:o:o,,..:o
-                 #                 (oo(          `--o.o`o---o'o'o,o,-'''        o'o'o
-                 #                  \ o\              ``-o-o''''
-                 #   ,-o;o           \o \
-                 #  /o/               )o )  Carl Pilcher
-                 # (o(               /o /                |
-                 #  \o\.       ...-o'o /             \   |
-                 #    \o`o`-o'o o,o,--'       ~~~~~~~~\~~|~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 #      ```o--'''                       \| /
-                 #                                       |/
-                 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                 #                                       |
-                 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
                 data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 250) # timeout is the last argument
 
                 # map the input to a character
                 map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
                 data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
 
-                # fire the event
+                # set the event arguments
                 values = {"id": str(i), "char": data2}
+                # fire the event
                 self.keypress(values)
             except usb.core.USBError as e:
                 pass
@@ -144,9 +108,11 @@ class KeyboardLibrary:
         self.configure()
 
         # Create processes
-        for kb in self.keyboard_array:
-            print "BBBBBBBBBBBBBBBBBBBBBBB"
-            print str(kb)
-            p = multiprocessing.Process(target=self.read_keyboard_input, args=(kb))
+        for i,kb in enumerate(self.keyboard_array):
+            p = multiprocessing.Process(target=self.read_keyboard_input, args=(i,kb))
             self.keyboard_proc_array.append(p)
             p.start()
+
+        for p in self.keyboard_proc_array:
+            p.join()
+

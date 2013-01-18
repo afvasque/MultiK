@@ -48,7 +48,7 @@ class KeyboardLibrary:
     keyboard_proc_array = []
     keypress = event.Event('A key has been pressed')
 
-    def detect(self,vendor_id, product_id):
+    def detect_all_keyboards(self,vendor_id, product_id):
         # find our keyboards
         print 'Detecting keyboards with vendor_id = ' + str(vendor_id) + ' and product_id = ' + str(product_id) + '...'
         keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
@@ -63,7 +63,7 @@ class KeyboardLibrary:
 
 
 
-    def configure(self):
+    def configure_all_keyboards(self):
         
         for keyboard in self.keyboard_array:
             if keyboard.is_kernel_driver_active(0):
@@ -84,28 +84,28 @@ class KeyboardLibrary:
             keyboard._endpoint = keyboard[0][(0,0)][0]
 
     def read_keyboard_input(self, i, kb):
-        print str(kb)
         #Display the keyboard input
         while True:
             try:
-                data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 250) # timeout is the last argument
+                data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 10) # timeout is the last argument
 
                 # map the input to a character
                 map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
                 data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
 
-                # set the event arguments
+                # define the event arguments
                 values = {"id": str(i), "char": data2}
                 # fire the event
                 self.keypress(values)
             except usb.core.USBError as e:
                 pass
     
-    def start(self,vendor_id, product_id):
+    def start(self, vendor_id, product_id):
         # Detect the keyboards
         #(id values found using 'lsusb --vv' command in ubuntu 12.04)
-        self.detect(vendor_id,product_id)  
-        self.configure()
+        self.detect_all_keyboards(vendor_id, product_id)
+        # detach from kernel and set usb configuration
+        self.configure_all_keyboards()
 
         # Create processes
         for i,kb in enumerate(self.keyboard_array):
@@ -113,6 +113,8 @@ class KeyboardLibrary:
             self.keyboard_proc_array.append(p)
             p.start()
 
-        for p in self.keyboard_proc_array:
-            p.join()
+
+
+
+
 

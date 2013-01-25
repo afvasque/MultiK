@@ -1,0 +1,35 @@
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\bin\Debug\Generador Español.exe
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\bin\Debug\Generador Español.pdb
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\MainWindow.baml
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\MainWindow.g.cs
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\App.g.cs
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Generador Español_MarkupCompile.cache
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Generador Español.g.resources
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Generador_Español.Properties.Resources.resources
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\GenerateResource.read.1.tlog
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\GenerateResource.write.1.tlog
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Generador Español.exe
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Generador Español.pdb
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\bin\Debug\Biblioteca.dll
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Generador Español\bin\Debug\Biblioteca.pdb
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Advertencia.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\VentanaCierre.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\Advertencia.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\VentanaCierre.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\AdvertenciaFuncion.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorAdjetivo.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorArticulo.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorSustantivo.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorVerbo.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\ModificadorSustantivo.baml
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\AdvertenciaFuncion.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorAdjetivo.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorArticulo.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorSustantivo.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\CreadorVerbo.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\obj\x86\Debug\ModificadorSustantivo.g.cs
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\bin\Debug\GeneradorTexto.dll
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\bin\Debug\ModificadorBaseDato.dll
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\bin\Debug\GeneradorTexto.pdb
+C:\Users\Felipe\Documents\Visual Studio 2010\Projects\Generador Español\Generador Español\bin\Debug\ModificadorBaseDato.pdb

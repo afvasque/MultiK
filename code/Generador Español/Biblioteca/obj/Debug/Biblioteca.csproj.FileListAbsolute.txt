@@ -1,0 +1,5 @@
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Biblioteca\bin\Debug\Biblioteca.dll
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Biblioteca\bin\Debug\Biblioteca.pdb
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Biblioteca\obj\Debug\ResolveAssemblyReference.cache
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Biblioteca\obj\Debug\Biblioteca.dll
+c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\Biblioteca\obj\Debug\Biblioteca.pdb

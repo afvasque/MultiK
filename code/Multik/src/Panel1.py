@@ -4,6 +4,8 @@
 import wx
 import os
 import audio_library
+from Reglas import *
+from BasicOperacion import *
 
 [wxID_PANEL1, wxID_PANEL1STATICBITMAP1, wxID_PANEL1STATICBITMAP2, 
  wxID_PANEL1STATICTEXT1, wxID_PANEL1TEXTCTRL1, 
@@ -47,13 +49,35 @@ class Panel1(wx.Panel):
         
         
 
-    def __init__(self, parent, id, pos, size, style, name, number):
+    def __init__(self, parent, Id, pos, size, style, name, numero_audifono, Alumno):
         self._init_ctrls(parent)
         self.textCtrl1.Value= ""
         self.staticBitmap1.SetBitmap(scale_bitmap(wx.Bitmap('keyboard.png'), 30, 10))
         self.staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
-        self.number= number
+        self.numero_audifono= numero_audifono
+        self.Alumno_actual= Alumno
+        self.reglas_main= Reglas()
+        
+        operacion= BasicOperacion()
+        operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
+        operacion.nivelOperacion= 1
+        operacion.feedback_correcto= "first"
+        self.Operacion_actual= operacion
+        
+        self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+        
+        self.CreateGrid(self.Operacion_actual)
+        
+        
+    def CreateGrid(self, operacion):
+        
+        
+        return
 
+    def ResetLayout(self):
+        
+        
+        return
 
     def OnTextCtrl1KeyUp(self, event):
         keycode = event.GetKeyCode()
@@ -64,18 +88,18 @@ class Panel1(wx.Panel):
 
     def Keyboard_Pressed(self, sender, earg):
 
-      text= str(earg[1])
+        text= str(earg[1])
       
 
-      if text is "Enter":
-        audio_lib.play(self.number, self.textCtrl1.Value)
-        self.textCtrl1.Value=""
-        return
+        if text is "Enter":
+            audio_lib.play(self.numero_audifono, self.textCtrl1.Value)
+            self.textCtrl1.Value=""
+            return
 
-      if text is '^H': # backspace captura
-        self.textCtrl1.Value= self.textCtrl1.Value[:-1]
-        return
-      self.textCtrl1.Value+=text
+        if text is '^H': # backspace captura
+            self.textCtrl1.Value= self.textCtrl1.Value[:-1]
+            return
+        self.textCtrl1.Value+=text
 
         
 

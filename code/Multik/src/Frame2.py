@@ -48,6 +48,18 @@ class Frame2(wx.Frame):
         
         box_tot = wx.GridSizer(rows=line_number, cols=line_number, hgap=0, vgap=0)
         
+        Alumnos = list()
+        
+        Alumnos.append("Andrea")
+        Alumnos.append("Miguel")
+        Alumnos.append("Esteban")
+        Alumnos.append("Enzo")
+        Alumnos.append("Felipe")
+        Alumnos.append("Tomás")
+        Alumnos.append("Gabriel")
+        Alumnos.append("José")
+                                
+        
         for x in range(0,keyboardsNum,line_number):
                     
             #box_hor = wx.BoxSizer(wx.HORIZONTAL)
@@ -59,8 +71,16 @@ class Frame2(wx.Frame):
                 temp = line_number;
         
             for y in range(x,x+temp):
+                
+                alumno=""
+                
+                if y< len(Alumnos):
+                    alumno= Alumnos[y]
+                else:
+                    alumno = Alumnos[0]
+                
                 panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
-                      pos=wx.Point(0, 0), size=wx.Size(0, 0), number=y,
+                      pos=wx.Point(0, 0), size=wx.Size(0, 0), numero_audifono=y, Alumno=alumno,
                       style=wx.NO_BORDER)
                 box_tot.Add(panel1, 0, wx.ALIGN_TOP, 0)
                 diccionario[y]=panel1
@@ -101,11 +121,11 @@ class Frame2(wx.Frame):
         
    
 
-    def OnTextCtrl1KeyUp(self, event):
-        keycode = event.GetKeyCode()
-        
-        if keycode== wx.WXK_RETURN:
-            self.textCtrl1.Value="ar"
+    #def OnTextCtrl1KeyUp(self, event):
+    #   keycode = event.GetKeyCode()
+    #    
+    #    if keycode== wx.WXK_RETURN:
+    #        self.textCtrl1.Value="ar"
     
   
 class ThreadKeyboard(threading.Thread):

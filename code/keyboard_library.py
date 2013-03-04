@@ -56,7 +56,9 @@ class KeyboardLibrary:
         print str(len(keyboards)) + ' keyboards of the specified type detected!'
 
         if len(keyboards) is 0:
-            sys.exit("Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.")
+            print "Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct."
+            raw_input('Press any key to exit.')
+            sys.exit()
 
         for kb in keyboards:
             self.keyboard_array.append(kb)

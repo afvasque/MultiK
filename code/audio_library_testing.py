@@ -29,4 +29,4 @@ for p in all_p:
 	p.join()
 
 # ...and continue running from here when they're joined
-print "Chai."
+raw_input('Press any key to exit.')

@@ -1,0 +1,21 @@
+[Desktop Entry]
+Name=MultiK
+Comment=Actividades de aprendizaje de lenguaje
+Exec=nautilus /home/esteban/pyprojects/MultiK/ #editar todas las rutas
+Icon=/home/esteban/pyprojects/MultiK/icon/obey-the-pug-hat-pink-230-230.png
+Type=Application
+Terminal=false
+
+X-Ayatana-Desktop-Shortcuts=TestKeyboards;TestAudio;
+
+[TestKeyboards Shortcut Group]
+Name=Test Keyboards
+Exec=gnome-terminal -t "Test Keyboards - MultiK" -x bash -c "python /home/esteban/pyprojects/MultiK/code/keyboard_library_testing.py"
+Terminal=false
+OnlyShowIn=Unity
+
+[TestAudio Shortcut Group]
+Name=Test Sound Cards
+Exec=gnome-terminal -t "Test Sound Cards - MultiK" -x bash -c "python /home/esteban/pyprojects/MultiK/code/audio_library_testing.py"
+Terminal=false
+OnlyShowIn=Unity

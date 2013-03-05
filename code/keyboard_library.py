@@ -57,7 +57,7 @@ class KeyboardLibrary:
 
         if len(keyboards) is 0:
             print "Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct."
-            raw_input('Press any key to exit.')
+            raw_input('Press [Enter] to exit.')
             sys.exit()
 
         for kb in keyboards:

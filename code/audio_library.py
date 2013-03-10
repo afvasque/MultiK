@@ -26,7 +26,7 @@ class AudioLibrary:
         usb_cards = self.get_usb_card_names()
 
         total_cards = len(all_cards)
-        print "Detected " + str(total_cards) + " sound cards in total."
+        print '\033[94m' + "Detected " + str(total_cards) + " sound cards in total." + '\033[0m'
         total_usb_cards = len(usb_cards)
         print "Assuming " + str(total_usb_cards) + " USB sound cards in total."
 

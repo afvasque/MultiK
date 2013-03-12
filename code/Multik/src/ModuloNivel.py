@@ -13,8 +13,8 @@ class ModuloNivel:
 
 	def GenerarOperandosContenidos(self):
 		for i in range(0,len(nivelesTipoOperacion)):
-			if not nivelesTipoOperacion[i].TipoOperacion in tipoOperaciones:
-				tipoOperaciones.append(nivelesTipoOperacion[i].TipoOperacion)
+			if not nivelesTipoOperacion[i].tipo_op in tipoOperaciones:
+				tipoOperaciones.append(nivelesTipoOperacion[i].tipo_op)
  
 
 	# Constructor de un modulo

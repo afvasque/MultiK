@@ -79,7 +79,7 @@ class Frame2(wx.Frame):
                 else:
                     alumno = Alumnos[0]
                 
-                panel1 = Panel1(id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
+                panel1 = Panel1(Id=wxID_FRAME1PANEL2, name='panel'+str(y), parent=self,
                       pos=wx.Point(0, 0), size=wx.Size(0, 0), numero_audifono=y, Alumno=alumno,
                       style=wx.NO_BORDER)
                 box_tot.Add(panel1, 0, wx.ALIGN_TOP, 0)

@@ -7,9 +7,7 @@ import audio_library
 from Reglas import *
 from BasicOperacion import *
 
-[wxID_PANEL1, wxID_PANEL1STATICBITMAP1, wxID_PANEL1STATICBITMAP2, 
- wxID_PANEL1STATICTEXT1, wxID_PANEL1TEXTCTRL1, 
-] = [wx.NewId() for _init_ctrls in range(5)]
+[wxID_PANEL1] = [wx.NewId() for _init_ctrls in range(1)]
 
 audio_lib = audio_library.AudioLibrary()
 
@@ -28,32 +26,58 @@ class Panel1(wx.Panel):
               style=wx.NO_BORDER)
         #self.SetClientSize(wx.Size(419, 134))
 
-        self.staticText1 = wx.StaticText(id=wxID_PANEL1STATICTEXT1,
+        self.box_tot = wx.BoxSizer(orient=wx.VERTICAL)#rows=4, cols=1, hgap=0, vgap=0)
+        box_up= wx.BoxSizer(orient=wx.HORIZONTAL) # tiene los indicadores de arriba
+        self.box_left= wx.BoxSizer(orient=wx.VERTICAL)  # tiene el espacio para ejercicios
+        box_right= wx.BoxSizer(orient=wx.VERTICAL) # tiene el semáforo
+
+        box_down= wx.BoxSizer(orient=wx.HORIZONTAL)
+        box_down.Add(self.box_left,0,wx.ALIGN_TOP,0)
+        box_down.Add(box_right,0,wx.ALIGN_TOP,0)
+
+        self.box_tot.Add(box_up)
+        self.box_tot.Add(box_down)
+
+
+
+        staticText1 = wx.StaticText(
               label=u'Escribe la letra...', name='staticText1', parent=self,
               pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
+        self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
 
-        self.textCtrl1 = wx.TextCtrl(id=wxID_PANEL1TEXTCTRL1, name='textCtrl1',
+        self.textCtrl1 = wx.TextCtrl(
               parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
               value='textCtrl1')
-        self.textCtrl1.Bind(wx.EVT_KEY_UP, self.OnTextCtrl1KeyUp)
+        self.textCtrl1.Value= ""
+        self.box_left.Add(self.textCtrl1, 0, wx.ALIGN_TOP, 0)
 
-        self.staticBitmap1 = wx.StaticBitmap(bitmap=wx.NullBitmap,
-              id=wxID_PANEL1STATICBITMAP1, name='staticBitmap1', parent=self,
-              pos=wx.Point(60, 0), size=wx.Size(132, 84), style=0)
-        self.staticBitmap1.SetBitmap(wx.Bitmap('keyboard.png'))
+        staticBitmap1 = wx.StaticBitmap(bitmap=wx.NullBitmap,
+              name='staticBitmap1', parent=self,
+              pos=wx.Point(0, 0), size=wx.Size(30, 20), style=0)
+        staticBitmap1.SetBitmap(wx.Bitmap('keyboard.png'))
+        staticBitmap1.SetBitmap(scale_bitmap(wx.Bitmap('keyboard.png'), 30, 10))
 
-        self.staticBitmap2 = wx.StaticBitmap(bitmap=wx.NullBitmap,
-              id=wxID_PANEL1STATICBITMAP2, name='staticBitmap2', parent=self,
+        box_up.Add(staticBitmap1, 0, wx.ALIGN_TOP, 0)
+
+
+        staticBitmap2 = wx.StaticBitmap(bitmap=wx.NullBitmap,
+              name='staticBitmap2', parent=self,
               pos=wx.Point(110, 20), size=wx.Size(182, 229), style=0)
-        self.staticBitmap2.SetBitmap(wx.Bitmap('barra_progreso.png'))
+        staticBitmap2.SetBitmap(wx.Bitmap('barra_progreso.png'))
+        staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
+
+        box_right.Add(staticBitmap2, 0, wx.ALIGN_TOP, 0)
+
+        self.SetAutoLayout(True)
+        self.SetSizer(self.box_tot)
+        self.Layout()
         
         
 
     def __init__(self, parent, Id, pos, size, style, name, numero_audifono, Alumno):
         self._init_ctrls(parent)
-        self.textCtrl1.Value= ""
-        self.staticBitmap1.SetBitmap(scale_bitmap(wx.Bitmap('keyboard.png'), 30, 10))
-        self.staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
+        
+        
         self.numero_audifono= numero_audifono
         self.Alumno_actual= Alumno
         self.reglas_main= Reglas()
@@ -65,26 +89,56 @@ class Panel1(wx.Panel):
         self.Operacion_actual= operacion
         
         self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+
+        
         
         self.CreateGrid(self.Operacion_actual)
         
         
     def CreateGrid(self, operacion):
         
+        self.ResetLayout()
+        
+        if operacion.TipoOperacion is TipoOperacion.Reproduccion_letras_alfabeto:
+            
+            if operacion.nivelOperacion ==1:
+                self.reproduccion_letras_alfabeto1(operacion)
+            elif operacion.nivelOperacion ==2:
+                self.reproduccion_letras_alfabeto2(operacion)
         
         return
 
     def ResetLayout(self):
+        self.box_left.Clear()
         
+        staticText1 = wx.StaticText(
+              label=u'', name='staticText1', parent=self,
+              pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
+        self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
+        self.box_left.Add(self.textCtrl1)
         
         return
 
-    def OnTextCtrl1KeyUp(self, event):
-        keycode = event.GetKeyCode()
+    def reproduccion_letras_alfabeto1(self,operacion):
         
-        if keycode== wx.WXK_RETURN:
-            audio_lib.play(self.textCtrl1.Value)            
-            self.textCtrl1.Value=""
+        self.box_left.GetChildren()[0].label=operacion.pregunta
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        self.textCtrl1.Value=''
+        
+        return
+    
+    def reproduccion_letras_alfabeto2(self,operacion):
+        
+        self.box_left.GetChildren()[0]
+        self.textCtrl1.SetDimensions(height=0)
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox()
+        
+        return
+
+
 
     def Keyboard_Pressed(self, sender, earg):
 
@@ -100,6 +154,12 @@ class Panel1(wx.Panel):
             self.textCtrl1.Value= self.textCtrl1.Value[:-1]
             return
         self.textCtrl1.Value+=text
-
+    
+    def TexttoSpeech(self, st):
+        
+        if len(st)>0:
+            audio_lib.play(self.numero_audifono, st)            
+            return
+        
         
 

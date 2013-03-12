@@ -22,7 +22,7 @@ class Generador_pal:
         elif silaba == 2:
             return "casa"
         elif silaba ==3:
-            return "cámara"
+            return "camara"
         
     def generador_sust_propio(self,propio):
         if propio is True:

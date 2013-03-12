@@ -29,4 +29,6 @@ for p in all_p:
 	p.join()
 
 # ...and continue running from here when they're joined
+
+# wait for keypress before exiting
 raw_input('Press [Enter] to exit.')

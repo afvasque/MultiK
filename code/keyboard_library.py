@@ -53,10 +53,10 @@ class KeyboardLibrary:
         print 'Detecting keyboards with vendor_id = ' + str(vendor_id) + ' and product_id = ' + str(product_id) + '...'
         keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
 
-        print str(len(keyboards)) + ' keyboards of the specified type detected!'
+        print '\033[94m' + str(len(keyboards)) + ' keyboards of the specified type detected!' + '\033[0m'
 
         if len(keyboards) is 0:
-            print "Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct."
+            print '\033[91m' + 'Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.' + '\033[0m'
             raw_input('Press [Enter] to exit.')
             sys.exit()
 

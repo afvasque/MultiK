@@ -1,5 +1,6 @@
 # coding=utf-8
 import keyboard_library
+import sys
 
 def mostrar_algo_en_pantalla(sender, earg):
 	print str(earg)

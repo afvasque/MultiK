@@ -11,10 +11,14 @@ class Welcome:
 	# This is a callback function. The data arguments are ignored
 	# in this example. More on callbacks below.
 	def test_keyboards(self, widget, data=None):
-		os.system("gnome-terminal -t 'Test Keyboards - MultiK' -x bash -c 'python /home/esteban/pyprojects/MultiK/code/keyboard_library_testing.py'")
+		# Get the path of the file executed for testing. We assume it is in the same directory as this file.
+		test_keyboards_path = os.path.join(self.realdirname, 'keyboard_library_testing.py')
+		os.system("gnome-terminal -t 'Test Keyboards - MultiK' -x bash -c 'python %s'" % test_keyboards_path)
 
 	def test_audio(self, widget, data=None):
-		os.system("gnome-terminal -t 'Test Sound Cards - MultiK' -x bash -c 'python /home/esteban/pyprojects/MultiK/code/audio_library_testing.py'")
+		# Get the path of the file executed for testing. We assume it is in the same directory as this file.
+		test_audio_path = os.path.join(self.realdirname, 'audio_library_testing.py')
+		os.system("gnome-terminal -t 'Test Sound Cards - MultiK' -x bash -c 'python %s'" % test_audio_path)
 
 	def delete_event(self, widget, event, data=None):
 		# If you return FALSE in the "delete_event" signal handler,
@@ -33,6 +37,11 @@ class Welcome:
 		gtk.main_quit()
 
 	def __init__(self):
+		# set the directory where this file is located
+		self.realdirname = os.path.dirname(os.path.realpath(__file__))
+
+
+
 		# create a new window
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 

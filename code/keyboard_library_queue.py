@@ -44,6 +44,7 @@ class KeyboardLibrary:
 		queue = multiprocessing.Queue(False)
 
 		# Create processes
+		print "Starting %i processes..." % self.total_keyboards
 		for i in range(self.total_keyboards):
 
 			# The keyboard needs to be detected again.
@@ -54,7 +55,7 @@ class KeyboardLibrary:
 
 			# Start it.
 			p.start()
-			print "Started %s" % str(p)
+			print "%s" % str(p)
 
 
 		# Read the queue forever.

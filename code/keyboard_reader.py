@@ -118,7 +118,7 @@ class KeyboardReader:
 						# put these values on the queue
 						self.queue.put_nowait(values)
 					except Queue.Full:
-						print "Queue full. Lost values: %s", values
+						print "Queue full. Lost values: %s", str(values)
 						pass
 
 			except usb.core.USBError as e:

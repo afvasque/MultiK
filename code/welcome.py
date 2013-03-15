@@ -12,7 +12,7 @@ class Welcome:
 	# in this example. More on callbacks below.
 	def test_keyboards(self, widget, data=None):
 		# Get the path of the file executed for testing. We assume it is in the same directory as this file.
-		test_keyboards_path = os.path.join(self.realdirname, 'keyboard_library_testing.py')
+		test_keyboards_path = os.path.join(self.realdirname, 'keyboard_library_queue_testing.py')
 		os.system("gnome-terminal -t 'Test Keyboards - MultiK' -x bash -c 'python %s'" % test_keyboards_path)
 
 	def test_audio(self, widget, data=None):

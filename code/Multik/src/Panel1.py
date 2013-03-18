@@ -45,11 +45,11 @@ class Panel1(wx.Panel):
               pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
         self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
 
-        self.textCtrl1 = wx.TextCtrl(
+        textCtrl1 = wx.TextCtrl(
               parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
               value='textCtrl1')
-        self.textCtrl1.Value= ""
-        self.box_left.Add(self.textCtrl1, 0, wx.ALIGN_TOP, 0)
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
 
         staticBitmap1 = wx.StaticBitmap(bitmap=wx.NullBitmap,
               name='staticBitmap1', parent=self,
@@ -105,45 +105,215 @@ class Panel1(wx.Panel):
                 self.reproduccion_letras_alfabeto1(operacion)
             elif operacion.nivelOperacion ==2:
                 self.reproduccion_letras_alfabeto2(operacion)
+                
+        elif operacion.TipoOperacion is TipoOperacion.sentido_vocales_silabas:
+            
+            if operacion.nivelOperacion ==1:
+                self.sentido_vocales1(operacion)
         
-        return
+        elif operacion.TipoOperacion is TipoOperacion.signos_int_excl:
+            if operacion.nivelOperacion ==1:
+                self.signos_int_excl1(operacion)
+            elif operacion.nivelOperacion ==2:
+                self.signos_int_excl2(operacion)
+                
+        elif operacion.TipoOperacion is TipoOperacion.mayus_nombres_propios:
+            if operacion.nivelOperacion ==1:
+                self.mayus_nombres_propios1(operacion)
+            elif operacion.nivelOperacion ==2:
+                self.mayus_nombres_propios2(operacion)
+                
+        elif operacion.TipoOperacion is TipoOperacion.patrones_ort_comunes:
+            if operacion.nivelOperacion ==1:
+                self.patrones_ort_comunes1(operacion)            
+            elif operacion.nivelOperacion ==2:
+                self.patrones_ort_comunes2(operacion)
+            elif operacion.nivelOperacion ==3:
+                self.patrones_ort_comunes3(operacion)
+            elif operacion.nivelOperacion ==4:
+                self.patrones_ort_comunes4(operacion)
+            elif operacion.nivelOperacion ==5:
+                self.patrones_ort_comunes5(operacion)
+                
+        
 
     def ResetLayout(self):
-        self.box_left.Clear()
+        self.box_left.Clear(True)
+        
         
         staticText1 = wx.StaticText(
               label=u'', name='staticText1', parent=self,
               pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
         self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
-        self.box_left.Add(self.textCtrl1)
+
+
         
-        return
 
     def reproduccion_letras_alfabeto1(self,operacion):
-        
-        self.box_left.GetChildren()[0].label=operacion.pregunta
+
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
         self.TexttoSpeech(operacion.audio_pregunta)
         
-        self.textCtrl1.Value=''
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+        
+        
+    def reproduccion_letras_alfabeto2(self,operacion):
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("dsa")
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+
+        lista.Append("1")
+        lista.Append("2")
+        lista.Append("3")
+
+        for st in operacion.alternativas:
+            lista.Append(st)
+        
+        
+    
+    def sentido_vocales1(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("")
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        
+        for st in operacion.alternativas:
+            lista.Append(st)
+    
+    
+    def signos_int_excl1(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+
+    def signos_int_excl2(self, operacion):        
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        self.box_left.Clear(True)
+        
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+        staticText1 = wx.StaticText(
+              label=u'', name='staticText1', parent=self,
+              pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
+        self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
+        
+        textCtrl2 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl2')
+        textCtrl2.Value= ""
+        self.box_left.Add(textCtrl2, 0, wx.ALIGN_TOP, 0)
         
         return
     
-    def reproduccion_letras_alfabeto2(self,operacion):
+    def mayus_nombres_propios1(self, operacion):        
         
-        self.box_left.GetChildren()[0]
-        self.textCtrl1.SetDimensions(height=0)
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("")
+        
         self.TexttoSpeech(operacion.audio_pregunta)
         
-        lista= wx.ListBox()
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        
+        for st in operacion.alternativas:
+            lista.Append(st)
+        
+    # pendiente
+    def mayus_nombres_propios2(self, operacion):        
         
         return
+    
+    def patrones_ort_comunes1(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        
+        for st in operacion.alternativas:
+            lista.Append(st)
+        
+    
+    def patrones_ort_comunes2(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+    
+    def patrones_ort_comunes3(self, operacion):        
+        
+        # Falta imagen!!
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        
+        for st in operacion.alternativas:
+            lista.Append(st)
+        
+    
+    def patrones_ort_comunes4(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        
+        for st in operacion.alternativas:
+            lista.Append(st)
+    
+    def patrones_ort_comunes5(self, operacion):        
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+        self.TexttoSpeech(operacion.audio_pregunta)
+        return
 
-
+    
 
     def Keyboard_Pressed(self, sender, earg):
 
         text= str(earg[1])
-      
+        
 
         if text is "Enter":
             audio_lib.play(self.numero_audifono, self.textCtrl1.Value)
@@ -153,7 +323,17 @@ class Panel1(wx.Panel):
         if text is '^H': # backspace captura
             self.textCtrl1.Value= self.textCtrl1.Value[:-1]
             return
-        self.textCtrl1.Value+=text
+        
+        if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.TextCtrl):
+            strr= self.box_left.GetChildren()[1].GetWindow().Value
+            wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
+
+        if text is 'Down':
+
+        if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
+
+            return
+
     
     def TexttoSpeech(self, st):
         

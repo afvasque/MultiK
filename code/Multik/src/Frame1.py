@@ -70,7 +70,7 @@ class Frame1(wx.Frame):
             self.tts(self.textCtrl1.Value)            
             self.textCtrl1.Value=""
     
-    
+   
 
 
 if __name__ == '__main__':

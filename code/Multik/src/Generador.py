@@ -1,3 +1,4 @@
+import random
 
 class Generador_pal:
     
@@ -7,8 +8,18 @@ class Generador_pal:
         return
     
     def generador_letra_alfabeto(self):
+        azar= random.randrange(0,4)
         
-        return "a"
+        if azar==0:        
+            return "a"
+        elif azar==1:
+            return "b"
+        elif azar==2:
+            return "f"
+        elif azar==3:
+            return "j"
+        elif azar==4:
+            return "m"
     
     def generador_palabra_contiene(self, letra):
         return letra+"prueba"

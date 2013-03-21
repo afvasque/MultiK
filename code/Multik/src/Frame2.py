@@ -3,6 +3,7 @@
 
 import wx
 from Panel1 import Panel1
+from Alumno import *
 import usb.core
 import threading
 import math
@@ -50,14 +51,14 @@ class Frame2(wx.Frame):
         
         Alumnos = list()
         
-        Alumnos.append("Andrea")
-        Alumnos.append("Miguel")
-        Alumnos.append("Esteban")
-        Alumnos.append("Enzo")
-        Alumnos.append("Felipe")
-        Alumnos.append("Tomás")
-        Alumnos.append("Gabriel")
-        Alumnos.append("José")
+        Alumnos.append(Alumno(1,"Andrea","Teclados"))
+        Alumnos.append(Alumno(2,"Miguel","Teclados"))
+        Alumnos.append(Alumno(3,"Esteban","Teclados"))
+        Alumnos.append(Alumno(4,"Enzo","Teclados"))
+        Alumnos.append(Alumno(5,"Felipe","Teclados"))
+        Alumnos.append(Alumno(6,"Tomás","Teclados"))
+        Alumnos.append(Alumno(7,"Gabriel","Teclados"))
+        Alumnos.append(Alumno(8,"José","Teclados"))
                                 
         
         for x in range(0,keyboardsNum,line_number):

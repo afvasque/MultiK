@@ -84,14 +84,15 @@ class Panel1(wx.Panel):
         
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.nivelOperacion= 1
-        operacion.feedback_correcto= "first"
+        operacion.nivelOperacion= 2
+        operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
+        #print operacion.TipoOperacion
+        print operacion.nivelOperacion
+        #print TipoOperacion.Reproduccion_letras_alfabeto
         self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-
-        
-        
+              
         self.CreateGrid(self.Operacion_actual)
         
         
@@ -99,14 +100,14 @@ class Panel1(wx.Panel):
         
         self.ResetLayout()
         
-        if operacion.TipoOperacion is TipoOperacion.Reproduccion_letras_alfabeto:
-            
-            if operacion.nivelOperacion ==1:
+        if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
+            print operacion.nivelOperacion
+            if operacion.nivelOperacion == 1:
                 self.reproduccion_letras_alfabeto1(operacion)
             elif operacion.nivelOperacion ==2:
                 self.reproduccion_letras_alfabeto2(operacion)
                 
-        elif operacion.TipoOperacion is TipoOperacion.sentido_vocales_silabas:
+        elif operacion.TipoOperacion == TipoOperacion.sentido_vocales_silabas:
             
             if operacion.nivelOperacion ==1:
                 self.sentido_vocales1(operacion)
@@ -140,10 +141,9 @@ class Panel1(wx.Panel):
     def ResetLayout(self):
         self.box_left.Clear(True)
         
-        
         staticText1 = wx.StaticText(
               label=u'', name='staticText1', parent=self,
-              pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
+              pos=wx.Point(0, 10), size=wx.Size(108, 47), style=0)
         self.box_left.Add(staticText1, 0, wx.ALIGN_TOP, 0)
 
 
@@ -152,7 +152,7 @@ class Panel1(wx.Panel):
     def reproduccion_letras_alfabeto1(self,operacion):
 
         self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
-        self.TexttoSpeech(operacion.audio_pregunta)
+        #self.TexttoSpeech(operacion.audio_pregunta)
         
         textCtrl1 = wx.TextCtrl(
               parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
@@ -166,13 +166,11 @@ class Panel1(wx.Panel):
         
         self.box_left.GetChildren()[0].GetWindow().SetLabel("dsa")
         
-        self.TexttoSpeech(operacion.audio_pregunta)
+        #self.TexttoSpeech(operacion.audio_pregunta)
         
-        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
 
-        lista.Append("1")
-        lista.Append("2")
-        lista.Append("3")
+        
 
         for st in operacion.alternativas:
             lista.Append(st)
@@ -328,7 +326,7 @@ class Panel1(wx.Panel):
             strr= self.box_left.GetChildren()[1].GetWindow().Value
             wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
 
-        if text is 'Down':
+        #if text is 'Down':
 
         if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
 

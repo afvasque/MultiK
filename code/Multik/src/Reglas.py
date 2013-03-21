@@ -37,11 +37,12 @@ class Reglas:
 		if not operacion.respuesta_correcta  and operacion.CantidadVecesIncorrectaSoloEsta <= 2 and not operacion.feedback_correcto is "First" :
 			return operacion
 		
+        
 		operacion.cantidadMaximaNivel= max(Reglas_Fijas.MaximoNivel, operacion.cantidadMaximaNivel)
 		
-		siguiente_nivel = operacion.NivelOperacion
-		cantidad_nivel = operacion.CantidadNivel
-		cantidad_maxima_nivel = operacion.CantidadMaximaNivel
+		siguiente_nivel = operacion.nivelOperacion
+		cantidad_nivel = operacion.cantidadNivel
+		cantidad_maxima_nivel = operacion.cantidadMaximaNivel
 		borrarCorrectas = False
 		tipoActual = operacion.TipoOperacion;
 		
@@ -101,7 +102,7 @@ class Reglas:
 			if siguiente_nivel==2:
 				siguiente_operacion = generador.generador_signos_int_excl2()
 		
-		if siguiente_nivel == operacion.NivelOperacion:
+		if siguiente_nivel == operacion.nivelOperacion:
 			siguiente_operacion.cantidadMaximaNivel= cantidad_maxima_nivel
 			siguiente_operacion.AgregarPuntajesNivel(operacion.puntajesNivel, operacion.puntaje)
 			siguiente_operacion.cantidadNivel= cantidad_nivel
@@ -109,9 +110,9 @@ class Reglas:
 			siguiente_operacion.cantidadNivel=1
 			
 		if not borrarCorrectas:
-			siguiente_operacion.CantidadCorrectasTotales = operacion.CantidadCorrectasTotales
+			siguiente_operacion.correctasTotales = operacion.correctasTotales
 		
-		siguiente_operacion.CantidadVecesIncorrecta = operacion.CantidadVecesIncorrecta
+		siguiente_operacion.vecesIncorrecta = operacion.vecesIncorrecta
 		
 		return siguiente_operacion
 		

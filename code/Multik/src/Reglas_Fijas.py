@@ -9,8 +9,8 @@ class Reglas_Fijas:
     #Cantidad de preguntas cuando hay un error
     CantidadPreguntasNivelError = 4
 
-
-    def StringToTipoOperacion(self, tipoOperacion):
+    @staticmethod
+    def StringToTipoOperacion(tipoOperacion):
         if tipoOperacion== "mayus_nombres_propios":
             return TipoOperacion.mayus_nombres_propios
         elif tipoOperacion=="patrones_ort_comunes":
@@ -22,21 +22,22 @@ class Reglas_Fijas:
         else:
             return TipoOperacion.signos_int_excl
 
-    def CambioNivel(self,operacion):
-        siguiente_nivel = operacion.NivelOperacion
-        cantidad_nivel = operacion.CantidadNivel
-        cantidad_maxima_nivel = operacion.CantidadMaximaNivel
+    @staticmethod
+    def CambioNivel(operacion):
+        siguiente_nivel = operacion.nivelOperacion
+        cantidad_nivel = operacion.cantidadNivel
+        cantidad_maxima_nivel = operacion.cantidadMaximaNivel
         to_return = CambioNivel.Mantiene
         
-        if operacion.TipoOperacion is TipoOperacion.signos_int_excl and operacion.NivelOperacion==1 and "?" in operacion.respuesta:
+        if operacion.TipoOperacion is TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
             return CambioNivel.Sube
         
-        if operacion.CantidadCorrectasTotales < self.MinimoPasoNivel and cantidad_nivel>= self.CantidadPreguntasNivelError :
+        if operacion.correctasTotales < Reglas_Fijas.MinimoPasoNivel and cantidad_nivel>= Reglas_Fijas.CantidadPreguntasNivelError :
             return CambioNivel.Mantiene
         
         if cantidad_nivel +1 > cantidad_maxima_nivel:
             to_return= CambioNivel.Sube
-        elif operacion.CantidadCorrectasTotales >= self.MinimoPasoNivel and cantidad_nivel >= self.CantidadPreguntasNivelError:
+        elif operacion.correctasTotales >= Reglas_Fijas.MinimoPasoNivel and cantidad_nivel >= Reglas_Fijas.CantidadPreguntasNivelError:
             to_return = CambioNivel.Sube
             
         return to_return

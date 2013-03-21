@@ -1,6 +1,7 @@
 ﻿from Generador import *
 from BasicOperacion import *
 from TipoOperacionNivel import *
+from Alumno import *
 import random
 
 class GeneradorPreguntas:
@@ -22,9 +23,9 @@ class GeneradorPreguntas:
         letra= self.ReemplazoLetras(letra)
         
         operacion.TipoOperacion = TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.NivelOperacion = 1
+        operacion.nivelOperacion = 1
         operacion.audio_pregunta = "Presiona la letra. " + letra
-        operacion.pregunta = "Presiona la letra... "
+        operacion.pregunta = "Presiona la \nletra... "
         operacion.feedback_correcto = "Bien " + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo de nuevo"
                     
@@ -46,7 +47,7 @@ class GeneradorPreguntas:
         
         operacion= BasicOperacion()
         operacion.TipoOperacion = TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.NivelOperacion = 2
+        operacion.nivelOperacion = 2
         operacion.audio_pregunta = "Busca la palabra con la letra. "+self.ReemplazoLetras(letra)
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
@@ -142,7 +143,7 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         
         operacion.TipoOperacion = TipoOperacion.mayus_nombres_propios
-        operacion.NivelOperacion = 1
+        operacion.nivelOperacion = 1
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.audio_pregunta = "Selecciona el sustantivo propio"
         operacion.feedback_error = "Inténtalo \nde nuevo"
@@ -216,7 +217,7 @@ class GeneradorPreguntas:
         pregunta= respuesta.replace("aba","___")
         
         operacion.TipoOperacion = TipoOperacion.patrones_ort_comunes
-        operacion.NivelOperacion = 2
+        operacion.nivelOperacion = 2
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         operacion.audio_pregunta = "Los verbos terminados en aba se escriben con b y nos indican que una acción ocurrió en el pasado"
@@ -233,7 +234,7 @@ class GeneradorPreguntas:
         respuesta = self.interpal.generador_palabra_contiene("mb")
         pregunta = respuesta.replace("mb", "__")
         operacion.TipoOperacion = TipoOperacion.patrones_ort_comunes
-        operacion.NivelOperacion = 3
+        operacion.nivelOperacion = 3
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         operacion.audio_pregunta = "Escoge la combinación que corresponde para cada palabra"
@@ -254,7 +255,7 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         
         operacion.TipoOperacion = TipoOperacion.patrones_ort_comunes
-        operacion.NivelOperacion = 4
+        operacion.nivelOperacion = 4
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         operacion.audio_pregunta = "Selecciona la palabra con la combinación doble erre"
@@ -274,7 +275,7 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         
         operacion.TipoOperacion = TipoOperacion.patrones_ort_comunes
-        operacion.NivelOperacion = 5
+        operacion.nivelOperacion = 5
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         operacion.pregunta = ""

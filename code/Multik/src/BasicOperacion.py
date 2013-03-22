@@ -1,3 +1,4 @@
+from Reglas_Fijas import *
 
 class BasicOperacion:
     
@@ -33,3 +34,28 @@ class BasicOperacion:
                 
         self.puntajesNivel.append(nuevoPuntaje)
                 
+    def RespuestaCorrecta(self):
+        
+        if self.CantidadVecesIncorrectaSoloEsta==0:
+            self.correctasTotales+=1
+            
+            self.respuesta_correcta=True
+            
+            self.SetearPuntaje()
+        
+    def SetearPuntaje(self):
+        
+        if self.CantidadVecesIncorrectaSoloEsta >=2:
+            self.puntaje=0
+        else:
+            self.puntaje= 2- self.CantidadVecesIncorrectaSoloEsta
+        
+    def RespuestaIncorrecta(self):
+        
+        self.vecesIncorrecta+=1
+        self.CantidadVecesIncorrectaSoloEsta+=1
+        
+        if self.cantidadMaximaNivel < Reglas_Fijas.CantidadPreguntasNivelError:
+            self.cantidadMaximaNivel= Reglas_Fijas.CantidadPreguntasNivelError
+            
+        self.cantidadNivel+=1

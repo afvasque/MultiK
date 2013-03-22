@@ -314,9 +314,118 @@ class Panel1(wx.Panel):
         
 
         if text is "Enter":
-            audio_lib.play(self.numero_audifono, self.textCtrl1.Value)
-            self.textCtrl1.Value=""
-            return
+            
+            if ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 2) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.mayus_nombres_propios and self.Operacion_actual.nivelOperacion == 1) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 1) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 3) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 4) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas)):
+                
+                if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
+                    
+                    list= self.box_left.GetChildren()[1].GetWindow()
+                    
+                    if len(list.GetSelections())>0:
+                        if list.GetSelections()[0] is self.Operacion_actual.respuesta:
+                            list.Clear()
+                            list.append(self.Operacion_actual.feedback_correcto)
+                            self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
+                            self.Operacion_actual.respuesta_correcta()
+
+                        else:
+                            list.Clear()
+                            list.append(self.Operacion_actual.feedback_error)
+                            self.TexttoSpeech(self.Operacion_actual.feedback_error)
+                            self.Operacion_actual.RespuestaIncorrecta()
+            
+            elif ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 1) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl and self.Operacion_actual.nivelOperacion == 1) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 2) or
+                (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5)):
+                
+                textctrl= wx.TextCtrl
+                #textctrl= self.box_left.GetChildren()[1].GetWindow()
+                
+                if self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl:
+                    resp= self.Operacion_actual.respuesta.split(",")
+                    if ((resp[0] in textctrl.Value) and (resp[1] in textctrl.Value)):
+                        textctrl.Value= self.Operacion_actual.respuesta
+                        
+                if textctrl.Value is self.Operacion_actual.respuesta:
+                    self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
+                    self.Operacion_actual.RespuestaCorrecta()
+                    textctrl.Value=""
+                else:
+                    self.TexttoSpeech(self.Operacion_actual.feedback_error)
+                    self.Operacion_actual.RespuestaIncorrecta()
+                    textctrl.Value=""
+                
+                
+            self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+            self.CreateGrid(self.Operacion_actual)    
+            '''
+else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()) || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()))
+               {
+                   TexttoSpeech(Operacion_actual.audio_pregunta);
+               }
+
+               else if (e.Equals("Q") || e.Equals("W") || e.Equals("E") || e.Equals("R") || e.Equals("T") || e.Equals("Y") || e.Equals("U") || e.Equals("I") || e.Equals("O") || e.Equals("P") ||
+                   e.Equals("A") || e.Equals("S") || e.Equals("D") || e.Equals("F") || e.Equals("G") || e.Equals("H") || e.Equals("J") || e.Equals("K") || e.Equals("L") || e.Equals("Ñ") ||
+                   e.Equals("Z") || e.Equals("X") || e.Equals("C") || e.Equals("V") || e.Equals("B") || e.Equals("N") || e.Equals("M") ||
+                   e.Equals("á") || e.Equals("é") || e.Equals("í") || e.Equals("ó") || e.Equals("ú"))
+               {
+                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
+                       (stackpanel1.Children[0] as TextBox).Text += e.ToLower();
+               }
+
+               // Reconocimiento de signos de interrogación y exclamación
+               else if (e.Equals("!") || e.Equals("¡") || e.Equals("'") || e.Equals("?") || e.Equals("¿"))
+               {
+                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
+                       (stackpanel1.Children[0] as TextBox).Text += e.ToLower();
+               }
+
+               // reconocimiento de backspace para borrado
+               else if (e.Equals("Back"))
+               {
+                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
+                       if ((stackpanel1.Children[0] as TextBox).Text.Length > 0)
+                           (stackpanel1.Children[0] as TextBox).Text = (stackpanel1.Children[0] as TextBox).Text.Substring(0, (stackpanel1.Children[0] as TextBox).Text.Length - 1);
+               }
+
+              //reconocimiento de flechas
+               else if (e.Equals("Up") || e.Equals("Down"))
+               {
+
+                   if (e.Equals("Down"))
+                   {
+                       if (Listview1.SelectedIndex == Listview1.Items.Count - 1)
+                           Listview1.SelectedIndex = 0;
+                       else
+                           Listview1.SelectedIndex += 1;
+                   }
+
+                   if (e.Equals("Up"))
+                   {
+                       if (Listview1.SelectedIndex == -1)
+                       {
+                           Listview1.SelectedIndex = 0;
+                           return;
+                       }
+                       if (Listview1.SelectedIndex == 0)
+                           Listview1.SelectedIndex = Listview1.Items.Count - 1;
+                       else
+                           Listview1.SelectedIndex -= 1;
+                   }
+               }
+           }
+
+
+        '''
+
+
+
 
         if text is '^H': # backspace captura
             self.textCtrl1.Value= self.textCtrl1.Value[:-1]

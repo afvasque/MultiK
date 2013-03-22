@@ -7,7 +7,7 @@ from Alumno import *
 import usb.core
 import threading
 import math
-import keyboard_library
+from keyboard_library_queue import *
 import event
 
 def create(parent):
@@ -16,7 +16,7 @@ def create(parent):
 [wxID_FRAME2, wxID_FRAME2PANEL1, wxID_FRAME1PANEL2,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
-lib = keyboard_library.KeyboardLibrary()
+lib = KeyboardLibrary()
 diccionario= {}
 
 class Frame2(wx.Frame): 

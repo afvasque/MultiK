@@ -1,4 +1,4 @@
-# coding=utf-8
+    # coding=utf-8
 
 import sys
 import wave
@@ -80,8 +80,8 @@ class AudioLibrary:
 
             # remove the played wav file
             os.remove(filename + ".wav")
-        except Exception:
-            print "Exception!"
+        except Exception as e:
+            print "Exception: %s" % str(e)
             pass
 
         self.semaphore.release()

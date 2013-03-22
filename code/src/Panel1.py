@@ -89,7 +89,7 @@ class Panel1(wx.Panel):
         self.Operacion_actual= operacion
         
         #print operacion.TipoOperacion
-        print operacion.nivelOperacion
+        #print operacion.nivelOperacion
         #print TipoOperacion.Reproduccion_letras_alfabeto
         self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
               
@@ -101,7 +101,7 @@ class Panel1(wx.Panel):
         self.ResetLayout()
         
         if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
-            print operacion.nivelOperacion
+            #print operacion.nivelOperacion
             if operacion.nivelOperacion == 1:
                 self.reproduccion_letras_alfabeto1(operacion)
             elif operacion.nivelOperacion ==2:
@@ -152,7 +152,7 @@ class Panel1(wx.Panel):
     def reproduccion_letras_alfabeto1(self,operacion):
 
         self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
-        #self.TexttoSpeech(operacion.audio_pregunta)
+        self.TexttoSpeech(operacion.audio_pregunta)
         
         textCtrl1 = wx.TextCtrl(
               parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
@@ -166,7 +166,7 @@ class Panel1(wx.Panel):
         
         self.box_left.GetChildren()[0].GetWindow().SetLabel("dsa")
         
-        #self.TexttoSpeech(operacion.audio_pregunta)
+        self.TexttoSpeech(operacion.audio_pregunta)
         
         lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
 
@@ -310,10 +310,12 @@ class Panel1(wx.Panel):
 
     def Keyboard_Pressed(self, sender, earg):
 
-        text= str(earg['char'])
+        text= str(earg['char']).decode('utf-8')
         
+        if len(text)==0:
+            return
 
-        if text is "Enter":
+        if text == "Enter":
             
             if ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 2) or
                 (self.Operacion_actual.TipoOperacion == TipoOperacion.mayus_nombres_propios and self.Operacion_actual.nivelOperacion == 1) or
@@ -327,7 +329,7 @@ class Panel1(wx.Panel):
                     list= self.box_left.GetChildren()[1].GetWindow()
                     
                     if len(list.GetSelections())>0:
-                        if list.GetSelections()[0] is self.Operacion_actual.respuesta:
+                        if list.GetSelections()[0] == self.Operacion_actual.respuesta:
                             list.Clear()
                             list.append(self.Operacion_actual.feedback_correcto)
                             self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
@@ -352,7 +354,7 @@ class Panel1(wx.Panel):
                     if ((resp[0] in textctrl.Value) and (resp[1] in textctrl.Value)):
                         textctrl.Value= self.Operacion_actual.respuesta
                         
-                if textctrl.Value is self.Operacion_actual.respuesta:
+                if textctrl.Value == self.Operacion_actual.respuesta:
                     self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
                     self.Operacion_actual.RespuestaCorrecta()
                     textctrl.Value=""
@@ -424,16 +426,26 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
 
         '''
 
+        if self.box_left.GetChildren()[1].GetWindow().Value is None:
+            self.box_left.GetChildren()[1].GetWindow().SetValue('')
 
 
+        try:
+            
+            if text == "Back": # backspace captura
+                self.box_left.GetChildren()[1].GetWindow().Value=self.box_left.GetChildren()[1].GetWindow().Value[:-1]
+                return
 
-        if text is '^H': # backspace captura
-            self.textCtrl1.Value= self.textCtrl1.Value[:-1]
-            return
-        
-        if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.TextCtrl):
-            strr= self.box_left.GetChildren()[1].GetWindow().Value
-            wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
+            if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.TextCtrl):
+                strr= self.box_left.GetChildren()[1].GetWindow().Value
+                #wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
+                self.box_left.GetChildren()[1].GetWindow().Value=strr+text
+        except TypeError as e:
+            print "Error: %s" % str(e)
+        except UnicodeDecodeError as e:
+            print "Error: %s" % str(e)
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
 
         #if text is 'Down':
 

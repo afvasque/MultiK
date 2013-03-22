@@ -16,16 +16,18 @@ def create(parent):
 [wxID_FRAME2, wxID_FRAME2PANEL1, wxID_FRAME1PANEL2,
 ] = [wx.NewId() for _init_ctrls in range(3)]
 
-lib = KeyboardLibrary()
+
 diccionario= {}
+lib = KeyboardLibrary()
 
 class Frame2(wx.Frame): 
     
     
+    
     @staticmethod
     def Keyboard_event(sender, earg):
-        diccionario[int(earg[0])].Keyboard_Pressed(sender,earg)
-        print "#%s : %s" % (earg[0], earg[1])  # 0: id, 1: teclas
+        diccionario[int(earg['id'])].Keyboard_Pressed(sender,earg)
+        print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
         
     def _init_ctrls(self, prnt):
         # generated method, don't edit
@@ -38,7 +40,9 @@ class Frame2(wx.Frame):
         #box_tot.SetDimension(0,0,500,200)
         
         lib.keypress += self.Keyboard_event
-        keyboardsNum= len(lib.keyboard_array)
+        lib.detect_all_keyboards(0x0e8f,0x0022)
+
+        keyboardsNum= lib.get_total_keyboards()
         print "teclados: "+str(keyboardsNum)
         
         
@@ -109,10 +113,7 @@ class Frame2(wx.Frame):
         '''
 
     def __init__(self, parent):     
-        
-        lib.detect(0x0e8f,0x0022)
-        lib.configure()
-        
+                
         self._init_ctrls(parent)
         
         t = ThreadKeyboard()
@@ -129,9 +130,10 @@ class Frame2(wx.Frame):
     #        self.textCtrl1.Value="ar"
     
   
+  #TODO: poner thread como padre
 class ThreadKeyboard(threading.Thread):
     def run(self):
-        lib.start(0x0e8f,0x0022)
+        lib.run(0x0e8f,0x0022)
         
 
 if __name__ == '__main__':

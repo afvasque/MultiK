@@ -12,7 +12,7 @@ class ModuloNivel:
 
 
 	def GenerarOperandosContenidos(self):
-		for i in range(0,len(nivelesTipoOperacion)):
+		for i in range(0,len(nivelesTipoOperacion)-1):
 			if not nivelesTipoOperacion[i].tipo_op in tipoOperaciones:
 				tipoOperaciones.append(nivelesTipoOperacion[i].tipo_op)
  
@@ -24,7 +24,7 @@ class ModuloNivel:
 		#Nombre del modulo, en el que se explica los contenidos pedagogicos de las reglas que contiene
 		self.nombre = nombre;
 		
-		for i in range(0,len(niveles)):
+		for i in range(0,len(tipo_op)-1):
 			nivelesTipoOperacion.append(TipoOperacionNivel(niveles[i], tipo_op[i]))
 			if not tipo_op[i] in tipoOperaciones:
 				tipoOperaciones.append(tipo_op[i])

@@ -84,7 +84,7 @@ class Panel1(wx.Panel):
         
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.nivelOperacion= 2
+        operacion.nivelOperacion= 1
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
@@ -310,7 +310,7 @@ class Panel1(wx.Panel):
 
     def Keyboard_Pressed(self, sender, earg):
 
-        text= str(earg[1])
+        text= str(earg['char'])
         
 
         if text is "Enter":

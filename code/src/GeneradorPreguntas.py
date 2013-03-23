@@ -33,11 +33,11 @@ class GeneradorPreguntas:
 
 
     def ReemplazoLetras(self, letra):
-        if letra is "w":
+        if letra == "w":
             letra = "doble b"
-        if letra is "v":
+        if letra == "v":
             letra = "b corta"
-        if letra is "y":
+        if letra == "y":
             letra = "y griega"
         return letra
     
@@ -212,7 +212,7 @@ class GeneradorPreguntas:
         
         respuesta= self.interpal.generador_palabra_contiene("aba")
         
-        while not respuesta[len(respuesta-4):len(respuesta)-1] is "aba":
+        while respuesta[len(respuesta-4):len(respuesta)-1] != "aba":
             respuesta= self.interpal.generador_palabra_contiene("aba")
         pregunta= respuesta.replace("aba","___")
         

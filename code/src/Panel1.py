@@ -112,19 +112,19 @@ class Panel1(wx.Panel):
             if operacion.nivelOperacion ==1:
                 self.sentido_vocales1(operacion)
         
-        elif operacion.TipoOperacion is TipoOperacion.signos_int_excl:
+        elif operacion.TipoOperacion == TipoOperacion.signos_int_excl:
             if operacion.nivelOperacion ==1:
                 self.signos_int_excl1(operacion)
             elif operacion.nivelOperacion ==2:
                 self.signos_int_excl2(operacion)
                 
-        elif operacion.TipoOperacion is TipoOperacion.mayus_nombres_propios:
+        elif operacion.TipoOperacion == TipoOperacion.mayus_nombres_propios:
             if operacion.nivelOperacion ==1:
                 self.mayus_nombres_propios1(operacion)
             elif operacion.nivelOperacion ==2:
                 self.mayus_nombres_propios2(operacion)
                 
-        elif operacion.TipoOperacion is TipoOperacion.patrones_ort_comunes:
+        elif operacion.TipoOperacion == TipoOperacion.patrones_ort_comunes:
             if operacion.nivelOperacion ==1:
                 self.patrones_ort_comunes1(operacion)            
             elif operacion.nivelOperacion ==2:
@@ -426,7 +426,7 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
 
         '''
 
-        if self.box_left.GetChildren()[1].GetWindow().Value is None:
+        if self.box_left.GetChildren()[1].GetWindow().Value == None:
             self.box_left.GetChildren()[1].GetWindow().SetValue('')
 
 
@@ -447,7 +447,7 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
         except:
             print "Unexpected error:", sys.exc_info()[0]
 
-        #if text is 'Down':
+        #if text == 'Down':
 
         if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
 

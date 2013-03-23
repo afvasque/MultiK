@@ -28,7 +28,7 @@ class BasicOperacion:
     
     def AgregarPuntajesNivel(self, listvieja, nuevoPuntaje):
         
-        if listvieja is not None:
+        if listvieja != None:
             for i in listvieja:
                 self.puntajesNivel.append(i)
                 

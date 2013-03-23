@@ -34,7 +34,7 @@ class Reglas:
 	def GetSiguienteOperacion(self, operacion, alumno):
 		
 		
-		if not operacion.respuesta_correcta  and operacion.CantidadVecesIncorrectaSoloEsta <= 2 and not operacion.feedback_correcto is "First" :
+		if not operacion.respuesta_correcta  and operacion.CantidadVecesIncorrectaSoloEsta <= 2 and operacion.feedback_correcto != "First" :
 			return operacion
 		
         
@@ -48,7 +48,7 @@ class Reglas:
 		
 		cambia_nivel= Reglas_Fijas.CambioNivel(operacion)
 		
-		if cambia_nivel is CambioNivel.Sube:
+		if cambia_nivel == CambioNivel.Sube:
 			borrarCorrectas = True
 			siguiente_nivel+=1
 			cantidad_nivel = 1
@@ -56,20 +56,20 @@ class Reglas:
 			tipoActual = op.TipoOperacion
 			siguiente_nivel = op.nivelOperacion
 		
-		elif cambia_nivel is CambioNivel.Mantiene:
+		elif cambia_nivel == CambioNivel.Mantiene:
 			cantidad_maxima_nivel += self.SubidaMaximoNivel(operacion)
 			cantidad_nivel+=1
 		
 		siguiente_operacion= None
 		generador= GeneradorPreguntas(alumno)
 		
-		if tipoActual is TipoOperacion.mayus_nombres_propios:
+		if tipoActual == TipoOperacion.mayus_nombres_propios:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_mayus_nombres_propios1()
 			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_mayus_nombres_propios2()
 				
-		if tipoActual is TipoOperacion.patrones_ort_comunes:
+		if tipoActual == TipoOperacion.patrones_ort_comunes:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_patrones_ort_comunes1()
 			if siguiente_nivel==2:
@@ -81,21 +81,21 @@ class Reglas:
 			if siguiente_nivel==5:
 				siguiente_operacion = generador.generador_patrones_ort_comunes5()
 				
-		if tipoActual is TipoOperacion.Reproduccion_letras_alfabeto:
+		if tipoActual == TipoOperacion.Reproduccion_letras_alfabeto:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto1()
 			if siguiente_nivel==2:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto2()
 				
-		if tipoActual is TipoOperacion.sentido_vocales_silabas:
+		if tipoActual == TipoOperacion.sentido_vocales_silabas:
 			
 			next_num= random.randrange(1,3)
 			
 			siguiente_operacion = generador.generador_sentido_vocales1(next_num)
 			
-		if tipoActual is TipoOperacion.signos_int_excl:
+		if tipoActual == TipoOperacion.signos_int_excl:
 			if siguiente_nivel==1:
-				if operacion.TipoOperacion is TipoOperacion.sentido_vocales_silabas:
+				if operacion.TipoOperacion == TipoOperacion.sentido_vocales_silabas:
 					siguiente_operacion = generador.generador_signos_int_excl1(False)
 				else:
 					siguiente_operacion = generador.generador_signos_int_excl1(True)
@@ -123,10 +123,10 @@ class Reglas:
 		for mn in self.lista:
 			index= mn.ContieneTipoOperacionNivel(nivelActual, operacion.TipoOperacion)
 			
-			if index is not -1:
+			if index != -1:
 				on= mn.GetSiguiente(index)
 				
-				if on is not None:
+				if on != None:
 					indexMO= self.lista.index(mn)
 					indexMO+=1
 					

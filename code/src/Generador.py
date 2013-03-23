@@ -36,7 +36,7 @@ class Generador_pal:
             return "camara"
         
     def generador_sust_propio(self,propio):
-        if propio is True:
+        if propio == True:
             return "Pedro"
         else:
             return "perro"

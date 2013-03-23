@@ -55,7 +55,7 @@ class KeyboardLibrary:
 
         print '\033[94m' + str(len(keyboards)) + ' keyboards of the specified type detected!' + '\033[0m'
 
-        if len(keyboards) is 0:
+        if len(keyboards) == 0:
             print '\033[91m' + 'Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.' + '\033[0m'
             raw_input('Press [Enter] to exit.')
             sys.exit()
@@ -92,7 +92,7 @@ class KeyboardLibrary:
                 data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 10) # timeout is the last argument
 
                 # map the input to a character
-                map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
+                map_keys = lambda c: key_pages_shift[c[1]] if c[0] == 2 else key_pages[c[1]]
                 data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
 
                 # define the event arguments

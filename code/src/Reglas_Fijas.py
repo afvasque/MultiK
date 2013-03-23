@@ -29,7 +29,7 @@ class Reglas_Fijas:
         cantidad_maxima_nivel = operacion.cantidadMaximaNivel
         to_return = CambioNivel.Mantiene
         
-        if operacion.TipoOperacion is TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
+        if operacion.TipoOperacion == TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
             return CambioNivel.Sube
         
         if operacion.correctasTotales < Reglas_Fijas.MinimoPasoNivel and cantidad_nivel>= Reglas_Fijas.CantidadPreguntasNivelError :

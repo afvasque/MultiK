@@ -25,7 +25,7 @@ class KeyboardLibrary:
 
 		self.total_keyboards = len(keyboards)
 
-		if self.total_keyboards is 0:
+		if self.total_keyboards == 0:
 			print '\033[91m' + 'Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.' + '\033[0m'
 			raw_input('Press [Enter] to exit.')
 			sys.exit()

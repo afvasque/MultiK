@@ -346,8 +346,8 @@ class Panel1(wx.Panel):
                 (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 2) or
                 (self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5)):
                 
-                textctrl= wx.TextCtrl
-                #textctrl= self.box_left.GetChildren()[1].GetWindow()
+                #textctrl= wx.TextCtrl
+                textctrl= self.box_left.GetChildren()[1].GetWindow()
                 
                 if self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl:
                     resp= self.Operacion_actual.respuesta.split(",")
@@ -457,7 +457,8 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
     def TexttoSpeech(self, st):
         
         if len(st)>0:
-            audio_lib.play(self.numero_audifono, st)            
+            print str(self.numero_audifono)+": "+st
+            #audio_lib.play(self.numero_audifono, st)            
             return
         
         

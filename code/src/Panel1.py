@@ -84,7 +84,7 @@ class Panel1(wx.Panel):
         
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.nivelOperacion= 1
+        operacion.nivelOperacion= 2
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
@@ -135,6 +135,8 @@ class Panel1(wx.Panel):
                 self.patrones_ort_comunes4(operacion)
             elif operacion.nivelOperacion ==5:
                 self.patrones_ort_comunes5(operacion)
+
+        self.Refresh()
                 
         
 
@@ -149,8 +151,7 @@ class Panel1(wx.Panel):
 
         
 
-    def reproduccion_letras_alfabeto1(self,operacion):
-
+    def reproduccion_letras_alfabeto1(self,operacion):        
         self.box_left.GetChildren()[0].GetWindow().SetLabel(operacion.pregunta)
         self.TexttoSpeech(operacion.audio_pregunta)
         
@@ -164,16 +165,16 @@ class Panel1(wx.Panel):
         
     def reproduccion_letras_alfabeto2(self,operacion):
         
-        self.box_left.GetChildren()[0].GetWindow().SetLabel("dsa")
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("")
         
         self.TexttoSpeech(operacion.audio_pregunta)
         
-        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
-
-        
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)        
 
         for st in operacion.alternativas:
             lista.Append(st)
+
+        self.box_left.Add(lista, 0, wx.ALIGN_TOP, 0)
         
         
     
@@ -331,13 +332,13 @@ class Panel1(wx.Panel):
                     if len(list.GetSelections())>0:
                         if list.GetSelections()[0] == self.Operacion_actual.respuesta:
                             list.Clear()
-                            list.append(self.Operacion_actual.feedback_correcto)
+                            list.Append(self.Operacion_actual.feedback_correcto)
                             self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
                             self.Operacion_actual.respuesta_correcta()
 
                         else:
                             list.Clear()
-                            list.append(self.Operacion_actual.feedback_error)
+                            list.Append(self.Operacion_actual.feedback_error)
                             self.TexttoSpeech(self.Operacion_actual.feedback_error)
                             self.Operacion_actual.RespuestaIncorrecta()
             
@@ -363,9 +364,8 @@ class Panel1(wx.Panel):
                     self.Operacion_actual.RespuestaIncorrecta()
                     textctrl.Value=""
                 
-                
             self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-            self.CreateGrid(self.Operacion_actual)    
+            wx.CallAfter(self.CreateGrid,self.Operacion_actual)
             '''
 else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()) || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()))
                {
@@ -426,9 +426,44 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
 
         '''
 
-        if self.box_left.GetChildren()[1].GetWindow().Value == None:
-            self.box_left.GetChildren()[1].GetWindow().SetValue('')
+        #if self.box_left.GetChildren()[1].GetWindow().Value == None:
+        #    self.box_left.GetChildren()[1].GetWindow().SetValue('')
 
+
+        if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
+            if text == "-v" or text == "-^":
+
+                if text == "-v":
+
+                    if len(self.box_left.GetChildren()[1].GetWindow().GetSelections()) ==0:
+                        self.box_left.GetChildren()[1].GetWindow().Select(0)
+                        
+                    else:
+                        num=self.box_left.GetChildren()[1].GetWindow().GetSelections()[0]
+
+                        if num == self.box_left.GetChildren()[1].GetWindow().GetCount()-1:
+                            self.box_left.GetChildren()[1].GetWindow().Select(0)
+                        else:
+                            self.box_left.GetChildren()[1].GetWindow().Select(num+1)
+
+                elif text == "-^":
+                    if len(self.box_left.GetChildren()[1].GetWindow().GetSelections()) ==0:
+                        cont=self.box_left.GetChildren()[1].GetWindow().GetCount()-1
+                        self.box_left.GetChildren()[1].GetWindow().Select(cont)
+                    else:
+                        num=self.box_left.GetChildren()[1].GetWindow().GetSelections()[0]
+
+                        if num==0:
+                            cont=self.box_left.GetChildren()[1].GetWindow().GetCount()-1
+                            self.box_left.GetChildren()[1].GetWindow().Select(cont)
+                        else:
+                            self.box_left.GetChildren()[1].GetWindow().Select(num-1)
+
+
+
+            self.Refresh()
+
+                #self.box_left.GetChildren()[1].GetWindow().Select(num+1)
 
         try:
             
@@ -440,19 +475,19 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
                 strr= self.box_left.GetChildren()[1].GetWindow().Value
                 #wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
                 self.box_left.GetChildren()[1].GetWindow().Value=strr+text
+
+
+
         except TypeError as e:
             print "Error: %s" % str(e)
         except UnicodeDecodeError as e:
             print "Error: %s" % str(e)
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print "Unexpected error:"#, sys.exc_info()[0]
 
         #if text == 'Down':
 
-        if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
-
-            return
-
+        
     
     def TexttoSpeech(self, st):
         

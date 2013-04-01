@@ -7,25 +7,27 @@ from GeneradorPreguntas import *
 
 class Reglas:
 
-	modulosNivel = list()
 
 	# pendiente 2 mayus
 	# pendiente 2 otr (no hay palabras terminadas en aba en la base de datos)
 	#pendiente 2 int
-	lista = list()
+	#lista = list()
 	
 	
 	def __init__(self):
-		self.lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))
-		self.lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador
-		self.lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
-		self.lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
-		self.lista.append(TipoOperacionNivel(1,TipoOperacion.Reproduccion_letras_alfabeto))
-		self.lista.append(TipoOperacionNivel(2,TipoOperacion.Reproduccion_letras_alfabeto))
-		self.lista.append(TipoOperacionNivel(3, TipoOperacion.patrones_ort_comunes)) # falta imagen en las palabras
-		self.lista.append(TipoOperacionNivel(4, TipoOperacion.patrones_ort_comunes)) # pendiente 4, no hay diferencias entre palabras con r y rr
-		self.lista.append(TipoOperacionNivel(5, TipoOperacion.patrones_ort_comunes))
-		self.modulosNivel.append(ModuloNivel(self.lista, "principal"))
+		lista=list()
+		lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador
+		lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
+		lista.append(TipoOperacionNivel(1,TipoOperacion.Reproduccion_letras_alfabeto))
+		lista.append(TipoOperacionNivel(2,TipoOperacion.Reproduccion_letras_alfabeto))
+		lista.append(TipoOperacionNivel(3, TipoOperacion.patrones_ort_comunes)) # falta imagen en las palabras
+		lista.append(TipoOperacionNivel(4, TipoOperacion.patrones_ort_comunes)) # pendiente 4, no hay diferencias entre palabras con r y rr
+		lista.append(TipoOperacionNivel(5, TipoOperacion.patrones_ort_comunes))
+
+		self.modulosNivel = list()
+		self.modulosNivel.append(ModuloNivel(lista, "principal"))
 		return		
 	
 	# Metodo publico que entrega la siguiente operacion en funcion
@@ -119,28 +121,27 @@ class Reglas:
 	
 	def AlterarFlujo(self, operacion, siguienteNivel):
 		nivelActual = siguienteNivel - 1
-		
-		for mn in self.lista:
-			index= mn.ContieneTipoOperacionNivel(nivelActual, operacion.TipoOperacion)
-			
-			if index != -1:
-				on= mn.GetSiguiente(index)
+
+		for mn in self.modulosNivel:
+			ind= mn.ContieneTipoOperacionNivel(nivelActual, operacion.TipoOperacion)
+			if ind != -1:
+				on= mn.GetSiguiente(ind)
 				
-				if on != None:
-					indexMO= self.lista.index(mn)
+				if on == None:
+					indexMO= self.modulosNivel.index(mn)
 					indexMO+=1
 					
-					if indexMO== len(self.lista):
+					if indexMO== len(self.modulosNivel):
 						op= BasicOperacion()
 						op.TipoOperacion= operacion.TipoOperacion
 						op.nivelOperacion= nivelActual
 						return op
 					else:
-						on= self.lista[indexMO].GetPrimerOpNivel()
+						on= self.modulosNivel[indexMO].GetPrimerOpNivel()
 				
 				op= BasicOperacion()
-				op.TipoOperacion= TipoOperacionNivel.TipoOpGlobal
-				op.nivelOperacion= TipoOperacionNivel.NivelGlobal
+				op.TipoOperacion= on.tipo_op
+				op.nivelOperacion= on.nivel
 				return op
 				
 		op= BasicOperacion()

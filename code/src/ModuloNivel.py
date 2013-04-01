@@ -18,47 +18,36 @@ class ModuloNivel:
  
 
 	# Constructor de un modulo
-	def __init__(self, niveles, tipo_op,nombre=""):
-		self.niveles= niveles
-		self.tipo_op= tipo_op
+	def __init__(self, lista,nombre=""):
+
 		#Nombre del modulo, en el que se explica los contenidos pedagogicos de las reglas que contiene
 		self.nombre = nombre;
 		
-		for i in range(0,len(tipo_op)-1):
-			nivelesTipoOperacion.append(TipoOperacionNivel(niveles[i], tipo_op[i]))
-			if not tipo_op[i] in tipoOperaciones:
-				tipoOperaciones.append(tipo_op[i])
-				self.GenerarOperandosContenidos();
-		
-	def ModuloNivel(self, lista, nombre):
-		nombreModulo = nombre
-			
 		for on in lista:
 			nivelesTipoOperacion.append(on);
 		self.GenerarOperandosContenidos()
 		
+			
+		
+
+	def ContieneTipoOperacionNivel(self, nivel, op):
+		if op in tipoOperaciones:
+			for on in nivelesTipoOperacion:
+				if on.IsOpNivel(nivel,op):
+					return nivelesTipoOperacion.index(on)
+		return -1
+
+
 	def GetSiguiente(self, indexOf):
 		if len(nivelesTipoOperacion)-1 == indexOf:
 			return TipoOperacionNivel.TipoOpGlobal
 		else:
-			return nivelesTipoOperacion[indexOf+1]
-			
+			return nivelesTipoOperacion[int(indexOf)+1]
+
 
 	def GetPrimerOpNivel(self):
 		return nivelesTipoOperacion[0]
-'''
-  public TipoOperacionNivel GetSiguiente(int indexOf)
-        {
-            if (nivelesTipoOperacion.Count - 1 == indexOf)
-            {
-                return new TipoOperacionNivel();
-            }
-            else
-            {
-                return nivelesTipoOperacion[indexOf + 1];
-            }
-        }
-'''	
+
 		
 	
 		

@@ -71,6 +71,7 @@ class Panel1(wx.Panel):
         self.SetAutoLayout(True)
         self.SetSizer(self.box_tot)
         self.Layout()
+        self.Refresh()
         
         
 
@@ -328,13 +329,12 @@ class Panel1(wx.Panel):
                 if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
                     
                     list= self.box_left.GetChildren()[1].GetWindow()
-                    
                     if len(list.GetSelections())>0:
-                        if list.GetSelections()[0] == self.Operacion_actual.respuesta:
+                        if list.Items[list.GetSelections()[0]] == self.Operacion_actual.respuesta:
                             list.Clear()
                             list.Append(self.Operacion_actual.feedback_correcto)
                             self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
-                            self.Operacion_actual.respuesta_correcta()
+                            self.Operacion_actual.RespuestaCorrecta()
 
                         else:
                             list.Clear()
@@ -486,6 +486,8 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
             print "Unexpected error:"#, sys.exc_info()[0]
 
         #if text == 'Down':
+
+        self.Refresh()
 
         
     

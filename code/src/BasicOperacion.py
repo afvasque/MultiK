@@ -40,6 +40,8 @@ class BasicOperacion:
             self.correctasTotales+=1
             
             self.respuesta_correcta=True
+
+            self.cantidadNivel+=1
             
             self.SetearPuntaje()
         

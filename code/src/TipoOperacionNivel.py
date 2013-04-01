@@ -26,6 +26,10 @@ class TipoOperacionNivel:
         TipoOpGlobal= tipo_op
         NivelGlobal= nivel
 
+    def IsOpNivel(self, nivel, op):
+        return (self.nivel == nivel and self.tipo_op==op)
+
+
     '''
 
 

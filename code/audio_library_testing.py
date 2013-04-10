@@ -12,6 +12,7 @@ def print_event(sender, earg):
 lib = audio_library.AudioLibrary()
 lib.finished += print_event
 
+# array for storing all the processes
 all_p = []
 
 for i in range(0,lib.get_total_usb_cards()):

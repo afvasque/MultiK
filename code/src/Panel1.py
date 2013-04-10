@@ -5,6 +5,8 @@ import wx
 import os
 import audio_library
 from Reglas import *
+import socket
+import multiprocessing
 from BasicOperacion import *
 
 [wxID_PANEL1] = [wx.NewId() for _init_ctrls in range(1)]
@@ -89,6 +91,44 @@ class Panel1(wx.Panel):
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
+        '''
+        s = socket.socket()         # Create a socket object
+        #host = socket.gethostname() # Get local machine name
+        #port = 7388
+        print 'conectando con servicio'
+        server_address = ('localhost', 7388)
+        s.connect(server_address)
+        print 'conectado'
+        #s.sendall("/media/Disco Local/Dropbox/magister/Github/MultiK/code/Windows Service/Servicio Final/SustantivosFinal.multik")
+        s.send('sdsa')
+        print 'enviado'
+
+        s.setblocking(True) # not really needed but to emphasize this 
+                                #is a blocking socket until the timeout
+        s.settimeout(15)
+
+        while True:
+            try:
+                s.send('sdsa')
+                msg = s.recv(1024)
+                if not msg:
+                    break
+                print(msg)
+                content += msg
+            except socket.timeout:
+                print 'timeout'
+            else:
+                print 'murio por alguna razon'#socket died for another reason or ended the way it was supposed to.
+
+
+
+        #temp= 'mensaje: '+s.recv(1).strip()
+        print 'recibido1'
+        #print temp
+        print 'recibido2'
+
+        '''
+
         #print operacion.TipoOperacion
         #print operacion.nivelOperacion
         #print TipoOperacion.Reproduccion_letras_alfabeto
@@ -488,14 +528,19 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
         #if text == 'Down':
 
         self.Refresh()
-
-        
+ 
     
-    def TexttoSpeech(self, st):
+    def TexttoSpeech(self, text_to_speech):
         
-        if len(st)>0:
-            print str(self.numero_audifono)+": "+st
-            #audio_lib.play(self.numero_audifono, st)            
+        if len(text_to_speech)>0:
+            print str(self.numero_audifono)+": "+text_to_speech
+
+            p = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, text_to_speech))
+
+            p.start()
+
+            p.join()
+            #audio_lib.play(self.numero_audifono, text_to_speech)            
             return
         
         

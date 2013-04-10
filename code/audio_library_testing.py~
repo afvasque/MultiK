@@ -19,7 +19,7 @@ for i in range(0,lib.get_total_usb_cards()):
 	# text to play
 	text_to_speech = "Hola. Tarjeta %d. Chao." % i
 	# create a process for each audio to play
-	p = multiprocessing.Process(target=lib.play, args=(i, text_to_speech))	
+	p = multiprocessing.Process(target=lib.play, args=(i, text_to_speech))
 	# append to the process array
 	all_p.append(p)
 	# start it

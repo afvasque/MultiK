@@ -4,13 +4,13 @@ import time
 import multiprocessing
 
 
-def imprimir_algo_en_pantalla(sender, earg):
+def print_event(sender, earg):
 	print "Terminó audio en " + str(earg)
 
 
 
 lib = audio_library.AudioLibrary()
-lib.finished += imprimir_algo_en_pantalla
+lib.finished += print_event
 
 all_p = []
 

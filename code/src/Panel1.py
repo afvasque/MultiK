@@ -87,7 +87,7 @@ class Panel1(wx.Panel):
         
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.nivelOperacion= 2
+        operacion.nivelOperacion= 1
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
@@ -529,19 +529,17 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
 
         self.Refresh()
  
+    lib_play_proc = None
     
     def TexttoSpeech(self, text_to_speech):
+        if self.lib_play_proc is None:
+            self.text_to_speech_queue = multiprocessing.Queue()
+            self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
+            self.lib_play_proc.start()          
         
         if len(text_to_speech)>0:
-            print str(self.numero_audifono)+": "+text_to_speech
-
-            p = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, text_to_speech))
-
-            p.start()
-
-            p.join()
-            #audio_lib.play(self.numero_audifono, text_to_speech)            
-            return
+            print "Reproduciendo en audífono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
+            self.text_to_speech_queue.put(text_to_speech)
         
         
 

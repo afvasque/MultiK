@@ -5,9 +5,9 @@ class Reglas_Fijas:
     MaximoNivel = 10
 
     #Cantidad de buenas que debe tener un niño para pasar de nivel
-    MinimoPasoNivel = 1
+    MinimoPasoNivel = 2
     #Cantidad de preguntas cuando hay un error
-    CantidadPreguntasNivelError = 1
+    CantidadPreguntasNivelError = 2
 
     @staticmethod
     def StringToTipoOperacion(tipoOperacion):
@@ -27,15 +27,19 @@ class Reglas_Fijas:
         siguiente_nivel = operacion.nivelOperacion
         cantidad_nivel = operacion.cantidadNivel
         cantidad_maxima_nivel = operacion.cantidadMaximaNivel
-
+        print "cantidad: "+str(cantidad_nivel)
+        print "maximo: "+str(cantidad_maxima_nivel)
         to_return = CambioNivel.Mantiene
         
+        # En caso de que tenga buena prgeunta de exclamación, pasa directo a interrogacioń
         if operacion.TipoOperacion == TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
             return CambioNivel.Sube
         
+        # Si ha contestado menos de las mínimas
         if operacion.correctasTotales < Reglas_Fijas.MinimoPasoNivel and cantidad_nivel>= Reglas_Fijas.CantidadPreguntasNivelError :
             return CambioNivel.Mantiene
         
+        #si ya no tiene que contestar más
         if cantidad_nivel +1 > cantidad_maxima_nivel:
             to_return= CambioNivel.Sube
         elif operacion.correctasTotales >= Reglas_Fijas.MinimoPasoNivel and cantidad_nivel >= Reglas_Fijas.CantidadPreguntasNivelError:

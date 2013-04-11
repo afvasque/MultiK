@@ -36,14 +36,14 @@ class BasicOperacion:
                 
     def RespuestaCorrecta(self):
         
-        if self.CantidadVecesIncorrectaSoloEsta==0:
-            self.correctasTotales+=1
-            
-            self.respuesta_correcta=True
+        self.respuesta_correcta=True
+        self.cantidadNivel+=1
+        self.SetearPuntaje()
 
-            self.cantidadNivel+=1
+        if self.CantidadVecesIncorrectaSoloEsta==0:
+            self.correctasTotales+=1                       
             
-            self.SetearPuntaje()
+            
         
     def SetearPuntaje(self):
         

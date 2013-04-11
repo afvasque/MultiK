@@ -220,15 +220,17 @@ class Panel1(wx.Panel):
         
     
     def sentido_vocales1(self, operacion):        
-        
+        print "sentido"
         self.box_left.GetChildren()[0].GetWindow().SetLabel("")
         
         self.TexttoSpeech(operacion.audio_pregunta)
         
-        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+        lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
         
         for st in operacion.alternativas:
             lista.Append(st)
+
+        self.box_left.Add(lista, 0, wx.ALIGN_TOP, 0)
     
     
     def signos_int_excl1(self, operacion):        
@@ -403,7 +405,7 @@ class Panel1(wx.Panel):
                     self.TexttoSpeech(self.Operacion_actual.feedback_error)
                     self.Operacion_actual.RespuestaIncorrecta()
                     textctrl.Value=""
-                
+                    
             self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
             wx.CallAfter(self.CreateGrid,self.Operacion_actual)
             '''

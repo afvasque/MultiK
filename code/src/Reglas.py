@@ -16,12 +16,12 @@ class Reglas:
 	
 	def __init__(self):
 		lista=list()
-		lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))
-		lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador
-		lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
-		lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
 		lista.append(TipoOperacionNivel(1,TipoOperacion.Reproduccion_letras_alfabeto))
 		lista.append(TipoOperacionNivel(2,TipoOperacion.Reproduccion_letras_alfabeto))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))		
+		lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador		
 		lista.append(TipoOperacionNivel(3, TipoOperacion.patrones_ort_comunes)) # falta imagen en las palabras
 		lista.append(TipoOperacionNivel(4, TipoOperacion.patrones_ort_comunes)) # pendiente 4, no hay diferencias entre palabras con r y rr
 		lista.append(TipoOperacionNivel(5, TipoOperacion.patrones_ort_comunes))
@@ -35,8 +35,9 @@ class Reglas:
 	# la clase Reglas
 	def GetSiguienteOperacion(self, operacion, alumno):
 		
-		
-		if not operacion.respuesta_correcta  and operacion.CantidadVecesIncorrectaSoloEsta <= 2 and operacion.feedback_correcto != "First" :
+		print "correcta:"+str(operacion.respuesta_correcta)	
+		if (not operacion.respuesta_correcta)  and (operacion.CantidadVecesIncorrectaSoloEsta <= 2) and (operacion.feedback_correcto != "First") :
+			print "misma operacion"
 			return operacion
 		
         

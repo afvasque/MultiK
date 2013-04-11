@@ -76,7 +76,7 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.sentido_vocales_silabas
         operacion.nivelOperacion=1
-        operacion.audio_pregunta= "Selecciona la palabra con " + silabas + " sílaba"
+        operacion.audio_pregunta= "Selecciona la palabra con " + str(silabas) + " sílaba"
         
         if silabas>1:
             operacion.audio_pregunta+="s"

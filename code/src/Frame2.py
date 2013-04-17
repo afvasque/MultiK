@@ -26,8 +26,13 @@ class Frame2(wx.Frame):
     
     @staticmethod
     def Keyboard_event(sender, earg):
-        diccionario[int(earg['id'])].Keyboard_Pressed(sender,earg)
-        print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+        
+        if ((diccionario[int(earg['id'])].pareado == False) or (diccionario[int(earg['id'])].nombre_ingresado == False) ):
+            diccionario[int(earg['id'])].ModificarPareamiento(diccionario,earg)
+            
+        else:    
+            diccionario[int(earg['id'])].Keyboard_Pressed(sender,earg)
+            print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
         
     def _init_ctrls(self, prnt):
         # generated method, don't edit

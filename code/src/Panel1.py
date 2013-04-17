@@ -5,8 +5,10 @@ import wx
 import os
 import audio_library
 from Reglas import *
-import socket
+from socket import *
+import sys
 import multiprocessing
+from threading import Thread
 from BasicOperacion import *
 
 [wxID_PANEL1] = [wx.NewId() for _init_ctrls in range(1)]
@@ -69,7 +71,10 @@ class Panel1(wx.Panel):
         staticBitmap2.SetBitmap(scale_bitmap(wx.Bitmap('barra_progreso.png'), 20, 60))
 
         box_right.Add(staticBitmap2, 0, wx.ALIGN_TOP, 0)
-
+        
+        self.pareado= False
+        self.nombre_ingresado=False
+        
         self.SetAutoLayout(True)
         self.SetSizer(self.box_tot)
         self.Layout()
@@ -92,34 +97,63 @@ class Panel1(wx.Panel):
         self.Operacion_actual= operacion
         
         '''
-        s = socket.socket()         # Create a socket object
+        HOST = 'localhost'
+        PORT = 7388
+        BUFSIZE = 1024
+        ADDR = (HOST, PORT)
+
+        tcpCliSock = socket(AF_INET, SOCK_STREAM)
+        tcpCliSock.connect(ADDR)
+
+        def recv():
+            print 'recibiendo'
+            data = tcpCliSock.recv(BUFSIZE)
+            if not data: sys.exit(0)
+            print (data)
+        
+        Thread(target=recv).start()
+
+        print 'enviando'
+        data = '01AF23'.decode('hex')
+        #if not data: break
+        tcpCliSock.send(bytes(data))
+
+        tcpCliSock.close()
+
+        '''
+        
+        
+        s = socket(AF_INET, SOCK_STREAM)         # Create a socket object
         #host = socket.gethostname() # Get local machine name
         #port = 7388
         print 'conectando con servicio'
         server_address = ('localhost', 7388)
+        BUFSIZE= 1024
         s.connect(server_address)
         print 'conectado'
         #s.sendall("/media/Disco Local/Dropbox/magister/Github/MultiK/code/Windows Service/Servicio Final/SustantivosFinal.multik")
-        s.send('sdsa')
+        #data= input('asd')
+        s.send(bytes('sdfds'))
         print 'enviado'
 
-        s.setblocking(True) # not really needed but to emphasize this 
+        #s.setblocking(True) # not really needed but to emphasize this 
                                 #is a blocking socket until the timeout
-        s.settimeout(15)
+        #s.settimeout(15)
 
         while True:
             try:
-                s.send('sdsa')
+                data= 'asd'
+                s.send(bytes(data),'UTF-8')
+            
                 msg = s.recv(1024)
-                if not msg:
-                    break
                 print(msg)
                 content += msg
+                break
             except socket.timeout:
                 print 'timeout'
             else:
                 print 'murio por alguna razon'#socket died for another reason or ended the way it was supposed to.
-
+        s.close()
 
 
         #temp= 'mensaje: '+s.recv(1).strip()
@@ -127,7 +161,7 @@ class Panel1(wx.Panel):
         #print temp
         print 'recibido2'
 
-        '''
+        
 
         #print operacion.TipoOperacion
         #print operacion.nivelOperacion
@@ -140,6 +174,10 @@ class Panel1(wx.Panel):
     def CreateGrid(self, operacion):
         
         self.ResetLayout()
+        
+        if self.pareado == False:
+            self.parear()
+            return
         
         if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
             #print operacion.nivelOperacion
@@ -350,6 +388,97 @@ class Panel1(wx.Panel):
         self.TexttoSpeech(operacion.audio_pregunta)
         return
 
+
+    ##########  PAREAMIENTO ##############
+    
+    def set_nombre(self):
+        self.ResetLayout()
+        self.Operacion_actual.audio_pregunta= "Ingresa tu nombre"
+        
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("Ingresa tu nombre")
+        self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+    
+        self.Refresh()
+        
+    def parear(self):
+        
+        self.ResetLayout()
+        
+        self.Operacion_actual.audio_pregunta= "Escribe el número"+str(self.numero_audifono)
+        self.box_left.GetChildren()[0].GetWindow().SetLabel("")
+        
+        self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
+        
+        textCtrl1 = wx.TextCtrl(
+              parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0,
+              value='textCtrl1')
+        textCtrl1.Value= ""
+        self.box_left.Add(textCtrl1, 0, wx.ALIGN_TOP, 0)
+        
+        self.Refresh()      
+        
+    def ModificarPareamiento(self, diccionario, earg):
+        
+        text= str(earg['char']).decode('utf-8')
+        
+        if self.pareado== True and self.nombre_ingresado==False:
+            textctrl= self.box_left.GetChildren()[1].GetWindow()
+            if text=="Enter" and len(textctrl.Value)>0:
+                temp_nombre= textctrl.Value
+                nombre_caps= temp_nombre.title()
+                self.Alumno_actual.Nombre= nombre_caps
+                self.nombre_ingresado=True
+                self.Operacion_actual.RespuestaCorrecta()
+                self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+                wx.CallAfter(self.CreateGrid,self.Operacion_actual)
+                
+        elif self.pareado== False and self.nombre_ingresado==False:
+            textctrl= self.box_left.GetChildren()[1].GetWindow()
+            if text=="Enter" and len(textctrl.Value)>0:
+                temp= int(textctrl.Value)
+                
+                if temp>=0 and temp< len(diccionario):
+                    self.numero_audifono=temp
+                    self.pareado=true
+                    self.set_nombre()
+                    
+        # reconocimiento de backspace para borrado
+        
+        if text == "Back": # backspace captura
+                self.box_left.GetChildren()[1].GetWindow().Value=self.box_left.GetChildren()[1].GetWindow().Value[:-1]
+                return
+            
+        '''
+        
+         if ((e.Equals("0") || e.Equals("1") || e.Equals("2") || e.Equals("3") || e.Equals("4") || e.Equals("5")
+                || e.Equals("6") || e.Equals("7") || e.Equals("8") || e.Equals("9")) && pareado == false)
+            {              
+
+                if (stackpanel1.Children[0] is TextBox)
+                    (stackpanel1.Children[0] as TextBox).Text += e;
+            }
+
+            else if ((e.Equals("Q") || e.Equals("W") || e.Equals("E") || e.Equals("R") || e.Equals("T") || e.Equals("Y") || e.Equals("U") || e.Equals("I") || e.Equals("O") || e.Equals("P") ||
+              e.Equals("A") || e.Equals("S") || e.Equals("D") || e.Equals("F") || e.Equals("G") || e.Equals("H") || e.Equals("J") || e.Equals("K") || e.Equals("L") || e.Equals("Ñ") ||
+              e.Equals("Z") || e.Equals("X") || e.Equals("C") || e.Equals("V") || e.Equals("B") || e.Equals("N") || e.Equals("M") ||
+              e.Equals("á") || e.Equals("é") || e.Equals("í") || e.Equals("ó") || e.Equals("ú")) && pareado == true)
+            {
+                if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
+                    (stackpanel1.Children[0] as TextBox).Text += e.ToUpper();
+            }
+        
+        
+        '''
+        
+        
+            
+    
     
 
     def Keyboard_Pressed(self, sender, earg):
@@ -408,65 +537,7 @@ class Panel1(wx.Panel):
                     
             self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
             wx.CallAfter(self.CreateGrid,self.Operacion_actual)
-            '''
-else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()) || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.RightAlt.ToString()))
-               {
-                   TexttoSpeech(Operacion_actual.audio_pregunta);
-               }
-
-               else if (e.Equals("Q") || e.Equals("W") || e.Equals("E") || e.Equals("R") || e.Equals("T") || e.Equals("Y") || e.Equals("U") || e.Equals("I") || e.Equals("O") || e.Equals("P") ||
-                   e.Equals("A") || e.Equals("S") || e.Equals("D") || e.Equals("F") || e.Equals("G") || e.Equals("H") || e.Equals("J") || e.Equals("K") || e.Equals("L") || e.Equals("Ã‘") ||
-                   e.Equals("Z") || e.Equals("X") || e.Equals("C") || e.Equals("V") || e.Equals("B") || e.Equals("N") || e.Equals("M") ||
-                   e.Equals("Ã¡") || e.Equals("Ã©") || e.Equals("Ã­") || e.Equals("Ã³") || e.Equals("Ãº"))
-               {
-                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
-                       (stackpanel1.Children[0] as TextBox).Text += e.ToLower();
-               }
-
-               // Reconocimiento de signos de interrogaciÃ³n y exclamaciÃ³n
-               else if (e.Equals("!") || e.Equals("Â¡") || e.Equals("'") || e.Equals("?") || e.Equals("Â¿"))
-               {
-                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
-                       (stackpanel1.Children[0] as TextBox).Text += e.ToLower();
-               }
-
-               // reconocimiento de backspace para borrado
-               else if (e.Equals("Back"))
-               {
-                   if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
-                       if ((stackpanel1.Children[0] as TextBox).Text.Length > 0)
-                           (stackpanel1.Children[0] as TextBox).Text = (stackpanel1.Children[0] as TextBox).Text.Substring(0, (stackpanel1.Children[0] as TextBox).Text.Length - 1);
-               }
-
-              //reconocimiento de flechas
-               else if (e.Equals("Up") || e.Equals("Down"))
-               {
-
-                   if (e.Equals("Down"))
-                   {
-                       if (Listview1.SelectedIndex == Listview1.Items.Count - 1)
-                           Listview1.SelectedIndex = 0;
-                       else
-                           Listview1.SelectedIndex += 1;
-                   }
-
-                   if (e.Equals("Up"))
-                   {
-                       if (Listview1.SelectedIndex == -1)
-                       {
-                           Listview1.SelectedIndex = 0;
-                           return;
-                       }
-                       if (Listview1.SelectedIndex == 0)
-                           Listview1.SelectedIndex = Listview1.Items.Count - 1;
-                       else
-                           Listview1.SelectedIndex -= 1;
-                   }
-               }
-           }
-
-
-        '''
+           
 
         #if self.box_left.GetChildren()[1].GetWindow().Value == None:
         #    self.box_left.GetChildren()[1].GetWindow().SetValue('')
@@ -505,7 +576,6 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
 
             self.Refresh()
 
-                #self.box_left.GetChildren()[1].GetWindow().Select(num+1)
 
         try:
             
@@ -533,6 +603,7 @@ else if (e.Equals("Menu") || e.Equals(Key.LeftAlt.ToString()) || e.Equals(Key.Ri
  
     lib_play_proc = None
     
+       
     def TexttoSpeech(self, text_to_speech):
         if self.lib_play_proc is None:
             self.text_to_speech_queue = multiprocessing.Queue()

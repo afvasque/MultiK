@@ -75,6 +75,9 @@ class Panel1(wx.Panel):
         self.pareado= False
         self.nombre_ingresado=False
         
+        self.mayus= False
+        self.tilde=False
+        
         self.SetAutoLayout(True)
         self.SetSizer(self.box_tot)
         self.Layout()
@@ -426,6 +429,7 @@ class Panel1(wx.Panel):
     def ModificarPareamiento(self, diccionario, earg):
         
         text= str(earg['char']).decode('utf-8')
+        text= self.arreglar_texto(text)
         
         if self.pareado== True and self.nombre_ingresado==False:
             textctrl= self.box_left.GetChildren()[1].GetWindow()
@@ -484,6 +488,7 @@ class Panel1(wx.Panel):
     def Keyboard_Pressed(self, sender, earg):
 
         text= str(earg['char']).decode('utf-8')
+        text= self.arreglar_texto(text)
         
         if len(text)==0:
             return
@@ -602,6 +607,58 @@ class Panel1(wx.Panel):
         self.Refresh()
  
     lib_play_proc = None
+    
+    
+    
+    def arreglar_texto(self, texto):
+               
+        return texto
+    
+        # Reconocimiento de signos de interrogacion y exclamación
+        
+        if self.mayus:
+            if texto== "'":
+                texto="?"
+            elif texto== "¿":
+                texto="¡"
+            elif texto=="1":
+                texto="!"
+            self.mayus=False
+        
+        if self.tilde:
+            if texto=="a":
+                texto="á"
+            elif texto=="e":
+                texto="é"
+            elif texto=="i":
+                texto="í"
+            elif texto=="o":
+                texto="ó"
+            elif texto=="u":
+                texto="ú"
+            self.mayus=False
+            self.tilde=False
+            
+            
+        # Reconocimiento de tildes
+        
+        if texto=="tilde":
+            self.tilde=True
+        
+        if texto="mayus":
+            self.mayus=True
+            texto=""
+            
+        return texto
+        
+            
+                
+            
+            
+                
+        
+        
+        
     
        
     def TexttoSpeech(self, text_to_speech):

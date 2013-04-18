@@ -12,6 +12,7 @@ import event
 
 class KeyboardLibrary:
 
+	total_keyboards = 0
 	keyboard_proc_array = []
 	keypress = event.Event('A key has been pressed')
 
@@ -25,24 +26,19 @@ class KeyboardLibrary:
 
 		self.total_keyboards = len(keyboards)
 
-		if self.total_keyboards == 0:
+		if self.total_keyboards is 0:
 			print '\033[91m' + 'Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.' + '\033[0m'
 			raw_input('Press [Enter] to exit.')
 			sys.exit()
 
 
-	def get_total_keyboards(self):
-		return self.total_keyboards
 
-	def __init__(self):
-		self.total_keyboards=0
-		return
 
 	
 	def run(self, vendor_id, product_id):
 		# Detect the keyboards
 		# (id values can be found using 'lsusb --vv' command in ubuntu 12.04 and other linux versions)
-		#self.detect_all_keyboards(vendor_id, product_id)
+		self.detect_all_keyboards(vendor_id, product_id)
 
 		# Create a queue (FIFO) for safely exchanging information
 		queue = multiprocessing.Queue(False)

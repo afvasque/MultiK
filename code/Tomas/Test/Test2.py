@@ -9,3 +9,13 @@ import event
 
 lib = KeyboardLibrary()
 lib.detect_all_keyboards(0x0e8f,0x0022)
+
+#@staticmethod
+def Keyboard_event(sender, earg):
+	#diccionario[int(earg['id'])].Keyboard_Pressed(sender,earg)
+    print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+
+lib.keypress += Keyboard_event
+
+lib.run(0x0e8f,0x0022)
+

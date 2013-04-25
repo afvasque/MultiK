@@ -7,8 +7,8 @@ import sys
 import pygame
 from ejercicio import *
 
-width = 800
-height = 600
+width = 1200
+height = 800
 
 lib = KeyboardLibrary()
 
@@ -46,10 +46,18 @@ def Keyboard_event(sender, earg):
     grupo = int(int(earg['id'])/3)
     ejercicios[grupo].react(int(earg['id']), earg['char'])
     if(ejercicios[grupo].finished):
-        ejercicios[grupo] = ejercicio1(ejercicios[grupo].teclados, ejercicios[grupo].pos_x, ejercicios[grupo].pos_y, ejercicios[grupo].width, ejercicios[grupo].height)
+        ejercicios[grupo] = ejercicio2(ejercicios[grupo].teclados, ejercicios[grupo].pos_x, ejercicios[grupo].pos_y, ejercicios[grupo].width, ejercicios[grupo].height)
     window.blit(ejercicios[grupo].screen(),(ejercicios[grupo].width *ejercicios[grupo].pos_x,ejercicios[grupo].height *ejercicios[grupo].pos_y))
     pygame.display.flip()
 
+def close():
+	while True:
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				pygame.quit()
+				sys.exit()
+
+Thread(target=close).start()
 
 lib.keypress += Keyboard_event
 

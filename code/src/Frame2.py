@@ -29,10 +29,11 @@ class Frame2(wx.Frame):
         
         text= str(earg['char']).decode('utf-8')
         if text=="Pow":
+            print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
             for a in range(0,len(diccionario)):
-                if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
-                	diccionario[a].RepetirPregunta()
-			return
+                #if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
+				diccionario[a].RepetirPregunta()
+            return
 
         if ((diccionario[int(earg['id'])].pareado == False) or (diccionario[int(earg['id'])].nombre_ingresado == False) ):
             diccionario[int(earg['id'])].ModificarPareamiento(diccionario,earg)

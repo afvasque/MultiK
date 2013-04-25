@@ -13,22 +13,37 @@ from BasicOperacion import *
 
 [wxID_PANEL1] = [wx.NewId() for _init_ctrls in range(1)]
 
+
 audio_lib = audio_library.AudioLibrary()
 
+
+        
 def scale_bitmap(bitmap, width, height):
     image = wx.ImageFromBitmap(bitmap)
     image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
     result = wx.BitmapFromImage(image)
     return result
 
+def print_event(sender, earg):
+    print "TerminÛ audio en " + str(earg)
+    global audio_lib
+    print str(audio_lib.reproduciendo[int(earg['id'])])
+    audio_lib.reproduciendo[int(earg['id'])]=True
+    print "audio_lib:"+str(audio_lib.reproduciendo[int(earg['id'])])
+
+audio_lib.finished += print_event
+
 class Panel1(wx.Panel):
-        
+  
+
+
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Panel.__init__(self, id=wxID_PANEL1, name='', parent=prnt,
               pos=wx.Point(0,0), size=wx.Size(0, 0),
               style=wx.NO_BORDER)
         #self.SetClientSize(wx.Size(419, 134))
+        
 
         self.box_tot = wx.BoxSizer(orient=wx.VERTICAL)#rows=4, cols=1, hgap=0, vgap=0)
         box_up= wx.BoxSizer(orient=wx.HORIZONTAL) # tiene los indicadores de arriba
@@ -77,7 +92,6 @@ class Panel1(wx.Panel):
         
         self.mayus= False
         self.tilde=False
-        
         self.SetAutoLayout(True)
         self.SetSizer(self.box_tot)
         self.Layout()
@@ -90,6 +104,7 @@ class Panel1(wx.Panel):
         
         
         self.numero_audifono= numero_audifono
+        audio_lib.reproduciendo[int(self.numero_audifono)]=False
         self.Alumno_actual= Alumno
         self.reglas_main= Reglas()
         
@@ -99,7 +114,7 @@ class Panel1(wx.Panel):
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
-        
+        """
         HOST = 'localhost'
         PORT = 7388
         BUFSIZE = 1024
@@ -133,7 +148,7 @@ class Panel1(wx.Panel):
 
         #tcpCliSock.close()
 
-        
+        """
         
         '''
         s = socket(AF_INET, SOCK_STREAM)         # Create a socket object
@@ -459,7 +474,7 @@ class Panel1(wx.Panel):
                 
                 if temp>=0 and temp< len(diccionario):
                     self.numero_audifono=temp
-                    self.pareado=true
+                    self.pareado=True
                     self.set_nombre()
                     
         # reconocimiento de backspace para borrado
@@ -669,13 +684,15 @@ class Panel1(wx.Panel):
             
             
     def RepetirPregunta(self):
+    	print "Repetir pregunta"
+    	print self.Operacion_actual.audio_pregunta
         self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
-        
-        
         
     
        
     def TexttoSpeech(self, text_to_speech):
+        print "reproduciendo"
+        #if audio_lib.reproduciendo[self.numero_audifono]==False:
         if self.lib_play_proc is None:
             self.text_to_speech_queue = multiprocessing.Queue()
             self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
@@ -683,6 +700,8 @@ class Panel1(wx.Panel):
         
         if len(text_to_speech)>0:
             print "Reproduciendo en aud√≠fono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
+            audio_lib.reproduciendo[int(self.numero_audifono)]=True
+            print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
             self.text_to_speech_queue.put(text_to_speech)
         
         

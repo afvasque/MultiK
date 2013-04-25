@@ -15,6 +15,7 @@ import multiprocessing
 class AudioLibrary:
     card_name_array = [] # array containing the names of the usb sound cards
     finished = event.Event('Audio has finished playing.')
+    reproduciendo={}
 
     # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
     # since our bitrate is 1.54Mbit/s,

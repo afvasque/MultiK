@@ -6,9 +6,10 @@ import event
 import sys
 import pygame
 from ejercicio import *
+from threading import Thread
 
-width = 1200
-height = 800
+width = 900
+height = 700
 
 lib = KeyboardLibrary()
 
@@ -19,10 +20,14 @@ num_grupos = num_teclados/3
 if num_teclados%3 > 0:
     num_grupos+=1
 	
-line_number = int(math.sqrt(num_grupos))
+line_number_x = int(math.sqrt(num_grupos))
+line_number_y = int(math.sqrt(num_grupos))
 
-if math.floor(math.sqrt(num_grupos)) < math.sqrt(num_grupos):
-    line_number+=1
+if line_number_x * line_number_y < num_grupos:
+    line_number_x+=1
+
+if line_number_x * line_number_y < num_grupos:
+    line_number_y+=1
 
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
@@ -36,7 +41,7 @@ for i in range(num_grupos):
         teclados_grupo = [3 * i, 3 * i + 1]
     else:
         teclados_grupo = [3 * i]
-    ejercicios.append(ejercicio1(teclados_grupo,i%line_number,i/line_number,width/line_number,height/line_number))
+    ejercicios.append(ejercicio1(teclados_grupo,i%line_number_x,i/line_number_x,width/line_number_x,height/line_number_y))
     window.blit(ejercicios[i].screen(),(ejercicios[i].width *ejercicios[i].pos_x,ejercicios[i].height *ejercicios[i].pos_y))
 
 pygame.display.flip()

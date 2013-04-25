@@ -99,33 +99,43 @@ class Panel1(wx.Panel):
         operacion.feedback_correcto= "First"
         self.Operacion_actual= operacion
         
-        '''
+        
         HOST = 'localhost'
         PORT = 7388
         BUFSIZE = 1024
         ADDR = (HOST, PORT)
 
-        tcpCliSock = socket(AF_INET, SOCK_STREAM)
+        tcpCliSock = socket()
         tcpCliSock.connect(ADDR)
 
-        def recv():
-            print 'recibiendo'
-            data = tcpCliSock.recv(BUFSIZE)
-            if not data: sys.exit(0)
-            print (data)
+        print 'conectando'
+        data = "SustantivosFinal.multik"
+        tcpCliSock.send(data)
+
+
+        print 'recibiendo1'
+        data = tcpCliSock.recv(BUFSIZE)
+        if not data: sys.exit(0)
+        print data
+
+
+        print 'conectando'
+        data = "30/1"
+        tcpCliSock.send(data)
+
+        print 'recibiendo2'
+        data = tcpCliSock.recv(BUFSIZE)
+        if not data: sys.exit(0)
+        print data
+
         
-        Thread(target=recv).start()
+        return
 
-        print 'enviando'
-        data = '01AF23'.decode('hex')
-        #if not data: break
-        tcpCliSock.send(bytes(data))
+        #tcpCliSock.close()
 
-        tcpCliSock.close()
-
+        
+        
         '''
-        
-        
         s = socket(AF_INET, SOCK_STREAM)         # Create a socket object
         #host = socket.gethostname() # Get local machine name
         #port = 7388
@@ -163,7 +173,7 @@ class Panel1(wx.Panel):
         print 'recibido1'
         #print temp
         print 'recibido2'
-
+        '''
         
 
         #print operacion.TipoOperacion
@@ -457,7 +467,10 @@ class Panel1(wx.Panel):
         if text == "Back": # backspace captura
                 self.box_left.GetChildren()[1].GetWindow().Value=self.box_left.GetChildren()[1].GetWindow().Value[:-1]
                 return
-            
+        
+        strr= self.box_left.GetChildren()[1].GetWindow().Value
+        self.box_left.GetChildren()[1].GetWindow().Value=strr+text   
+
         '''
         
          if ((e.Equals("0") || e.Equals("1") || e.Equals("2") || e.Equals("3") || e.Equals("4") || e.Equals("5")
@@ -645,7 +658,7 @@ class Panel1(wx.Panel):
         if texto=="tilde":
             self.tilde=True
         
-        if texto="mayus":
+        if texto=="mayus":
             self.mayus=True
             texto=""
             
@@ -655,7 +668,8 @@ class Panel1(wx.Panel):
                 
             
             
-                
+    def RepetirPregunta(self):
+        self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
         
         
         

@@ -23,6 +23,3 @@ while (True):
     msge = 'C:\Program Files (x86)\A new service test\SustantivosFinal.multik'
     tcpCliSock.send(msge)
     tcpCliSock.send('1/1')
-
-sudo mono-service2 --debug MultikSentenceGenerator.exe 
-

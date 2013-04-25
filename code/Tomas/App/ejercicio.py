@@ -152,7 +152,7 @@ class ejercicio2(ejercicio):
 		self.canvas.blit(label_3,(self.width/5,4*self.height/5))
 		self.canvas.blit(label_4,(3*self.width/5,4*self.height/5))
 		
-		self.radio = 5
+		self.radio = 2
 		
 		self.paint_circles(0);
 		self.paint_circles(1);
@@ -166,7 +166,7 @@ class ejercicio2(ejercicio):
 			pygame.draw.circle(self.canvas, self.redColor,((self.xs[0] * 2 + 2) * self.width / 5 - self.radio, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.redColor,((self.xs[0] * 2 + 1) * self.width / 5 - self.radio, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			
-		elif id == 1: # patron × : ×
+		elif id == 1: # patron ' : '
 			pygame.draw.circle(self.canvas, self.greenColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio, (self.ys[1] * 2 + 1) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.greenColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio, (self.ys[1] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.greenColor,((self.xs[1] * 2 + 1) * self.width / 5 - self.radio, (self.ys[1] * 3 + 4) * self.height / 10 - self.radio), 2 * self.radio, 0)
@@ -181,13 +181,13 @@ class ejercicio2(ejercicio):
 		return
 
 	def paint_blocked_circles(self, id):
-		if id == 0: #Patron :  :
+		"""if id == 0: #Patron :  :
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 1) * self.width / 5 - self.radio + 2, (self.ys[0] * 2 + 1) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 2) * self.width / 5 - self.radio + 2, (self.ys[0] * 2 + 1) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 2) * self.width / 5 - self.radio + 2, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 1) * self.width / 5 - self.radio + 2, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			
-		elif id == 1: # patron × : ×
+		elif id == 1: # patron ' : '
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio + 2, (self.ys[1] * 2 + 1) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio + 2, (self.ys[1] * 2 + 2) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 2 + 1) * self.width / 5 - self.radio + 2, (self.ys[1] * 3 + 4) * self.height / 10 - self.radio + 2), 2 * self.radio - 4, 0)
@@ -198,7 +198,7 @@ class ejercicio2(ejercicio):
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[2] * 8 + 7) * self.width / 20 - self.radio + 2, (self.ys[2] * 8 + 4) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[2] * 8 + 5) * self.width / 20 - self.radio + 2, (self.ys[2] * 8 + 8) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[2] * 8 + 7) * self.width / 20 - self.radio + 2, (self.ys[2] * 8 + 8) * self.height / 5 - self.radio + 2), 2 * self.radio - 4, 0)
-		
+		"""
 		return
 		
 	def erase_circles(self, id):
@@ -208,7 +208,7 @@ class ejercicio2(ejercicio):
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 2) * self.width / 5 - self.radio, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[0] * 2 + 1) * self.width / 5 - self.radio, (self.ys[0] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			
-		elif id == 1: # patron × : ×
+		elif id == 1: # patron ' : '
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio, (self.ys[1] * 2 + 1) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 4 + 3) * self.width / 10 - self.radio, (self.ys[1] * 2 + 2) * self.height / 5 - self.radio), 2 * self.radio, 0)
 			pygame.draw.circle(self.canvas, self.whiteColor,((self.xs[1] * 2 + 1) * self.width / 5 - self.radio, (self.ys[1] * 3 + 4) * self.height / 10 - self.radio), 2 * self.radio, 0)
@@ -232,22 +232,22 @@ class ejercicio2(ejercicio):
 				if self.blocked[index_teclado]:
 					self.paint_blocked_circles(index_teclado)
 				else:
-					self.paint_circles(index_teclados)
+					self.paint_circles(index_teclado)
 		elif not self.blocked[index_teclado]:
-			self.erase_circles(index_teclados)
-			if input == "Up":
+			self.erase_circles(index_teclado)
+			if input == "-^":
 				if self.ys[index_teclado] == 0:
 					self.ys[index_teclado] = 1
 				else:
 					self.ys[index_teclado] = 0
-			elif input == "Down":
+			elif input == "-v":
 				self.ys[index_teclado] = (self.ys[index_teclado] + 1)%2
-			elif input == "Left":
+			elif input == "<-":
 				if self.xs[index_teclado] == 0:
 					self.xs[index_teclado] = 1
 				else:
 					self.xs[index_teclado] = 0
-			elif input == "Right"
+			elif input == "->":
 				self.xs[index_teclado] = (self.xs[index_teclado] + 1)%2
 			self.paint_circles(index_teclado)
 		return

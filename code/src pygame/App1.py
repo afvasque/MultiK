@@ -28,12 +28,18 @@ def Keyboard_event(sender, earg):
         return
 
     if ((diccionario[int(earg['id'])].pareado == False) or (diccionario[int(earg['id'])].nombre_ingresado == False) ):
-        diccionario[int(earg['id'])].ModificarPareamiento(diccionario,earg)
+        temp= int(earg['id'])
+        diccionario[temp].ModificarPareamiento(diccionario,earg)
+        window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
         
-    else:    
-        diccionario[int(earg['id'])].Keyboard_Pressed(sender,earg)
+    else:
+        temp= int(earg['id'])
+        diccionario[temp].Keyboard_Pressed(sender,earg)
+        window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+
+    pygame.display.flip()
 
 
   #TODO: poner thread como padre

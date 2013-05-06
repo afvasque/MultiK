@@ -99,12 +99,12 @@ class ejercicio:
 			  
 		self.CreateGrid(self.Operacion_actual)
 
-		self.myfont = pygame.font.SysFont("monospace", 18)
-		label = self.myfont.render("Escribe la letra...", 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
+		#self.myfont = pygame.font.SysFont("monospace", 18)
+		#label = self.myfont.render("Escribe la letra...", 1, (0,0,0))
+		#self.canvas.blit(label,(0, 0))
 
-		self.Objects.append(Textbox(self.canvas,0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+		#self.Objects.append(Textbox(self.canvas,0,20,300,40))
+		#self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
 
 
 
@@ -151,7 +151,6 @@ class ejercicio:
 			elif operacion.nivelOperacion ==5:
 				self.patrones_ort_comunes5(operacion)
 
-		self.Refresh()	
 
 	def ResetLayout(self):
 		self.canvas.fill(self.whiteColor)
@@ -164,6 +163,23 @@ class ejercicio:
 	def react(self,input):
 
 		self.Objects[0].react(input)
+
+
+	def reproduccion_letras_alfabeto1(self,operacion):
+
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		pygame.font.init() # Se estaba cayendo acá así que le agregue esta linea, pero no es necesario
+		#self.myfont= pygame.font.Font("Arial",18)
+		self.myfont = pygame.font.SysFont("monospace", 18)
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(self.canvas,0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+
+		
+
 
 
 	def arreglar_texto(self, texto):
@@ -234,6 +250,81 @@ class ejercicio:
 
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
 
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", 18)
+		label = self.myfont.render(u"Escribe el número...", 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(self.canvas,0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+
+	def ModificarPareamiento(self, diccionario, earg):
+		
+		text= str(earg['char']).decode('utf-8')
+		text= self.arreglar_texto(text)
+		
+		if self.pareado== True and self.nombre_ingresado==False:
+			textctrl= self.Objects[0]
+			if text=="Enter" and len(textctrl.Value)>0:
+				temp_nombre= textctrl.Value
+				nombre_caps= temp_nombre.title()
+				self.Alumno_actual.Nombre= nombre_caps
+				self.nombre_ingresado=True
+				self.Operacion_actual.RespuestaCorrecta()
+				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+				self.CreateGrid(self.Operacion_actual)
+		
+
+		elif self.pareado== False and self.nombre_ingresado==False:
+			textctrl= self.Objects[0]
+			if text=="Enter" and len(textctrl.Value)>0:
+				temp= int(textctrl.Value)
+				if temp>=0 and temp< len(diccionario):
+					self.numero_audifono=temp
+					self.pareado=True
+					self.lib_play_proc=None
+					self.set_nombre()
+					
+		# reconocimiento de backspace para borrado
+		
+
+		strr= self.Objects[0].Value
+		self.Objects[0].react(text)
+		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+
+
+		'''
+		
+		 if ((e.Equals("0") || e.Equals("1") || e.Equals("2") || e.Equals("3") || e.Equals("4") || e.Equals("5")
+				|| e.Equals("6") || e.Equals("7") || e.Equals("8") || e.Equals("9")) && pareado == false)
+			{              
+
+				if (stackpanel1.Children[0] is TextBox)
+					(stackpanel1.Children[0] as TextBox).Text += e;
+			}
+
+			else if ((e.Equals("Q") || e.Equals("W") || e.Equals("E") || e.Equals("R") || e.Equals("T") || e.Equals("Y") || e.Equals("U") || e.Equals("I") || e.Equals("O") || e.Equals("P") ||
+			  e.Equals("A") || e.Equals("S") || e.Equals("D") || e.Equals("F") || e.Equals("G") || e.Equals("H") || e.Equals("J") || e.Equals("K") || e.Equals("L") || e.Equals("Ñ") ||
+			  e.Equals("Z") || e.Equals("X") || e.Equals("C") || e.Equals("V") || e.Equals("B") || e.Equals("N") || e.Equals("M") ||
+			  e.Equals("á") || e.Equals("é") || e.Equals("í") || e.Equals("ó") || e.Equals("ú")) && pareado == true)
+			{
+				if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
+					(stackpanel1.Children[0] as TextBox).Text += e.ToUpper();
+			}
+		
+		
+		'''
+
+	def set_nombre(self):
+		self.ResetLayout()
+		self.Operacion_actual.audio_pregunta= "Ingresa tu nombre"
+		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
+
+		pygame.font.init()
+		self.myfont = pygame.font.SysFont("monospace", 18)
+		label = self.myfont.render(u"Ingresa tu nombre", 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
 		self.Objects.append(Textbox(self.canvas,0,20,300,40))
 		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
 

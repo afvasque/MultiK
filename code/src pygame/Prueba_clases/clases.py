@@ -12,7 +12,7 @@ class Textbox:
 		self.canvas=canvas
 		#Sector especifico para el inicio
 		
-		self.input = ""
+		self.Value = ""
 		
 		pygame.draw.rect(self.canvas,self.Color,(self.pos_x, self.pos_y, self.width, self.height))
 		
@@ -24,21 +24,21 @@ class Textbox:
 		return self.canvas
 
 	def react(self,input):
-		
 		if len(input)==1:
-			self.input = self.input + input
+			self.Value = self.Value + input
+			print "valor: "+self.Value
 
 			self.myfont = pygame.font.SysFont("monospace", self.height)
-			label = self.myfont.render(self.input, 1, (0,0,0))
-			self.canvas.blit(label,(0, 0))
+			label = self.myfont.render(self.Value, 1, (0,0,0))
+			self.canvas.blit(label,(self.pos_x, self.pos_y))
 
 
 		elif input == "Back":
-			if len(self.input) > 0:
+			if len(self.Value) > 0:
 				pygame.draw.rect(self.canvas,self.Color,(self.pos_x, self.pos_y, self.width, self.height))
-				self.input = self.input[:-1]
+				self.Value = self.Value[:-1]
 				self.myfont = pygame.font.SysFont("monospace", self.height)
-				label = self.myfont.render(self.input, 1, (0,0,0))
-				self.canvas.blit(label,(0, 0))
+				label = self.myfont.render(self.Value, 1, (0,0,0))
+				self.canvas.blit(label,(self.pos_x, self.pos_y))
 		return
 				

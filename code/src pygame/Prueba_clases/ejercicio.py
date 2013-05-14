@@ -171,12 +171,12 @@ class ejercicio:
 
 		pygame.font.init() # Se estaba cayendo acá así que le agregue esta linea, pero no es necesario
 		#self.myfont= pygame.font.Font("Arial",18)
-		self.myfont = pygame.font.SysFont("monospace", 18)
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(self.canvas,0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+		self.Objects.append(Textbox(0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 		
 
@@ -250,13 +250,14 @@ class ejercicio:
 
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
 
-		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", 18)
-		label = self.myfont.render(u"Escribe el número...", 1, (0,0,0))
+		pygame.font.init()
+		frase = u"Escribe el número..."
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/(len(frase))))
+		label = self.myfont.render(frase, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(self.canvas,0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+		self.Objects.append(Textbox(0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	def ModificarPareamiento(self, diccionario, earg):
 		
@@ -290,7 +291,7 @@ class ejercicio:
 
 		strr= self.Objects[0].Value
 		self.Objects[0].react(text)
-		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 
 		'''
@@ -437,11 +438,12 @@ class ejercicio:
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
 
 		pygame.font.init()
-		self.myfont = pygame.font.SysFont("monospace", 18)
-		label = self.myfont.render(u"Ingresa tu nombre", 1, (0,0,0))
+		frase = u"Ingresa tu nombre"
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(frase)))
+		label = self.myfont.render(frase, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(self.canvas,0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
+		self.Objects.append(Textbox(0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 

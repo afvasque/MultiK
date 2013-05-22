@@ -1,64 +1,20 @@
 # coding=utf-8
 #Boa:FramePanel:Panel1
 
-import wx
-import os
-import audio_library
-from Reglas import *
-from socket import *
-import sys
-import multiprocessing
-from threading import Thread
-from BasicOperacion import *
-
-[wxID_PANEL1] = [wx.NewId() for _init_ctrls in range(1)]
 
 
-audio_lib = audio_library.AudioLibrary()
 
 
         
-def scale_bitmap(bitmap, width, height):
-    image = wx.ImageFromBitmap(bitmap)
-    image = image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
-    result = wx.BitmapFromImage(image)
-    return result
 
-def print_event(sender, earg):
-    print "Terminó audio en " + str(earg)
-    global audio_lib
-    print str(audio_lib.reproduciendo[int(earg['id'])])
-    audio_lib.reproduciendo[int(earg['id'])]=True
-    print "audio_lib:"+str(audio_lib.reproduciendo[int(earg['id'])])
-
-audio_lib.finished += print_event
 
 class Panel1(wx.Panel):
   
 
-
     def _init_ctrls(self, prnt):
-        # generated method, don't edit
-        wx.Panel.__init__(self, id=wxID_PANEL1, name='', parent=prnt,
-              pos=wx.Point(0,0), size=wx.Size(0, 0),
-              style=wx.NO_BORDER)
-        #self.SetClientSize(wx.Size(419, 134))
         
-
-        self.box_tot = wx.BoxSizer(orient=wx.VERTICAL)#rows=4, cols=1, hgap=0, vgap=0)
-        box_up= wx.BoxSizer(orient=wx.HORIZONTAL) # tiene los indicadores de arriba
-        self.box_left= wx.BoxSizer(orient=wx.VERTICAL)  # tiene el espacio para ejercicios
-        box_right= wx.BoxSizer(orient=wx.VERTICAL) # tiene el semÃ¡foro
-
-        box_down= wx.BoxSizer(orient=wx.HORIZONTAL)
-        box_down.Add(self.box_left,0,wx.ALIGN_TOP,0)
-        box_down.Add(box_right,0,wx.ALIGN_TOP,0)
-
-        self.box_tot.Add(box_up)
-        self.box_tot.Add(box_down)
-
-
-
+        
+        
         staticText1 = wx.StaticText(
               label=u'Escribe la letra...', name='staticText1', parent=self,
               pos=wx.Point(0, 10), size=wx.Size(108, 17), style=0)
@@ -103,147 +59,10 @@ class Panel1(wx.Panel):
         self._init_ctrls(parent)
         
         
-        self.numero_audifono= numero_audifono
-        audio_lib.reproduciendo[int(self.numero_audifono)]=False
-        self.Alumno_actual= Alumno
-        self.reglas_main= Reglas()
-        
-        operacion= BasicOperacion()
-        operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
-        operacion.nivelOperacion= 1
-        operacion.feedback_correcto= "First"
-        self.Operacion_actual= operacion
-        
-        """
-        HOST = 'localhost'
-        PORT = 7388
-        BUFSIZE = 1024
-        ADDR = (HOST, PORT)
-
-        tcpCliSock = socket()
-        tcpCliSock.connect(ADDR)
-
-        print 'conectando'
-        data = "SustantivosFinal.multik"
-        tcpCliSock.send(data)
-
-
-        print 'recibiendo1'
-        data = tcpCliSock.recv(BUFSIZE)
-        if not data: sys.exit(0)
-        print data
-
-
-        print 'conectando'
-        data = "30/1"
-        tcpCliSock.send(data)
-
-        print 'recibiendo2'
-        data = tcpCliSock.recv(BUFSIZE)
-        if not data: sys.exit(0)
-        print data
-
-        
-        return
-
-        #tcpCliSock.close()
-
-        """
-        
-        '''
-        s = socket(AF_INET, SOCK_STREAM)         # Create a socket object
-        #host = socket.gethostname() # Get local machine name
-        #port = 7388
-        print 'conectando con servicio'
-        server_address = ('localhost', 7388)
-        BUFSIZE= 1024
-        s.connect(server_address)
-        print 'conectado'
-        #s.sendall("/media/Disco Local/Dropbox/magister/Github/MultiK/code/Windows Service/Servicio Final/SustantivosFinal.multik")
-        #data= input('asd')
-        s.send(bytes('sdfds'))
-        print 'enviado'
-
-        #s.setblocking(True) # not really needed but to emphasize this 
-                                #is a blocking socket until the timeout
-        #s.settimeout(15)
-
-        while True:
-            try:
-                data= 'asd'
-                s.send(bytes(data),'UTF-8')
-            
-                msg = s.recv(1024)
-                print(msg)
-                content += msg
-                break
-            except socket.timeout:
-                print 'timeout'
-            else:
-                print 'murio por alguna razon'#socket died for another reason or ended the way it was supposed to.
-        s.close()
-
-
-        #temp= 'mensaje: '+s.recv(1).strip()
-        print 'recibido1'
-        #print temp
-        print 'recibido2'
-        '''
-        
-
-        #print operacion.TipoOperacion
-        #print operacion.nivelOperacion
-        #print TipoOperacion.Reproduccion_letras_alfabeto
-        self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-              
-        self.CreateGrid(self.Operacion_actual)
         
         
-    def CreateGrid(self, operacion):
         
-        self.ResetLayout()
-        
-        if self.pareado == False:
-            self.parear()
-            return
-        
-        if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
-            #print operacion.nivelOperacion
-            if operacion.nivelOperacion == 1:
-                self.reproduccion_letras_alfabeto1(operacion)
-            elif operacion.nivelOperacion ==2:
-                self.reproduccion_letras_alfabeto2(operacion)
-                
-        elif operacion.TipoOperacion == TipoOperacion.sentido_vocales_silabas:
-            
-            if operacion.nivelOperacion ==1:
-                self.sentido_vocales1(operacion)
-        
-        elif operacion.TipoOperacion == TipoOperacion.signos_int_excl:
-            if operacion.nivelOperacion ==1:
-                self.signos_int_excl1(operacion)
-            elif operacion.nivelOperacion ==2:
-                self.signos_int_excl2(operacion)
-                
-        elif operacion.TipoOperacion == TipoOperacion.mayus_nombres_propios:
-            if operacion.nivelOperacion ==1:
-                self.mayus_nombres_propios1(operacion)
-            elif operacion.nivelOperacion ==2:
-                self.mayus_nombres_propios2(operacion)
-                
-        elif operacion.TipoOperacion == TipoOperacion.patrones_ort_comunes:
-            if operacion.nivelOperacion ==1:
-                self.patrones_ort_comunes1(operacion)            
-            elif operacion.nivelOperacion ==2:
-                self.patrones_ort_comunes2(operacion)
-            elif operacion.nivelOperacion ==3:
-                self.patrones_ort_comunes3(operacion)
-            elif operacion.nivelOperacion ==4:
-                self.patrones_ort_comunes4(operacion)
-            elif operacion.nivelOperacion ==5:
-                self.patrones_ort_comunes5(operacion)
-
-        self.Refresh()
+ 
                 
         
 

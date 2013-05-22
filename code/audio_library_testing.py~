@@ -18,13 +18,8 @@ all_p = []
 for i in range(0,lib.get_total_usb_cards()):
 	# text to play
 	text_to_speech = "Hola. Tarjeta %d. Chao." % i
-
-	queue = multiprocessing.Queue()
-
-	queue.put(text_to_speech)
-
 	# create a process for each audio to play
-	p = multiprocessing.Process(target=lib.play, args=(i, queue))	
+	p = multiprocessing.Process(target=lib.play, args=(i, text_to_speech))
 	# append to the process array
 	all_p.append(p)
 	# start it

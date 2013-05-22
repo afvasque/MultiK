@@ -24,9 +24,9 @@ class GeneradorPreguntas:
         
         operacion.TipoOperacion = TipoOperacion.Reproduccion_letras_alfabeto
         operacion.nivelOperacion = 1
-        operacion.audio_pregunta = "Presiona la letra. " + letra
-        operacion.pregunta = "Presiona la \nletra... "
-        operacion.feedback_correcto = "Bien " + self.alumno.Nombre
+        operacion.audio_pregunta = "Presiona la letra. %s" % letra
+        operacion.pregunta = "Presiona la letra... "
+        operacion.feedback_correcto = "Bien, " + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo de nuevo"
                     
         return operacion

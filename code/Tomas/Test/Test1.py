@@ -325,10 +325,10 @@ def p4_screen():
         window.blit(label_1,(1 * width / 5, 2 * height / 5))
         window.blit(label_2,(3 * width / 5, 2 * height / 5))
         
-        pygame.draw.circle(window, redColor,((x * 2 + 1) * width / 5 - 5, 2 * height / 5 - 5),10,10)
-        pygame.draw.circle(window, redColor,((x * 2 + 2) * width / 5 - 5, 2 * height / 5 - 5),10,10)
-        pygame.draw.circle(window, redColor,((x * 2 + 2) * width / 5 - 5, 3 * height / 5 - 5),10,10)
-        pygame.draw.circle(window, redColor,((x * 2 + 1) * width / 5 - 5, 3 * height / 5 - 5),10,10)
+        pygame.draw.circle(window, redColor,((x * 2 + 1) * width / 5 - 5, 2 * height / 5 - 5),10,0)
+        pygame.draw.circle(window, redColor,((x * 2 + 2) * width / 5 - 5, 2 * height / 5 - 5),10,0)
+        pygame.draw.circle(window, redColor,((x * 2 + 2) * width / 5 - 5, 3 * height / 5 - 5),10,0)
+        pygame.draw.circle(window, redColor,((x * 2 + 1) * width / 5 - 5, 3 * height / 5 - 5),10,0)
     
         pygame.draw.circle(window, greenColor,(7 * width / 10 - 5, 2 * height / 5 - 5),10,10)
         pygame.draw.circle(window, greenColor,(7 * width / 10 - 5, 3 * height / 5 - 5),10,10)

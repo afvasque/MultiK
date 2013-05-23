@@ -42,4 +42,20 @@ class Textbox:
 				label = self.myfont.render(self.Value, 1, self.blackColor)
 				self.canvas.blit(label,(1, 1))
 		return
+
+class Listview:
+
+	def __init__(self, pos_x, pos_y, width, height):
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+		self.Color = pygame.Color(0,255,0)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = width
+		self.height = height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2, self.height - 2))
+
+
 				

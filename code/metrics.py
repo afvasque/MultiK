@@ -7,14 +7,20 @@ import sys
 import time
 import datetime
 from optparse import OptionParser
+from jinja2 import Template
 
 
 class Metrics:
 	def __init__(self, interval):
+		# Save the current time
 		self.start_time = time.time()
-		self.data_fn = 'cpu_%d.dat' % self.start_time
+
+		# Define output filenames
+		self.cpu_data_fn = 'cpu_%d.dat' % self.start_time
 		self.html_fn = 'cpu_%d.html' % self.start_time
-		self.data_file = open(self.data_fn, 'w')
+
+		# Open output file for data
+		self.cpu_data_file = open(self.cpu_data_fn, 'w')
 
 		# Capture and write data to data file
 		try:
@@ -23,30 +29,36 @@ class Metrics:
 				cpu_p = psutil.cpu_percent(interval=interval, percpu=False)
 
 				print "[%d , %d], " % (timestamp_millis, cpu_p)
-				self.data_file.write("[%d, %d], " % (timestamp_millis, cpu_p))
+				self.cpu_data_file.write("[%d, %d], " % (timestamp_millis, cpu_p))
+
 		# Close data file and generate html file.
 		except(KeyboardInterrupt):
-			self.data_file.close()
+			# Close the data file
+			self.cpu_data_file.close()
 
+			# Current directory (used for relative paths)
 			cdir = os.path.dirname(__file__)
 
-			pre  = open(os.path.join(cdir,'cpu_chart_pre.html'), 'r')
-			data = open(self.data_fn, 'r')
-			post = open(os.path.join(cdir,'cpu_chart_post.html'), 'r')
+			# Open template and data files
+			template_file = open(os.path.join(cdir,'metrics_template.html.jinja2'), 'r')
+			cpu_data = open(self.cpu_data_fn, 'r')
 
+			# Create a new file for saving the report
 			html_file = open(self.html_fn, 'w')
 
-			html_file.write( pre.read() )
-			html_file.write( data.read() )
-			html_file.write( post.read() )
+			# Replace the variables in the template
+			template = Template(template_file.read().decode('utf-8'))
+			report = template.render(cpu_data=cpu_data.read()).encode('utf-8')
 
-			pre.close()
-			data.close()
-			post.close()
+			# Write the report file
+			html_file.write(report)
 
+			# Close all used files
+			template_file.close()
+			cpu_data.close()
 			html_file.close()
 
-			# Open file
+			# Show created file in the default viewer
 			if (options.open_graph):
 				html_full_path = os.path.join( os.getcwd(), self.html_fn )
 				if sys.platform == 'linux2':

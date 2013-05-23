@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="utf-8">
-		<title>Gráfico de Uso de CPU</title>
+		<title>Reporte de Uso de Recursos</title>
 		<link rel="stylesheet" href="style.css">
 
         <!-- Load jQuery from Google's CDN if needed -->
@@ -18,20 +18,20 @@
 			$(function(){
 		    var chart = new Highcharts.Chart({
 		        chart: {"renderTo":"highchart","type":"line","zoomType":"x"},
-		        legend: { enabled: false },
 		        plotOptions: { series: {
 					                marker: {
 					                    enabled: false
 					                }
 					            }
 					        },
-		        series: [{"name":"% Uso CPU","data":[
-		        		{{ cpu_data }}
-		        		]}],
+		        series: [
+		        		{"name":"% uso CPU","data":[{{ cpu_data }}]},
+		        		{"name":"% uso memoria","data":[{{ mem_data }}]},
+		        		],
 		        subtitle: {"text":"Seleccione sobre el gr\u00e1fico para acercar."},
-		        title: {"text":"Uso de CPU"},
+		        title: {"text":"Uso de Recursos"},
 		        xAxis: {"title":{"text":"Tiempo"},"type":"datetime"},
-		        yAxis: {"title":{"text":"Uso CPU"},"labels":{"formatter":function() {
+		        yAxis: {"title":{"text":"Uso"},"labels":{"formatter":function() {
 		                                    return this.value + "%";
 		                                }}}
 		    });
@@ -39,7 +39,11 @@
 		</script>
 	</head>
 	<body>
-		<h1>Gráfico de Uso de CPU</h1>
-		<div id="highchart" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+		<h1>Reporte de Uso de Recursos</h1>
+		<p><strong>Inicio de la medición:</strong> {{ start_time }}</p>
+		<p><strong>Término de la medición:</strong> {{ end_time }}</p>
+		<p><strong>Total de usuarios durante la prueba:</strong> {{ total_users }}</p>
+
+		<div id="highchart" style="min-width: 400px; height: 540px; margin:0 auto"></div>
 	</body>
 </html>

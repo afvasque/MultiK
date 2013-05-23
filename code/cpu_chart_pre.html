@@ -11,7 +11,13 @@
 		<script type="text/javascript">
 			$(function(){
 		    var chart = new Highcharts.Chart({
-		        chart: {"renderTo":"highchart","type":"line","zoomType":"x","spacingRight":15},
+		        chart: {"renderTo":"highchart","type":"line","zoomType":"x"},
 		        legend: { enabled: false },
+		        plotOptions: { series: {
+					                marker: {
+					                    enabled: false
+					                }
+					            }
+					        },
 		        series: [{"name":"% Uso CPU","data":[
 		        			

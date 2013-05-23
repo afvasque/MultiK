@@ -50,7 +50,6 @@ class Generador_pal:
         if not data: sys.exit(0)
 
         temp= data.split('/')
-
         return temp[1]
 
     

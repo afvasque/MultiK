@@ -1,0 +1,4 @@
+abrir en el terminal la carpeta servicio final.
+ejecutar la sgte instruccion: sudo mono-service2 --debug MultikSentenceGenerator.exe
+
+ahora ejecutar la aplicación.

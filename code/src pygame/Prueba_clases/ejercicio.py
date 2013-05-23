@@ -334,9 +334,10 @@ class ejercicio:
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 4) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas)):
 				
-				if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
+				if isinstance(self.Objects[0],Listview):
 					
-					list= self.box_left.GetChildren()[1].GetWindow()
+					list= self.Objects[0]
+					'''
 					if len(list.GetSelections())>0:
 						if list.Items[list.GetSelections()[0]] == self.Operacion_actual.respuesta:
 							list.Clear()
@@ -349,14 +350,14 @@ class ejercicio:
 							list.Append(self.Operacion_actual.feedback_error)
 							self.TexttoSpeech(self.Operacion_actual.feedback_error)
 							self.Operacion_actual.RespuestaIncorrecta()
-			
+					'''
 			elif ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 1) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl and self.Operacion_actual.nivelOperacion == 1) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 2) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5)):
 				
-				#textctrl= wx.TextCtrl
-				textctrl= self.box_left.GetChildren()[1].GetWindow()
+				
+				textctrl= self.Objects[0]
 				
 				if self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl:
 					resp= self.Operacion_actual.respuesta.split(",")
@@ -373,14 +374,14 @@ class ejercicio:
 					textctrl.Value=""
 					
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-			wx.CallAfter(self.CreateGrid,self.Operacion_actual)
+			self.CreateGrid(self.Operacion_actual)
 		   
 
 		#if self.box_left.GetChildren()[1].GetWindow().Value == None:
 		#    self.box_left.GetChildren()[1].GetWindow().SetValue('')
 
-
-		if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.ListBox):
+		'''
+		if isinstance(self.Objects[0],Listview):
 			if text == "-v" or text == "-^":
 
 				if text == "-v":
@@ -408,20 +409,13 @@ class ejercicio:
 							self.box_left.GetChildren()[1].GetWindow().Select(cont)
 						else:
 							self.box_left.GetChildren()[1].GetWindow().Select(num-1)
+		'''
 
 
 		try:
-			
-			if text == "Back": # backspace captura
-				self.box_left.GetChildren()[1].GetWindow().Value=self.box_left.GetChildren()[1].GetWindow().Value[:-1]
-				return
-
-			if isinstance(self.box_left.GetChildren()[1].GetWindow(),wx.TextCtrl):
-				strr= self.box_left.GetChildren()[1].GetWindow().Value
-				#wx.CallAfter(self.box_left.GetChildren()[1].GetWindow().SetValue(strr+text))
-				self.box_left.GetChildren()[1].GetWindow().Value=strr+text
-
-
+			if isinstance(self.Objects[0],Textbox):
+				self.Objects[0].react(text)
+				self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 		except TypeError as e:
 			print "Error: %s" % str(e)

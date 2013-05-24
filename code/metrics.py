@@ -63,7 +63,8 @@ class Metrics:
 						mem_data=mem_data.read(),
 						start_time=datetime.datetime.fromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S'),
 						end_time=datetime.datetime.fromtimestamp(self.end_time).strftime('%Y-%m-%d %H:%M:%S'),
-						total_users=options.total_users
+						total_users=options.total_users,
+						interval=options.interval
 						)
 			report = report.encode('utf-8')
 
@@ -96,7 +97,7 @@ class Metrics:
 
 # For command-line arguments
 parser = OptionParser()
-parser.add_option("-i", "--interval", dest="interval", default=0.1,
+parser.add_option("-i", "--interval", dest="interval", default=0.5,
                   help="set the interval for capturing the cpu usage", metavar="INTERVAL")
 parser.add_option("-u", "--users", dest="total_users", default=-1,
                   help="set the number of users during the test", metavar="TOTAL_USERS")

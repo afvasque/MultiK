@@ -17,31 +17,36 @@
 
 			$(function(){
 		    var chart = new Highcharts.Chart({
-		        chart: {"renderTo":"highchart","type":"line","zoomType":"x"},
-		        plotOptions: { series: {
-					                marker: {
-					                    enabled: false
-					                }
+		        chart: {renderTo:"highchart",type:"line",zoomType:"x"},
+		        plotOptions: { series:
+		        				{
+					                marker: { enabled: false },
+					                lineWidth: 1,
+					                stickyTracking: false,
 					            }
 					        },
 		        series: [
-		        		{"name":"% uso CPU","data":[{{ cpu_data }}]},
-		        		{"name":"% uso memoria","data":[{{ mem_data }}]},
+		        		{name:"% uso CPU",data:[{{ cpu_data }}]},
+		        		{name:"% uso memoria",data:[{{ mem_data }}]},
 		        		],
-		        subtitle: {"text":"Seleccione sobre el gr\u00e1fico para acercar."},
-		        title: {"text":"Uso de Recursos"},
-		        xAxis: {"title":{"text":"Tiempo"},"type":"datetime"},
-		        yAxis: {"title":{"text":"Uso"},"labels":{"formatter":function() {
-		                                    return this.value + "%";
-		                                }}}
+		        tooltip: { enabled: false },
+		        subtitle: {text:"Seleccione sobre el gr\u00e1fico para acercar."},
+		        title: {text:"Uso de Recursos"},
+		        xAxis: {title:{text:"Tiempo"},type:"datetime"},
+		        yAxis: {
+		        		title:{text:"Uso"},
+		                min: 0, max: 100,
+		        		labels:{formatter:function() { return this.value + "%"; }}
+		            }
 		    });
 		});
 		</script>
 	</head>
 	<body>
 		<h1>Reporte de Uso de Recursos</h1>
-		<p><strong>Inicio de la medición:</strong> {{ start_time }}</p>
-		<p><strong>Término de la medición:</strong> {{ end_time }}</p>
+		<p><strong>Inicio del muestreo:</strong> {{ start_time }}</p>
+		<p><strong>Término del muestreo:</strong> {{ end_time }}</p>
+		<p><strong>Tiempo entre muestras:</strong> {{ interval }} segundos</p>
 		<p><strong>Total de usuarios durante la prueba:</strong> {{ total_users }}</p>
 
 		<div id="highchart" style="min-width: 400px; height: 540px; margin:0 auto"></div>

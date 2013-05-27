@@ -44,18 +44,53 @@ class Textbox:
 		return
 
 class Listview:
-
-	def __init__(self, pos_x, pos_y, width, height):
+	def __init__(self, texts, pos_x, pos_y, width, height):
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.Color = pygame.Color(0,255,0)
 		self.whiteColor = pygame.Color(255,255,255)
 		self.blackColor = pygame.Color(0,0,0)
+		self.focusColor = pygame.Color(210,210,210)
 		self.width = width
 		self.height = height
 		self.canvas = pygame.Surface((self.width,self.height))
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2, self.height - 2))
-
-
-				
+		self.texts = texts
+		self.focus = 0
+		self.count = len(texts)
+		
+		pygame.font.init()
+		
+		self.myfont = pygame.font.SysFont("monospace", (self.height - self.count) / self.count)
+		
+		self.labels = [self.myfont.render(self.texts[0], 1, self.blackColor)] * self.count
+		for i in range(self.count):
+			self.labels[i] = self.myfont.render(self.texts[i], 1, self.blackColor)
+			self.canvas.blit(self.labels[i],(1, (self.height / self.count) * i + 1))
+			pygame.draw.rect(self.canvas,self.blackColor,( 1, (self.height / self.count) * (i + 1) + 1, self.width - 2, 2))
+		
+		pygame.draw.rect(self.canvas,self.focusColor,( 1, (self.height / self.count) * (self.focus) + 1, self.width - 2, self.height / self.count))
+		self.canvas.blit(self.labels[self.focus],(1, (self.height / self.count) * self.focus + 1))
+		
+	def react(self,input):
+		if (input == "-v" or input == "-^"):
+			pygame.draw.rect(self.canvas,self.whiteColor,( 1, (self.height / self.count) * (self.focus) + 1, self.width - 2, self.height / self.count))
+			self.canvas.blit(self.labels[self.focus],(1, (self.height / self.count) * self.focus + 1))
+			if input == "-v":
+				self.focus = self.focus + 1
+				self.focus = self.focus % self.count
+			else:
+				if self.focus == 0:
+					self.focus = self.count - 1
+				else:
+					self.focus = self.focus + 1
+			pygame.draw.rect(self.canvas,self.focusColor,( 1, (self.height / self.count) * (self.focus) + 1, self.width - 2, self.height / self.count))
+			self.canvas.blit(self.labels[self.focus],(1, (self.height / self.count) * self.focus + 1))
+			for i in range(self.count):
+				pygame.draw.rect(self.canvas,self.blackColor,( 1, (self.height / self.count) * (i + 1) + 1, self.width - 2, 2))
+			
+			
+	def answer(self):
+		return self.texts[self.focus]
+			

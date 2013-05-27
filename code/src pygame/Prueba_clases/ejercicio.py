@@ -169,8 +169,7 @@ class ejercicio:
 
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		pygame.font.init() # Se estaba cayendo acá así que le agregue esta linea, pero no es necesario
-		#self.myfont= pygame.font.Font("Arial",18)
+		pygame.font.init()
 		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
@@ -178,12 +177,144 @@ class ejercicio:
 		self.Objects.append(Textbox(0,20,300,40))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
+	def reproduccion_letras_alfabeto2(self,operacion):
+
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)        
+
+		#for st in operacion.alternativas:
+		#    lista.Append(st)
+
+	def sentido_vocales1(self, operacion):        
 		
+		self.TexttoSpeech(operacion.audio_pregunta)
+		
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
+		
+		#for st in operacion.alternativas:
+		#    lista.Append(st)
+
+	def signos_int_excl1(self, operacion):        
+			
+			self.TexttoSpeech(operacion.audio_pregunta)
+
+			pygame.font.init()
+			self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+			label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+			self.canvas.blit(label,(0, 0))
+
+			self.Objects.append(Textbox(0,20,300,40))
+			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+
+	def signos_int_excl2(self, operacion):        
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+		
+		self.Objects.append(Textbox(0,20,300,40))
+			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(0,20,300,40))
+			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		
+	def mayus_nombres_propios1(self, operacion):        
+				
+		self.TexttoSpeech(operacion.audio_pregunta)
+		
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+		
+		#for st in operacion.alternativas:
+		#    lista.Append(st)
+
+	# pendiente
+	def mayus_nombres_propios2(self, operacion):        
+		
+		return
+
+	def patrones_ort_comunes1(self, operacion):        
+		
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+		
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+		
+		#for st in operacion.alternativas:
+		#	lista.Append(st)
+		
+	
+	def patrones_ort_comunes2(self, operacion):        
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		
+	
+	def patrones_ort_comunes3(self, operacion):        
+		
+		# Falta imagen!!
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		
+		
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+		
+		#for st in operacion.alternativas:
+		#	lista.Append(st)
+		
+	
+	def patrones_ort_comunes4(self, operacion):        
+		
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+		
+		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
+		
+		#for st in operacion.alternativas:
+		#	lista.Append(st)
+	
+	def patrones_ort_comunes5(self, operacion):        
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		pygame.font.init() 
+		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		
+		return
 
 
 
 	def arreglar_texto(self, texto):
-			   
+		
 		return texto
 	
 		# Reconocimiento de signos de interrogacion y exclamación

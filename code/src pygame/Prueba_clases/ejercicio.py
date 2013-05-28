@@ -172,18 +172,19 @@ class ejercicio:
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		pygame.font.init()
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	def reproduccion_letras_alfabeto2(self,operacion):
 
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		self.Objects.append(Listview(operacion.alternativas,0,20,300,40))
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
 
@@ -198,15 +199,16 @@ class ejercicio:
 
 	def signos_int_excl1(self, operacion):        
 			
-			self.TexttoSpeech(operacion.audio_pregunta)
+		self.TexttoSpeech(operacion.audio_pregunta)
 
-			pygame.font.init()
-			self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
-			label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-			self.canvas.blit(label,(0, 0))
+		pygame.font.init()
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
 
-			self.Objects.append(Textbox(0,20,300,40))
-			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	def signos_int_excl2(self, operacion):        
 		
@@ -216,12 +218,13 @@ class ejercicio:
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
 		
 		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		
 	def mayus_nombres_propios1(self, operacion):        
 				
@@ -257,12 +260,13 @@ class ejercicio:
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		
 	
 	def patrones_ort_comunes3(self, operacion):        
@@ -303,12 +307,13 @@ class ejercicio:
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		
 		return
 
@@ -384,11 +389,12 @@ class ejercicio:
 
 		pygame.font.init()
 		frase = u"Escribe el número..."
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/(len(frase))))
+		size= int(1.5 * self.width/(len(frase)))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(frase, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	def ModificarPareamiento(self, diccionario, earg):
@@ -510,43 +516,6 @@ class ejercicio:
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 			self.CreateGrid(self.Operacion_actual)
 		   
-
-		#if self.box_left.GetChildren()[1].GetWindow().Value == None:
-		#    self.box_left.GetChildren()[1].GetWindow().SetValue('')
-
-
-
-		'''
-		if isinstance(self.Objects[0],Listview):
-			if text == "-v" or text == "-^":
-
-				if text == "-v":
-
-					if len(self.box_left.GetChildren()[1].GetWindow().GetSelections()) ==0:
-						self.box_left.GetChildren()[1].GetWindow().Select(0)
-						
-					else:
-						num=self.box_left.GetChildren()[1].GetWindow().GetSelections()[0]
-
-						if num == self.box_left.GetChildren()[1].GetWindow().GetCount()-1:
-							self.box_left.GetChildren()[1].GetWindow().Select(0)
-						else:
-							self.box_left.GetChildren()[1].GetWindow().Select(num+1)
-
-				elif text == "-^":
-					if len(self.box_left.GetChildren()[1].GetWindow().GetSelections()) ==0:
-						cont=self.box_left.GetChildren()[1].GetWindow().GetCount()-1
-						self.box_left.GetChildren()[1].GetWindow().Select(cont)
-					else:
-						num=self.box_left.GetChildren()[1].GetWindow().GetSelections()[0]
-
-						if num==0:
-							cont=self.box_left.GetChildren()[1].GetWindow().GetCount()-1
-							self.box_left.GetChildren()[1].GetWindow().Select(cont)
-						else:
-							self.box_left.GetChildren()[1].GetWindow().Select(num-1)
-		'''
-
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
@@ -560,11 +529,11 @@ class ejercicio:
 
 		pygame.font.init()
 		frase = u"Ingresa tu nombre"
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(frase)))
+		size= int(1.5 * self.width/len(frase))
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(frase, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
-		self.Objects.append(Textbox(0,20,300,40))
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
 

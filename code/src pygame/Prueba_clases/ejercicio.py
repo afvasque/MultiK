@@ -313,43 +313,29 @@ class ejercicio:
 
 	def arreglar_texto(self, texto):
 		
-		return texto
+		#return texto
 	
-		# Reconocimiento de signos de interrogacion y exclamación
-
-		if self.mayus:
-			if texto== "'":
-				texto="?"
-			elif texto== "¿":
-				texto="¡"
-			elif texto=="1":
-				texto="!"
-			self.mayus=False
-
+		print "tilde: "+str(self.tilde)
 		if self.tilde:
 			if texto=="a":
-				texto="á"
+				texto=u"á"
 			elif texto=="e":
-				texto="é"
+				texto=u"é"
 			elif texto=="i":
-				texto="í"
+				texto=u"í"
 			elif texto=="o":
-				texto="ó"
+				texto=u"ó"
 			elif texto=="u":
-				texto="ú"
-			self.mayus=False
+				texto=u"ú"
 			self.tilde=False
 			
 			
 		# Reconocimiento de tildes
 
-		if texto=="tilde":
+		if texto=="´":
 			self.tilde=True
-
-		if texto=="mayus":
-			self.mayus=True
 			texto=""
-			
+
 		return texto
 
 

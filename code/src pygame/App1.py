@@ -25,7 +25,13 @@ def Keyboard_event(sender, earg):
     
     text= str(earg['char']).decode('utf-8')
     if text=="Pow":
+        temp= int(earg['id'])
+
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+        if diccionario[temp].pareado==True:
+            diccionario[temp].RepetirPregunta()
+            return
+            
         for a in range(0,len(diccionario)):
             if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
                 diccionario[a].RepetirPregunta()

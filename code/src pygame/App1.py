@@ -7,6 +7,8 @@ import threading
 import math
 from keyboard_library_queue import *
 import event
+import time
+import logging
 
 import pygame
 from Prueba_clases.clases import *
@@ -15,6 +17,8 @@ from Prueba_clases.ejercicio import *
 
 diccionario= {}
 lib = KeyboardLibrary()
+
+logging.basicConfig(filename='example.log',level=logging.INFO)
 
 
 def Keyboard_event(sender, earg):
@@ -34,7 +38,17 @@ def Keyboard_event(sender, earg):
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
         
     else:
-        temp= int(earg['id'])
+        temp = int(earg['id'])
+
+        op_type   = str(diccionario[temp].Operacion_actual.TipoOperacion)
+        op_level  = str(diccionario[temp].Operacion_actual.nivelOperacion)
+        user_name = str(diccionario[temp].Alumno_actual.Nombre)
+
+        timestamp = time.time()
+
+        
+        logging.info("[%d: [%s, %s, %s] ], " % (timestamp, op_type, op_level, user_name))
+
         diccionario[temp].Keyboard_Pressed(sender,earg)
         window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas

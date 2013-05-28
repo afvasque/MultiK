@@ -84,13 +84,15 @@ class Listview:
 				if self.focus == 0:
 					self.focus = self.count - 1
 				else:
-					self.focus = self.focus + 1
+					self.focus = self.focus - 1
 			pygame.draw.rect(self.canvas,self.focusColor,( 1, (self.height / self.count) * (self.focus) + 1, self.width - 2, self.height / self.count))
 			self.canvas.blit(self.labels[self.focus],(1, (self.height / self.count) * self.focus + 1))
 			for i in range(self.count):
 				pygame.draw.rect(self.canvas,self.blackColor,( 1, (self.height / self.count) * (i + 1) + 1, self.width - 2, 2))
 			
-			
+	def screen(self):
+		return self.canvas
+
 	def answer(self):
 		return self.texts[self.focus]
 			

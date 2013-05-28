@@ -1,4 +1,6 @@
-# coding=utf-8
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import pygame
 from clases import *
 import os
@@ -181,10 +183,9 @@ class ejercicio:
 
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)        
+		self.Objects.append(Listview(operacion.alternativas,0,20,300,40))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
-		#for st in operacion.alternativas:
-		#    lista.Append(st)
 
 	def sentido_vocales1(self, operacion):        
 		
@@ -212,7 +213,7 @@ class ejercicio:
 		self.TexttoSpeech(operacion.audio_pregunta)
 		
 		self.Objects.append(Textbox(0,20,300,40))
-			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
 		
 		pygame.font.init() 
 		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
@@ -220,7 +221,7 @@ class ejercicio:
 		self.canvas.blit(label,(0, 0))
 		
 		self.Objects.append(Textbox(0,20,300,40))
-			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
 		
 	def mayus_nombres_propios1(self, operacion):        
 				
@@ -365,7 +366,7 @@ class ejercicio:
 			self.lib_play_proc.start()          
 		
 		if len(text_to_speech)>0:
-			print "Reproduciendo en audífono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
+			print "Reproduciendo en audifono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
 			audio_lib.reproduciendo[int(self.numero_audifono)]=True
 			print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
 			self.text_to_speech_queue.put(text_to_speech)
@@ -467,7 +468,8 @@ class ejercicio:
 				
 				if isinstance(self.Objects[0],Listview):
 					
-					list= self.Objects[0]
+					listview= self.Objects[0]
+
 					'''
 					if len(list.GetSelections())>0:
 						if list.Items[list.GetSelections()[0]] == self.Operacion_actual.respuesta:
@@ -496,7 +498,8 @@ class ejercicio:
 						textctrl.Value= self.Operacion_actual.respuesta
 						
 				if textctrl.Value == self.Operacion_actual.respuesta:
-					self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
+					print u"feedback: "+self.Operacion_actual.feedback_correcto
+					self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
 					self.Operacion_actual.RespuestaCorrecta()
 					textctrl.Value=""
 				else:
@@ -510,6 +513,8 @@ class ejercicio:
 
 		#if self.box_left.GetChildren()[1].GetWindow().Value == None:
 		#    self.box_left.GetChildren()[1].GetWindow().SetValue('')
+
+
 
 		'''
 		if isinstance(self.Objects[0],Listview):
@@ -542,18 +547,9 @@ class ejercicio:
 							self.box_left.GetChildren()[1].GetWindow().Select(num-1)
 		'''
 
+		self.Objects[0].react(text)
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
-		try:
-			if isinstance(self.Objects[0],Textbox):
-				self.Objects[0].react(text)
-				self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
-		except TypeError as e:
-			print "Error: %s" % str(e)
-		except UnicodeDecodeError as e:
-			print "Error: %s" % str(e)
-		except:
-			print "Unexpected error:"#, sys.exc_info()[0]
 
 
 

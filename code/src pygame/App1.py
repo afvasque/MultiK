@@ -27,8 +27,8 @@ def Keyboard_event(sender, earg):
     if text=="Pow":
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
         for a in range(0,len(diccionario)):
-            #if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
-            diccionario[a].RepetirPregunta()
+            if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
+                diccionario[a].RepetirPregunta()
         return
 
     if ((diccionario[int(earg['id'])].pareado == False) or (diccionario[int(earg['id'])].nombre_ingresado == False) ):
@@ -47,7 +47,7 @@ def Keyboard_event(sender, earg):
         timestamp = time.time()
 
         
-        logging.info("[%d: [%s, %s, %s] ], " % (timestamp, op_type, op_level, user_name))
+        logging.info("[%d: [%s, %s, %s, %s, %s] ], " % (timestamp, text, op_type, op_level, user_name, temp))
 
         diccionario[temp].Keyboard_Pressed(sender,earg)
         window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
@@ -84,7 +84,7 @@ if line_number_x * line_number_y < keyboardsNum:
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 
-
+'''
 Alumnos = list()
 
 Alumnos.append(Alumno(1,"Andrea","Teclados"))
@@ -95,15 +95,12 @@ Alumnos.append(Alumno(5,"Felipe","Teclados"))
 Alumnos.append(Alumno(6,"Tomás","Teclados"))
 Alumnos.append(Alumno(7,"Gabriel","Teclados"))
 Alumnos.append(Alumno(8,"José","Teclados"))
-                        
+'''                     
 
 for i in range(keyboardsNum):    
         
-    if i< len(Alumnos):
-        alumno= Alumnos[i]
-    else:
-        alumno = Alumnos[0]
-    print i
+    
+    alumno= Alumno(i,"","Teclados")
     ej=ejercicio(i%line_number_x,i/line_number_x,width/line_number_x,height/line_number_y,i,alumno)
     diccionario[i]=ej
     window.blit(diccionario[i].screen(),(diccionario[i].width *diccionario[i].pos_x,diccionario[i].height *diccionario[i].pos_y))

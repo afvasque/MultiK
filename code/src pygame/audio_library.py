@@ -25,6 +25,9 @@ class AudioLibrary:
     def __init__(self):
         all_cards = self.get_card_names()
         usb_cards = self.get_usb_card_names()
+        
+        reload(sys)
+        sys.setdefaultencoding('utf-8')
 
         total_cards = len(all_cards)
         print '\033[94m' + "Detected " + str(total_cards) + " sound cards in total." + '\033[0m'
@@ -114,24 +117,25 @@ class AudioLibrary:
         return l
 
     def convert_intl_characters(self, text):
+        #text = unicode(text,"utf8")
         # lower case
-        text = text.replace("á", "'a")
-        text = text.replace("é", "'e")
-        text = text.replace("í", "'i")
-        text = text.replace("ó", "'o")
-        text = text.replace("ú", "'u")
-        text = text.replace("ü", "''u")
+        text = text.replace(u"á", "'a")
+        text = text.replace(u"é", "'e")
+        text = text.replace(u"í", "'i")
+        text = text.replace(u"ó", "'o")
+        text = text.replace(u"ú", "'u")
+        text = text.replace(u"ü", "''u")
 
-        text = text.replace("ñ", "~n")
+        text = text.replace(u"ñ", "~n")
 
         # upper case
-        text = text.replace("Á", "'A")
-        text = text.replace("É", "'E")
-        text = text.replace("Í", "'I")
-        text = text.replace("Ó", "'O")
-        text = text.replace("Ú", "'U")
-        text = text.replace("Ü", "''U")
+        text = text.replace(u"Á", "'A")
+        text = text.replace(u"É", "'E")
+        text = text.replace(u"Í", "'I")
+        text = text.replace(u"Ó", "'O")
+        text = text.replace(u"Ú", "'U")
+        text = text.replace(u"Ü", "''U")
 
-        text = text.replace("Ñ", "~N")
+        text = text.replace(u"Ñ", "~N")
 
         return text

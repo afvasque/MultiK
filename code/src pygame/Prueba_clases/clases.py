@@ -59,10 +59,22 @@ class Listview:
 		self.texts = texts
 		self.focus = 0
 		self.count = len(texts)
+		self.font_len=0
+		for i in range(self.count):
+			temp_font= len(texts[i])
+			if temp_font>self.font_len:
+				self.font_len=temp_font
+
+		self.font_final= int(1.5 * self.width/self.font_len)
+		font2= ((self.height - self.count) / self.count)
+
+		if self.font_final>font2:
+			self.font_final=font2
 		
 		pygame.font.init()
 		
-		self.myfont = pygame.font.SysFont("monospace", (self.height - self.count) / self.count)
+		self.myfont = pygame.font.SysFont("monospace", self.font_final)
+		#self.myfont = pygame.font.SysFont("monospace", (self.height - self.count) / self.count)
 		
 		self.labels = [self.myfont.render(self.texts[0], 1, self.blackColor)] * self.count
 		for i in range(self.count):

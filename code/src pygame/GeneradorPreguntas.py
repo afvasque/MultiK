@@ -16,7 +16,7 @@ class GeneradorPreguntas:
     def generador_reproduccion_letras_alfabeto1(self):
         
         letra= self.interpal.generador_letra_alfabeto()
-        
+        print "generando operacion letra"
         operacion= BasicOperacion()
         operacion.respuesta= letra
         
@@ -98,16 +98,16 @@ class GeneradorPreguntas:
         operacion.nivelOperacion=1
         
         if tipo_op:
-            operacion.audio_pregunta= "¿Cuáles son los signos de interrogación? . . . Recuerda que nos sirven\npara hacer preguntas"
+            operacion.audio_pregunta= "¿Cuáles son los signos de interrogación?  Recuerda que nos sirven para hacer preguntas"
             operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
             operacion.feedback_error = "Inténtalo \nde nuevo"
-            operacion.pregunta = "Recuerda que nos sirven\npara hacer preguntas"
+            #operacion.pregunta = "Recuerda que nos sirven\npara hacer preguntas"
             operacion.respuesta = "¿,?"
             
         else:
-            operacion.audio_pregunta = "¿Cuáles son los signos de exclamación? . . . . Recuerda que nos sirven\npara expresar sentimientos\ny emociones"
+            operacion.audio_pregunta = "¿Cuáles son los signos de exclamación?  Recuerda que nos sirven para expresar sentimientos y emociones"
             operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
-            operacion.pregunta = "Recuerda que nos sirven\npara expresar sentimientos\ny emociones"
+            #operacion.pregunta = "Recuerda que nos sirven\npara expresar sentimientos\ny emociones"
             operacion.feedback_error = "Inténtalo de nuevo"
             operacion.respuesta = "¡,!"
         
@@ -147,10 +147,11 @@ class GeneradorPreguntas:
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.audio_pregunta = "Selecciona el sustantivo propio"
         operacion.feedback_error = "Inténtalo \nde nuevo"
-        sust_propio = self.interpal.generador_sust_propio(True)
-        sust = sust_propio.title()
+        sust_propio = self.interpal.generador_sust_propio(True) #La primera letra es mayuscula
+        print "sustantivo: "+sust_propio
         
-        operacion.alternativas.append(sust)
+        #operacion.alternativas.append(sust_propio)
+        operacion.alternativas.append(self.interpal.generador_sust_propio(True))
         operacion.alternativas.append(self.interpal.generador_sust_propio(False))
         operacion.alternativas.append(self.interpal.generador_sust_propio(False))
         operacion.respuesta= operacion.alternativas[0]
@@ -259,8 +260,8 @@ class GeneradorPreguntas:
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         operacion.audio_pregunta = "Selecciona la palabra con la combinación doble erre"
-        operacion.alternativas.Add(self.interpal.generador_palabra_contiene("rr"))
-        operacion.alternativas.Add(self.interpal.generador_palabra_contiene("r"))
+        operacion.alternativas.append(self.interpal.generador_palabra_contiene("rr"))
+        operacion.alternativas.append(self.interpal.generador_palabra_contiene("r"))
         
         while "rr" in operacion.alternativas[1]:
             operacion.alternativas[1] = self.interpal.generador_palabra_contiene("r");

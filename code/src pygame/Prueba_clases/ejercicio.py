@@ -56,7 +56,7 @@ class ejercicio:
 		self.reglas_main= Reglas()
 		
 		operacion= BasicOperacion()
-		operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
+		operacion.TipoOperacion= TipoOperacion.patrones_ort_comunes
 		operacion.nivelOperacion= 1
 		operacion.feedback_correcto= "First"
 		self.Operacion_actual= operacion
@@ -114,6 +114,7 @@ class ejercicio:
 		self.ResetLayout()
 
 		if self.pareado == False:
+			print "parear"
 			self.parear()
 			return
 
@@ -192,17 +193,15 @@ class ejercicio:
 		
 		self.TexttoSpeech(operacion.audio_pregunta)
 		
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 62), style=0)
-		
-		#for st in operacion.alternativas:
-		#    lista.Append(st)
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
 	def signos_int_excl1(self, operacion):        
 			
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		pygame.font.init()
-		size= int(1.5 * self.width/len(operacion.pregunta))
+		size= int(self.height/6)
 		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
@@ -218,7 +217,7 @@ class ejercicio:
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
 		
 		pygame.font.init() 
-		size= int(1.5 * self.width/len(operacion.pregunta))
+		size= int(self.height/6)
 		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
@@ -230,10 +229,8 @@ class ejercicio:
 				
 		self.TexttoSpeech(operacion.audio_pregunta)
 		
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
-		
-		#for st in operacion.alternativas:
-		#    lista.Append(st)
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
 	# pendiente
 	def mayus_nombres_propios2(self, operacion):        
@@ -243,16 +240,15 @@ class ejercicio:
 	def patrones_ort_comunes1(self, operacion):        
 		
 		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		size= int(self.height/6)
+		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
 		self.TexttoSpeech(operacion.audio_pregunta)
 		
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
-		
-		#for st in operacion.alternativas:
-		#	lista.Append(st)
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 		
 	
 	def patrones_ort_comunes2(self, operacion):        
@@ -282,32 +278,28 @@ class ejercicio:
 		
 		
 		
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
-		
-		#for st in operacion.alternativas:
-		#	lista.Append(st)
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 		
 	
 	def patrones_ort_comunes4(self, operacion):        
 		
 		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
+		self.myfont = pygame.font.SysFont("monospace", size= int(self.height/6))
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
 		
 		self.TexttoSpeech(operacion.audio_pregunta)
 		
-		#lista= wx.ListBox(parent=self, pos=wx.Point(10, 40), size=wx.Size(80, 32), style=0)
-		
-		#for st in operacion.alternativas:
-		#	lista.Append(st)
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 	
 	def patrones_ort_comunes5(self, operacion):        
 		
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		pygame.font.init() 
-		size= int(1.5 * self.width/len(operacion.pregunta))
+		size= int(self.height/6)
 		self.myfont = pygame.font.SysFont("monospace", size)
 		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
 		self.canvas.blit(label,(0, 0))
@@ -427,7 +419,6 @@ class ejercicio:
 		# reconocimiento de backspace para borrado
 		
 
-		strr= self.Objects[0].Value
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
@@ -475,6 +466,15 @@ class ejercicio:
 				if isinstance(self.Objects[0],Listview):
 					
 					listview= self.Objects[0]
+					print "Respuesta"
+					print  listview.answer()
+					print self.Operacion_actual.respuesta
+					if listview.answer() == self.Operacion_actual.respuesta:
+						self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
+						self.Operacion_actual.RespuestaCorrecta()
+					else:
+						self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
+						self.Operacion_actual.RespuestaIncorrecta()
 
 					'''
 					if len(list.GetSelections())>0:
@@ -509,18 +509,23 @@ class ejercicio:
 					self.Operacion_actual.RespuestaCorrecta()
 					textctrl.Value=""
 				else:
-					self.TexttoSpeech(self.Operacion_actual.feedback_error)
+					self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 					self.Operacion_actual.RespuestaIncorrecta()
 					textctrl.Value=""
 					
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 			self.CreateGrid(self.Operacion_actual)
-		   
+		
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 
-
+ 	def RepetirPregunta(self):
+		print "Repetir pregunta"
+		print self.Operacion_actual.audio_pregunta
+		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
+		
+	
 
 	def set_nombre(self):
 		self.ResetLayout()

@@ -9,6 +9,7 @@ from Reglas import *
 from socket import *
 import sys
 import multiprocessing
+import time
 from threading import Thread
 from BasicOperacion import *
 
@@ -21,7 +22,8 @@ def scale_bitmap(bitmap, width, height):
 	return result
 
 def print_event(sender, earg):
-	print "Terminó audio en " + str(earg)
+	timestamp = time.time()
+	print str(timestamp)+" Terminó audio en " + str(earg)
 	global audio_lib
 	print str(audio_lib.reproduciendo[int(earg['id'])])
 	audio_lib.reproduciendo[int(earg['id'])]=True
@@ -56,7 +58,7 @@ class ejercicio:
 		self.reglas_main= Reglas()
 		
 		operacion= BasicOperacion()
-		operacion.TipoOperacion= TipoOperacion.patrones_ort_comunes
+		operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
 		operacion.nivelOperacion= 1
 		operacion.feedback_correcto= "First"
 		self.Operacion_actual= operacion
@@ -341,7 +343,6 @@ class ejercicio:
 
 	lib_play_proc = None
 	def TexttoSpeech(self, text_to_speech):
-		print "reproduciendo"
 		#if audio_lib.reproduciendo[self.numero_audifono]==False:
 		if self.lib_play_proc is None:
 			self.text_to_speech_queue = multiprocessing.Queue()
@@ -387,6 +388,7 @@ class ejercicio:
 				nombre_caps= temp_nombre.title()
 				self.Alumno_actual.Nombre= nombre_caps
 				self.nombre_ingresado=True
+				self.Operacion_actual.feedback_correcto= "First"
 				self.Operacion_actual.RespuestaCorrecta()
 				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 				self.CreateGrid(self.Operacion_actual)
@@ -407,29 +409,17 @@ class ejercicio:
 
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
-
 		'''
-		
-		 if ((e.Equals("0") || e.Equals("1") || e.Equals("2") || e.Equals("3") || e.Equals("4") || e.Equals("5")
-				|| e.Equals("6") || e.Equals("7") || e.Equals("8") || e.Equals("9")) && pareado == false)
-			{              
-
-				if (stackpanel1.Children[0] is TextBox)
-					(stackpanel1.Children[0] as TextBox).Text += e;
-			}
-
-			else if ((e.Equals("Q") || e.Equals("W") || e.Equals("E") || e.Equals("R") || e.Equals("T") || e.Equals("Y") || e.Equals("U") || e.Equals("I") || e.Equals("O") || e.Equals("P") ||
-			  e.Equals("A") || e.Equals("S") || e.Equals("D") || e.Equals("F") || e.Equals("G") || e.Equals("H") || e.Equals("J") || e.Equals("K") || e.Equals("L") || e.Equals("Ñ") ||
-			  e.Equals("Z") || e.Equals("X") || e.Equals("C") || e.Equals("V") || e.Equals("B") || e.Equals("N") || e.Equals("M") ||
-			  e.Equals("á") || e.Equals("é") || e.Equals("í") || e.Equals("ó") || e.Equals("ú")) && pareado == true)
-			{
-				if (stackpanel1.Children[0] is TextBox && !soundDevice.IsPlaying())
-					(stackpanel1.Children[0] as TextBox).Text += e.ToUpper();
-			}
-		
-		
+		if self.pareado==False:
+			if text=="0" or text=="1" or text=="2" or text=="3" or text=="4" or text=="5" or text=="6" or text=="7" or text=="8" or text=="9":
+				self.Objects[0].react(text)
+				self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+		else:
+			self.Objects[0].react(text)
+			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		'''
+	
+
 
 
 	def Keyboard_Pressed(self, sender, earg):

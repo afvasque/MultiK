@@ -37,7 +37,8 @@ class BasicOperacion:
     def RespuestaCorrecta(self):
         
         self.respuesta_correcta=True
-        self.cantidadNivel+=1
+        if self.feedback_correcto != "First":
+            self.cantidadNivel+=1
         self.SetearPuntaje()
 
         if self.CantidadVecesIncorrectaSoloEsta==0:

@@ -18,7 +18,7 @@ from Prueba_clases.ejercicio import *
 diccionario= {}
 lib = KeyboardLibrary()
 
-logging.basicConfig(filename='example.log',level=logging.INFO)
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 
 def Keyboard_event(sender, earg):
@@ -67,7 +67,7 @@ class ThreadKeyboard(threading.Thread):
     def run(self):
         lib.run(0x0e8f,0x0022)
 
-width = 900
+width = 1000
 height = 700
 
 lib.keypress += Keyboard_event

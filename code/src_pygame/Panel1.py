@@ -518,7 +518,7 @@ class Panel1(wx.Panel):
             self.lib_play_proc.start()          
         
         if len(text_to_speech)>0:
-            print "Reproduciendo en audÃ­fono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
+            print "Reproduciendo en audí­fono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
             audio_lib.reproduciendo[int(self.numero_audifono)]=True
             print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
             self.text_to_speech_queue.put(text_to_speech)

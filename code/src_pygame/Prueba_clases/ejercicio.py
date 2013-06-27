@@ -63,53 +63,9 @@ class ejercicio:
 		operacion.feedback_correcto= "First"
 		self.Operacion_actual= operacion
 
-		"""
-		HOST = 'localhost'
-		PORT = 7388
-		BUFSIZE = 1024
-		ADDR = (HOST, PORT)
-
-		tcpCliSock = socket()
-		tcpCliSock.connect(ADDR)
-
-		print 'conectando'
-		data = "SustantivosFinal.multik"
-		tcpCliSock.send(data)
-
-
-		print 'recibiendo1'
-		data = tcpCliSock.recv(BUFSIZE)
-		if not data: sys.exit(0)
-		print data
-
-
-		print 'conectando'
-		data = "30/1"
-		tcpCliSock.send(data)
-
-		print 'recibiendo2'
-		data = tcpCliSock.recv(BUFSIZE)
-		if not data: sys.exit(0)
-		print data
-
-
-		return
-
-		#tcpCliSock.close()
-
-		"""
-
 		self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 			  
 		self.CreateGrid(self.Operacion_actual)
-
-		#self.myfont = pygame.font.SysFont("monospace", 18)
-		#label = self.myfont.render("Escribe la letra...", 1, (0,0,0))
-		#self.canvas.blit(label,(0, 0))
-
-		#self.Objects.append(Textbox(self.canvas,0,20,300,40))
-		#self.canvas.blit(self.Objects[0].screen(),(self.width, self.height ))
-
 
 
 	def CreateGrid(self, operacion):
@@ -121,7 +77,6 @@ class ejercicio:
 			return
 
 		if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
-			#print operacion.nivelOperacion
 			if operacion.nivelOperacion == 1:
 				self.reproduccion_letras_alfabeto1(operacion)
 			elif operacion.nivelOperacion ==2:
@@ -131,6 +86,10 @@ class ejercicio:
 			
 			if operacion.nivelOperacion ==1:
 				self.sentido_vocales1(operacion)
+			elif operacion.nivelOperacion ==2:
+				self.sentido_vocales2(operacion)
+			elif operacion.nivelOperacion ==3:
+				self.sentido_vocales3(operacion)
 
 		elif operacion.TipoOperacion == TipoOperacion.signos_int_excl:
 			if operacion.nivelOperacion ==1:
@@ -197,7 +156,33 @@ class ejercicio:
 		
 		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
+		
+	def sentido_vocales2(self, operacion):        
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
 
+		pygame.font.init()
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+				
+	def sentido_vocales3(self, operacion):        
+		
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		pygame.font.init()
+		size= int(1.5 * self.width/len(operacion.pregunta))
+		self.myfont = pygame.font.SysFont("monospace", size)
+		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+		self.canvas.blit(label,(0, 0))
+		
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+	
 	def signos_int_excl1(self, operacion):        
 			
 		self.TexttoSpeech(operacion.audio_pregunta)
@@ -437,7 +422,7 @@ class ejercicio:
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 1) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 3) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 4) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas)):
+				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 1)):
 				
 				if isinstance(self.Objects[0],Listview):
 					
@@ -469,7 +454,9 @@ class ejercicio:
 			elif ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 1) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl and self.Operacion_actual.nivelOperacion == 1) or
 				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 2) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5)):
+				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5) or
+				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 2) or
+				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 3)):
 				
 				
 				textctrl= self.Objects[0]

@@ -48,7 +48,7 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         operacion.TipoOperacion = TipoOperacion.Reproduccion_letras_alfabeto
         operacion.nivelOperacion = 2
-        operacion.audio_pregunta = "Busca la palabra con la letra. "+self.ReemplazoLetras(letra)
+        operacion.audio_pregunta = "Busca la letra. "+self.ReemplazoLetras(letra)
         operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
         operacion.feedback_error = "Inténtalo \nde nuevo"
         
@@ -76,10 +76,18 @@ class GeneradorPreguntas:
         operacion= BasicOperacion()
         operacion.TipoOperacion= TipoOperacion.sentido_vocales_silabas
         operacion.nivelOperacion=1
-        operacion.audio_pregunta= "Selecciona la palabra con " + str(silabas) + " sílaba"
+        #operacion.audio_pregunta= "Selecciona la palabra con " + str(silabas) + " sílaba"
         
-        if silabas>1:
-            operacion.audio_pregunta+="s"
+		if silabas==1:
+			operacion.audio_pregunta= "Selecciona la palabra con una sílaba"
+		elif silabas==2:
+			operacion.audio_pregunta= "Selecciona la palabra con dos sílabas" 
+		elif silabas==3:
+			operacion.audio_pregunta= "Selecciona la palabra con tres sílabas" 
+		elif silabas==4:
+			operacion.audio_pregunta= "Selecciona la palabra con cuatro sílabas" 
+		
+		
         operacion.feedback_correcto= "Bien \n" + self.alumno.Nombre
         operacion.feedback_error= "Inténtalo \nde nuevo"
         operacion.alternativas.append(self.interpal.generador_palabra_silaba(silabas))
@@ -90,7 +98,79 @@ class GeneradorPreguntas:
         random.shuffle(operacion.alternativas)
         
         return operacion
+		
+		
+	def generador_sentido_vocales2(self, num_palabras):
         
+        # las opciones son ce, ci, que, qui, ge, gi, gue, gui, güe, güi
+		
+        operacion= BasicOperacion()
+        operacion.TipoOperacion= TipoOperacion.sentido_vocales_silabas
+        operacion.nivelOperacion=2
+        
+		
+		
+		if num_palabras==1:
+			self.silaba="ce"
+		elif num_palabras==2:
+			self.silaba="ci"
+		elif num_palabras==3:
+			self.silaba="que"
+		elif num_palabras==4:
+			self.silaba="qui"
+		elif num_palabras==5:
+			self.silaba="ge"
+		elif num_palabras==6:
+			self.silaba="gi"
+		elif num_palabras==7:
+			self.silaba="gue"
+		elif num_palabras==8:
+			self.silaba="gui"
+		elif num_palabras==9:
+			self.silaba="güe"
+		elif num_palabras==10:
+			self.silaba="güi"
+		
+		palabra= self.interpal.generador_palabra_contiene(self.silaba)
+		operacion.audio_pregunta= "Escribe la sílaba faltante de."+palabra
+		operacion.pregunta = palabra.replace(self.silaba,"___")
+		operacion.respuesta= self.silaba
+		
+        operacion.feedback_correcto= "Bien \n" + self.alumno.Nombre
+        operacion.feedback_error= "Inténtalo \nde nuevo"
+        
+        return operacion
+        
+	def generador_sentido_vocales3(self, num_palabras):
+        
+        # las opciones son ge, gi, je, ji
+		
+        operacion= BasicOperacion()
+        operacion.TipoOperacion= TipoOperacion.sentido_vocales_silabas
+        operacion.nivelOperacion=3
+        
+		
+		
+		if num_palabras==1:
+			self.silaba="ge"
+		elif num_palabras==2:
+			self.silaba="gi"
+		elif num_palabras==3:
+			self.silaba="je"
+		elif num_palabras==4:
+			self.silaba="ji"
+		
+		
+		palabra= self.interpal.generador_palabra_contiene(self.silaba)
+		operacion.audio_pregunta= "Escribe la sílaba faltante de."+palabra
+		operacion.pregunta = palabra.replace(self.silaba,"___")
+		operacion.respuesta= self.silaba
+		
+        operacion.feedback_correcto= "Bien \n" + self.alumno.Nombre
+        operacion.feedback_error= "Inténtalo \nde nuevo"
+        
+        return operacion
+		
     def generador_signos_int_excl1(self, tipo_op):
         
         operacion= BasicOperacion()
@@ -101,13 +181,11 @@ class GeneradorPreguntas:
             operacion.audio_pregunta= "¿Cuáles son los signos de interrogación?  Recuerda que nos sirven para hacer preguntas"
             operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
             operacion.feedback_error = "Inténtalo \nde nuevo"
-            #operacion.pregunta = "Recuerda que nos sirven\npara hacer preguntas"
             operacion.respuesta = "¿,?"
             
         else:
             operacion.audio_pregunta = "¿Cuáles son los signos de exclamación?  Recuerda que nos sirven para expresar sentimientos y emociones"
             operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre
-            #operacion.pregunta = "Recuerda que nos sirven\npara expresar sentimientos\ny emociones"
             operacion.feedback_error = "Inténtalo de nuevo"
             operacion.respuesta = "¡,!"
         

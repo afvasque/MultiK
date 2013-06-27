@@ -19,6 +19,8 @@ class Reglas:
 		lista.append(TipoOperacionNivel(1,TipoOperacion.Reproduccion_letras_alfabeto))
 		lista.append(TipoOperacionNivel(2,TipoOperacion.Reproduccion_letras_alfabeto))
 		lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
+		lista.append(TipoOperacionNivel(2, TipoOperacion.sentido_vocales_silabas))
+		lista.append(TipoOperacionNivel(3, TipoOperacion.sentido_vocales_silabas))
 		lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
 		lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))		
 		lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador		
@@ -75,26 +77,33 @@ class Reglas:
 		if tipoActual == TipoOperacion.patrones_ort_comunes:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_patrones_ort_comunes1()
-			if siguiente_nivel==2:
+			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_patrones_ort_comunes2()
-			if siguiente_nivel==3:
+			elif siguiente_nivel==3:
 				siguiente_operacion = generador.generador_patrones_ort_comunes3()
-			if siguiente_nivel==4:
+			elif siguiente_nivel==4:
 				siguiente_operacion = generador.generador_patrones_ort_comunes4()
-			if siguiente_nivel==5:
+			elif siguiente_nivel==5:
 				siguiente_operacion = generador.generador_patrones_ort_comunes5()
 				
 		if tipoActual == TipoOperacion.Reproduccion_letras_alfabeto:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto1()
-			if siguiente_nivel==2:
+			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto2()
 				
 		if tipoActual == TipoOperacion.sentido_vocales_silabas:
+			if siguiente_nivel==1:
+				next_num= random.randrange(1,3)
+				siguiente_operacion = generador.generador_sentido_vocales1(next_num)
+				
+			elif siguiente_nivel==2:
+				next_num= random.randrange(1,10)
+				siguiente_operacion = generador.generador_sentido_vocales2(next_num)
 			
-			next_num= random.randrange(1,3)
-			
-			siguiente_operacion = generador.generador_sentido_vocales1(next_num)
+			elif siguiente_nivel==3:
+				next_num= random.randrange(1,4)
+				siguiente_operacion = generador.generador_sentido_vocales3(next_num)
 			
 		if tipoActual == TipoOperacion.signos_int_excl:
 			if siguiente_nivel==1:
@@ -102,7 +111,7 @@ class Reglas:
 					siguiente_operacion = generador.generador_signos_int_excl1(False)
 				else:
 					siguiente_operacion = generador.generador_signos_int_excl1(True)
-			if siguiente_nivel==2:
+			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_signos_int_excl2()
 		
 		if siguiente_nivel == operacion.nivelOperacion:

@@ -50,40 +50,47 @@ Audio = []
 Setups = []
 Alumnos = []
 
+lib_play_proc = []
+text_to_speech_queue = []
+
 for i in range(num_teclados):
-	Grupos[i] = False
-	Audio[i] = False
+	Grupos.append(False)
+	Audio.append(False)
 	Alumnos.append(Alumno(i))
+	text_to_speech_queue.append(multiprocessing.Queue())
+	lib_play_proc.append(multiprocessing.Process(target=audio_lib.play, args=(i, text_to_speech_queue[i])))
+	lib_play_proc[i].start()
 
 for i in range(num_grupos):
 	Alumnos_grupo.append([])
 	if num_teclados >= 3 * i + 2:
 		Grupos_inicial.append([3 * i, 3 * i + 1, 3 * i + 2])
 	elif num_teclados == 3 * i + 1:
-        Grupos_inicial.append([3 * i, 3 * i + 1])
-    else:
-        Grupos_inicial.append([3 * i])
+		Grupos_inicial.append([3 * i, 3 * i + 1])
+	else:
+		Grupos_inicial.append([3 * i])
 
 for i in range(num_grupos):
-	for j in range(len(Grupos_inicial[i]):
+	for j in range(len(Grupos_inicial[i])):
 		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x,i/line_number_x + j,width/line_number_x,height/(3 * line_number_y)))
 		window.blit(Setups[3 * i + j].screen(),(Setups[3 * i + j].width *Setups[3 * i + j].pos_x,Setups[3 * i + j].height *Setups[3 * i + j].pos_y))
 
 pygame.display.flip()
 
-lib_play_proc = None
-text_to_speech_queue = None
+
 def TexttoSpeech(text_to_speech, id_audifono):
-	if lib_play_proc is None:
-		text_to_speech_queue = multiprocessing.Queue()
-		lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(id_audifono, text_to_speech_queue))
-		lib_play_proc.start()          
+	global lib_play_proc
+	global text_to_speech_queue
+	#if lib_play_proc is None:
+	#	text_to_speech_queue = multiprocessing.Queue()
+	#	lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(id_audifono, text_to_speech_queue))
+	#	lib_play_proc.start()          
 		
 	if len(text_to_speech)>0:
 		print "Reproduciendo en audifono #%s: \"%s\"" % (id_audifono, text_to_speech)
 		audio_lib.reproduciendo[id_audifono]=True
 		print str(id_audifono)+" "+str(audio_lib.reproduciendo[id_audifono])
-		self.text_to_speech_queue.put(text_to_speech)
+		text_to_speech_queue[id_audifono].put(text_to_speech)
 
 def Keyboard_event(sender, earg):
 	print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
@@ -102,7 +109,7 @@ def Keyboard_event(sender, earg):
 		else:
 			Setups[alumno.id].react(text)
 			window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
-
+	pygame.display.flip()
 
 lib.keypress += Keyboard_event
 

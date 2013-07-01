@@ -20,6 +20,8 @@ class Pareamiento:
 		pygame.draw.rect(self.canvas,self.blackColor,(self.width / 7, 10,  5 * self.width / 7,  self.height - 20))
 		pygame.draw.rect(self.canvas,self.whiteColor,(self.width / 7 + 1, 11,  5 * self.width / 7 - 2,  self.height - 22))
 		
+		pygame.font.init()
+
 		self.value = 0
 	
 	def screen(self):
@@ -51,6 +53,6 @@ class Pareamiento:
 		pygame.draw.rect(self.canvas,self.blackColor,(self.width / 7, 10,  5 * self.width / 7,  self.height - 20))
 		pygame.draw.rect(self.canvas,self.whiteColor,(self.width / 7 + 1, 11,  5 * self.width / 7 - 2,  self.height - 22))
 		self.myfont = pygame.font.SysFont("monospace", self.height - 24)
-		label = self.myfont.render(self.value, 1, self.blackColor)
-		self.canvas.blit(label,(self.width / 7 + 1, 12)
-		
+		label = self.myfont.render("%i" % self.value, 1, self.blackColor)
+		self.canvas.blit(label,(self.width / 7 + 1, 12))
+		#return 0

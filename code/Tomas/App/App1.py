@@ -91,11 +91,11 @@ def Keyboard_event(sender, earg):
 	text = str(earg['char']).decode('utf-8')
 	if alumno.ready:
 		grupo = alumno.grupo
-	else:
+	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":
 			if Audio[alumno.id] == False:
 				for i in range(num_teclados):
-					if(Audio[i] == False:
+					if Audio[i] == False:
 						TexttoSpeech("Escribe el número %d" % i, i)
 			else:
 				TexttoSpeech("Repitiendo", Audio[alumno.id])

@@ -1,3 +1,4 @@
+# coding=utf-8
 import usb.core
 import threading
 import math
@@ -6,8 +7,15 @@ import event
 import sys
 import pygame
 from ejercicio import *
+import multiprocessing
 from threading import Thread
+from Alumno import *
+from Setups import *
+import audio_library
 
+audio_lib = audio_library.AudioLibrary()
+
+#Setup inicial
 width = 900
 height = 700
 
@@ -33,6 +41,74 @@ window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 ejercicios = []
 
+#Pareamiento y grupos
+
+Grupos = []
+Grupos_inicial = []
+Alumnos_grupo = []
+Audio = []
+Setups = []
+Alumnos = []
+
+for i in range(num_teclados):
+	Grupos[i] = False
+	Audio[i] = False
+	Alumnos.append(Alumno(i))
+
+for i in range(num_grupos):
+	Alumnos_grupo.append([])
+	if num_teclados >= 3 * i + 2:
+		Grupos_inicial.append([3 * i, 3 * i + 1, 3 * i + 2])
+	elif num_teclados == 3 * i + 1:
+        Grupos_inicial.append([3 * i, 3 * i + 1])
+    else:
+        Grupos_inicial.append([3 * i])
+
+for i in range(num_grupos):
+	for j in range(len(Grupos_inicial[i]):
+		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x,i/line_number_x + j,width/line_number_x,height/(3 * line_number_y)))
+		window.blit(Setups[3 * i + j].screen(),(Setups[3 * i + j].width *Setups[3 * i + j].pos_x,Setups[3 * i + j].height *Setups[3 * i + j].pos_y))
+
+pygame.display.flip()
+
+lib_play_proc = None
+text_to_speech_queue = None
+def TexttoSpeech(text_to_speech, id_audifono):
+	if lib_play_proc is None:
+		text_to_speech_queue = multiprocessing.Queue()
+		lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(id_audifono, text_to_speech_queue))
+		lib_play_proc.start()          
+		
+	if len(text_to_speech)>0:
+		print "Reproduciendo en audifono #%s: \"%s\"" % (id_audifono, text_to_speech)
+		audio_lib.reproduciendo[id_audifono]=True
+		print str(id_audifono)+" "+str(audio_lib.reproduciendo[id_audifono])
+		self.text_to_speech_queue.put(text_to_speech)
+
+def Keyboard_event(sender, earg):
+	print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+	alumno = Alumnos[int(earg['id'])]
+	text = str(earg['char']).decode('utf-8')
+	if alumno.ready:
+		grupo = alumno.grupo
+	else:
+		if text=="Pow":
+			if Audio[alumno.id] == False:
+				for i in range(num_teclados):
+					if(Audio[i] == False:
+						TexttoSpeech("Escribe el número %d" % i, i)
+			else:
+				TexttoSpeech("Repitiendo", Audio[alumno.id])
+		else:
+			Setups[alumno.id].react(text)
+			window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
+
+
+lib.keypress += Keyboard_event
+
+lib.run(0x0e8f,0x0022)
+		
+'''
 for i in range(num_grupos):
     teclados_grupo = []
     if num_teclados >= 3 * i + 2:
@@ -72,4 +148,4 @@ lib.run(0x0e8f,0x0022)
 #    for event in pygame.event.get(): 
 #        if event.type == pygame.QUIT: 
 #            sys.exit(0)
-
+'''

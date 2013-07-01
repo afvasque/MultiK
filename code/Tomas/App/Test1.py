@@ -21,7 +21,7 @@ pygame.display.flip()
 
 teclados = [0, 1, 2]
 
-e = ejercicio2(teclados, width / 4, height / 4, width / 2, height / 2);
+e = setup(teclados, width / 4, height / 4, width / 2, height / 2);
 
 window.blit(e.canvas,(e.pos_x,e.pos_y))
 pygame.display.flip()
@@ -29,5 +29,6 @@ pygame.display.flip()
 
 while True:
     for event in pygame.event.get(): 
-        if event.type == pygame.QUIT: 
-            sys.exit(0) 
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit() 

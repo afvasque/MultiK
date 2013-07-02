@@ -2,8 +2,10 @@
 import pygame
 
 class ejercicio:
-	def __init__(self, teclados, pos_x, pos_y, width, height):
-		self.teclados = teclados
+	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.redColor = pygame.Color(255,0,0)
@@ -24,6 +26,40 @@ class ejercicio:
 	def react(self,id,input):
 		return
 	
+class ejercicio0(ejercicio):
+	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
+		self.alumnos = alumnos
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+		self.redColor = pygame.Color(255,0,0)
+		self.greenColor = pygame.Color(0,255,0)
+		self.blueColor = pygame.Color(0,0,255)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = width
+		self.height = height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, self.height / 4, self.width - 2,  3 * self.height / 4 - 2))
+		self.finished = False
+
+		self.blocked = [False, False, False]
+
+		pygame.font.init()
+		self.myfont = pygame.font.SysFont("monospace", self.height / 4)
+		labels = []
+		labels.append(self.myfont.render("Grupo %d" % alumnos[0].grupo, 1, self.whiteColor))
+		labels.append(self.myfont.render(alumnos[0].name, 1, self.redColor))
+		labels.append(self.myfont.render(alumnos[1].name, 1, self.greenColor))
+		labels.append(self.myfont.render(alumnos[2].name, 1, self.blueColor))
+
+		for i in range(len(labels)):
+			self.canvas.blit(labels[i], (2, self.height / len(labels) * i))
+
+
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
 		self.teclados = []

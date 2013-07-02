@@ -61,7 +61,7 @@ class Pareamiento:
 		return False
 		
 class setup_nombre:
-	def __init__(pareamiento):
+	def __init__(self,pareamiento):
 		self.id = pareamiento.id
 		self.pos_x = pareamiento.pos_x
 		self.pos_y = pareamiento.pos_y
@@ -76,8 +76,8 @@ class setup_nombre:
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
 		
-		self.text_box = Textbox(self.width / 7, 10,  5 * self.width / 7,  self.height - 20)
-		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		self.text_box = Textbox(int(self.width / 7), 10,  int(5 * self.width / 7),  int(self.height - 20))
+		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 		
 	def screen(self):
 		return self.canvas
@@ -87,7 +87,7 @@ class setup_nombre:
 		
 	def react(self, input):
 		self.text_box.react(input)
-		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 	
 	def value(self):
 		return self.text_box.Value
@@ -96,7 +96,7 @@ class setup_nombre:
 		return False
 		
 class setup_grupo:
-	def __init__(setup_nombre):
+	def __init__(self,setup_nombre):
 		self.id = setup_nombre.id
 		self.pos_x = setup_nombre.pos_x
 		self.pos_y = setup_nombre.pos_y
@@ -112,7 +112,7 @@ class setup_grupo:
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
 		
 		self.text_box = Numbox(self.width / 7, 10,  5 * self.width / 7,  self.height - 20)
-		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 		
 	def screen(self):
 		return self.canvas
@@ -122,7 +122,7 @@ class setup_grupo:
 		
 	def react(self, input):
 		self.text_box.react(input)
-		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 	
 	def value(self):
 		return self.text_box.value
@@ -131,7 +131,7 @@ class setup_grupo:
 		return False
 		
 class setup_wait:
-	def __init__(setup_grupo):
+	def __init__(self,setup_grupo):
 		self.id = setup_grupo.id
 		self.pos_x = setup_grupo.pos_x
 		self.pos_y = setup_grupo.pos_y
@@ -147,7 +147,7 @@ class setup_wait:
 		
 		pygame.font.init()
 		self.myfont = pygame.font.SysFont("monospace", self.height / 3)
-		label = self.myfont.render("Espera", 1, self.blackColor)
+		label = self.myfont.render("Espera", 1, self.whiteColor)
 		self.canvas.blit(label,(1, self.height / 3))
 		
 	def screen(self):

@@ -56,7 +56,7 @@ lib_play_proc = []
 text_to_speech_queue = []
 
 for i in range(num_teclados):
-	Audio.append(-1)
+	Audio.append(None)
 	Alumnos.append(Alumno(i))
 	text_to_speech_queue.append(multiprocessing.Queue())
 	lib_play_proc.append(multiprocessing.Process(target=audio_lib.play, args=(i, text_to_speech_queue[i])))
@@ -98,14 +98,14 @@ def Keyboard_event(sender, earg):
 		grupo = alumno.grupo
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto
-			if Audio[alumno.id] == -1:#Repetirselo a todos lo que no estan pareados
+			if Audio[alumno.id] is None:#Repetirselo a todos lo que no estan pareados
 				for i in range(num_teclados):
-					if Audio[i] == -1:
+					if Audio[i] is None:
 						TexttoSpeech("Escribe el número %d" % i, i)
 			else:
 				TexttoSpeech(Setups[alumno.id].get_audio_text(), Audio[alumno.id])
 		elif text=="Enter":#Recibir el input
-			if Audio[alumno.id] == -1:#Revisar si esta pareando el audio
+			if Audio[alumno.id] is None:#Revisar si esta pareando el audio
 				value = Setups[alumno.id].value
 				if value < 0 or value >= len(Audio):#Revisar que sea un valor valido
 					while Setups[alumno.id].value > 0:
@@ -146,7 +146,7 @@ def Keyboard_event(sender, earg):
 						Grupo_Listo = Alumnos_grupo[Grupo_Listo]
 						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos par empezar
 							Grupo_Listo[i].ready = True
-						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y - 1, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
+						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
 						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_x, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_y)) #Lo metemos a la pantalla
 		else:
 			Setups[alumno.id].react(text)

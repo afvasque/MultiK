@@ -25,8 +25,10 @@ class ejercicio:
 		return
 	
 class ejercicio1(ejercicio):
-	def __init__(self, teclados, pos_x, pos_y, width, height):
-		self.teclados = teclados
+	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.redColor = pygame.Color(255,0,0)

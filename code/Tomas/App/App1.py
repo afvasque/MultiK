@@ -24,7 +24,7 @@ lib = KeyboardLibrary()
 lib.detect_all_keyboards(0x0e8f,0x0022)
 num_teclados = lib.get_total_keyboards()
 
-num_grupos = num_teclados/3
+num_grupos = int(num_teclados/3)
 if num_teclados%3 > 0:
     num_grupos+=1
 	
@@ -43,18 +43,19 @@ ejercicios = []
 
 #Pareamiento y grupos
 
-Grupos = []
 Grupos_inicial = []
 Alumnos_grupo = []
 Audio = []
 Setups = []
 Alumnos = []
 
+Grupos_Listos = []
+Espacios_Listos = []
+
 lib_play_proc = []
 text_to_speech_queue = []
 
 for i in range(num_teclados):
-	Grupos.append(False)
 	Audio.append(False)
 	Alumnos.append(Alumno(i))
 	text_to_speech_queue.append(multiprocessing.Queue())
@@ -63,6 +64,7 @@ for i in range(num_teclados):
 
 for i in range(num_grupos):
 	Alumnos_grupo.append([])
+	ejercicios.append(False)
 	if num_teclados >= 3 * i + 2:
 		Grupos_inicial.append([3 * i, 3 * i + 1, 3 * i + 2])
 	elif num_teclados == 3 * i + 1:
@@ -80,11 +82,7 @@ pygame.display.flip()
 
 def TexttoSpeech(text_to_speech, id_audifono):
 	global lib_play_proc
-	global text_to_speech_queue
-	#if lib_play_proc is None:
-	#	text_to_speech_queue = multiprocessing.Queue()
-	#	lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(id_audifono, text_to_speech_queue))
-	#	lib_play_proc.start()          
+	global text_to_speech_queue        
 		
 	if len(text_to_speech)>0:
 		print "Reproduciendo en audifono #%s: \"%s\"" % (id_audifono, text_to_speech)
@@ -99,16 +97,60 @@ def Keyboard_event(sender, earg):
 	if alumno.ready:
 		grupo = alumno.grupo
 	else: #Todo lo que es el pareamiento y organizacion en grupos
-		if text=="Pow":
-			if Audio[alumno.id] == False:
+		if text=="Pow":#Repetir el texto
+			if Audio[alumno.id] === False:#Repetirselo a todos lo que no estan pareados
 				for i in range(num_teclados):
-					if Audio[i] == False:
+					if Audio[i] === False:
 						TexttoSpeech("Escribe el número %d" % i, i)
 			else:
-				TexttoSpeech("Repitiendo", Audio[alumno.id])
+				TexttoSpeech(Setups[alumno.id].get_audio_text(), Audio[alumno.id])
+		elif text=="Enter":#Recibir el input
+			if Audio[alumno.id] === False:#Revisar si esta pareando el audio
+				value = Setups[alumno.id].value
+				if value < 0 or value >= len(Audio):#Revisar que sea un valor valido
+					while Setups[alumno.id].value > 0:
+						Setups[alumno.id].react("Back")#Borramos lo que haya metido
+				elif value not in Audio: #Revisar que nadie mas tenga ese audio
+					Audio[alumno.id] = value
+					alumno.audio = value
+					Setups[alumno.id] = setup_nombre(Setups[alumno.id])#Siguiente setup
+					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
+				else: #asumimos que si mete un audio que ya fue asignado es porque esta cometiendo el error ahora, no el de antes
+					while Setups[alumno.id].value > 0:
+						Setups[alumno.id].react("Back")#Borramos lo que haya metido
+			elif alumno.name == "": #Si ya tiene audio puede que este metiendo su nombre
+				if(len(Setups[alumno.id].value()) > 0): #Si ingreso su nombre
+					alumno.name = Setups[alumno.id].value()
+					Setups[alumno.id] = setup_grupo(Setups[alumno.id])#Siguiente setup
+					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
+				else: #Se le repite la instruccion
+					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
+			elif alumno.grupo == 0: #Lo ultimo que queda es que sea la formacion de grupos
+				value = Setups[alumno.id].value()
+				if value <= 0 or value > num_grupos: #Ingresado un valor no valido
+					TexttoSpeech("Ese grupo no existe", alumno.audio)#Se le avisa que no existe
+				elif len(Alumnos_grupo[value]) >= 3: #Revisamos si el grupo ya esta lleno
+					TexttoSpeech("Ese grupo ya esta lleno", alumno.audio)#Se le avisa que esta lleno
+				else: #Se agrega el alumno al grupo
+					alumno.grupo = value
+					Alumnos_grupo[value].append(alumno)
+					Setups[alumno.id] = setup_wait(Setups[alumno.id]) #Pantalla para esperar a que el grupo este listo y halla un espacio disponible
+					if len(Alumnos_grupo[alumno.grupo]) == 3:#Revisamos si el grupo esta listo
+						Grupos_Listos.append(alumno.grupo)
+					index_espacio = int(alumno.id / 3)
+					if Setups[index_espacio].waiting() and Setups[index_espacio + 1].waiting() and Setups[index_espacio + 2].waiting(): #revisamos si el espacio esta listo
+						Espacios_Listos.append(index_espacio)
+					if len(Grupos_Listos) > 0 and len(Espacios_Listos) > 0: #Revisamos si hay un grupo listo y un espacio en el que meterlos
+						Espacio_Listo = Espacios_Listos.pop(0)
+						Grupo_Listo = Grupos_Listos.pop(0)
+						Grupo_Listo = Alumnos_grupo[Grupo_Listo]
+						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos par empezar
+							Grupo_Listo[i].ready = True
+						ejercicios[Espacio_Listo] = ejercicio1(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
+						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_x, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_y)) #Lo metemos a la pantalla
 		else:
 			Setups[alumno.id].react(text)
-			window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
+		window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
 	pygame.display.flip()
 
 lib.keypress += Keyboard_event

@@ -1,5 +1,6 @@
 # coding: utf-8
 import pygame
+from clases import *
 
 class Pareamiento:
 	def __init__(self, id, pos_x, pos_y, width, height):
@@ -55,4 +56,109 @@ class Pareamiento:
 		self.myfont = pygame.font.SysFont("monospace", self.height - 24)
 		label = self.myfont.render("%i" % self.value, 1, self.blackColor)
 		self.canvas.blit(label,(self.width / 7 + 1, 12))
-		#return 0
+		
+	def waiting(self):
+		return False
+		
+class setup_nombre:
+	def __init__(pareamiento):
+		self.id = pareamiento.id
+		self.pos_x = pareamiento.pos_x
+		self.pos_y = pareamiento.pos_y
+		self.redColor = pygame.Color(255,0,0)
+		self.greenColor = pygame.Color(0,255,0)
+		self.blueColor = pygame.Color(0,0,255)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = pareamiento.width
+		self.height = pareamiento.height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		self.text_box = Textbox(self.width / 7, 10,  5 * self.width / 7,  self.height - 20)
+		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		
+	def screen(self):
+		return self.canvas
+		
+	def get_audio_text(self):
+		return "Ingresa tu nombre"
+		
+	def react(self, input):
+		self.text_box.react(input)
+		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+	
+	def value(self):
+		return self.text_box.Value
+	
+	def waiting(self):
+		return False
+		
+class setup_grupo:
+	def __init__(setup_nombre):
+		self.id = setup_nombre.id
+		self.pos_x = setup_nombre.pos_x
+		self.pos_y = setup_nombre.pos_y
+		self.redColor = pygame.Color(255,0,0)
+		self.greenColor = pygame.Color(0,255,0)
+		self.blueColor = pygame.Color(0,0,255)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = setup_nombre.width
+		self.height = setup_nombre.height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		self.text_box = Numbox(self.width / 7, 10,  5 * self.width / 7,  self.height - 20)
+		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+		
+	def screen(self):
+		return self.canvas
+		
+	def get_audio_text(self):
+		return "Ingresa tu grupo"
+		
+	def react(self, input):
+		self.text_box.react(input)
+		self.canvas.blit(self.text_box.screen(), self.text_box.pos_x, self.text_box.pos_y)
+	
+	def value(self):
+		return self.text_box.value
+	
+	def waiting(self):
+		return False
+		
+class setup_wait:
+	def __init__(setup_grupo):
+		self.id = setup_grupo.id
+		self.pos_x = setup_grupo.pos_x
+		self.pos_y = setup_grupo.pos_y
+		self.redColor = pygame.Color(255,0,0)
+		self.greenColor = pygame.Color(0,255,0)
+		self.blueColor = pygame.Color(0,0,255)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = setup_grupo.width
+		self.height = setup_grupo.height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		
+		pygame.font.init()
+		self.myfont = pygame.font.SysFont("monospace", self.height / 3)
+		label = self.myfont.render("Espera", 1, self.blackColor)
+		self.canvas.blit(label,(1, self.height / 3))
+		
+	def screen(self):
+		return self.canvas
+		
+	def get_audio_text(self):
+		return "Porfavor espera"
+		
+	def react(self, input):
+		return
+	
+	def waiting(self):
+		return True
+	

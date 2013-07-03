@@ -95,7 +95,13 @@ def Keyboard_event(sender, earg):
 	alumno = Alumnos[int(earg['id'])]
 	text = str(earg['char']).decode('utf-8')
 	if alumno.ready:
-		grupo = alumno.grupo
+		if text=="Pow":#Repetir la instruccion
+			TexttoSpeech(ejercicios[alumno.grupo].get_audio_text(), alumno.audio)
+		else:
+			ejercicios[alumno.grupo].react(int(earg['id']),text)
+		if(ejercicios[alumno.grupo].finished):#Vemos si avanzamos al siguiente ejercicio
+			ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
+		window.blit(ejercicios[alumno.grupo].screen(),(ejercicios[alumno.grupo].width * ejercicios[alumno.grupo].pos_x, ejercicios[alumno.grupo].height * ejercicios[alumno.grupo].pos_y)) #Actualizamos el ejercicio
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto
 			if Audio[alumno.id] is None:#Repetirselo a todos lo que no estan pareados
@@ -144,10 +150,12 @@ def Keyboard_event(sender, earg):
 						Espacio_Listo = Espacios_Listos.pop(0)
 						Grupo_Listo = Grupos_Listos.pop(0)
 						Grupo_Listo = Alumnos_grupo[Grupo_Listo]
-						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos par empezar
+						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos para empezar
 							Grupo_Listo[i].ready = True
 						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
 						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_x, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_y)) #Lo metemos a la pantalla
+						for i in range(len(Grupo_Listo)):
+							TexttoSpeech(ejercicios[Espacio_Listo].get_audio_text(), Grupo_Listo[i].audio)
 		else:
 			Setups[alumno.id].react(text)
 		window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))

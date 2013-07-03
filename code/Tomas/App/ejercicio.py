@@ -1,5 +1,6 @@
 # coding: utf-8
 import pygame
+from Alumno import *
 
 class ejercicio:
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
@@ -25,6 +26,21 @@ class ejercicio:
 
 	def react(self,id,input):
 		return
+	
+	def get_audio_text(self):
+		return ""
+	
+	def get_color(self, id):
+		if id == 0:
+			return self.redColor
+		elif id == 1:
+			return self.greenColor
+		elif id == 2:
+			return self.blueColor
+		return self.blackColor
+		
+	def next(self):
+		return ejercicio0(self.alumnos, self.pos_x, self.pos_y, self.width, self.height)
 	
 class ejercicio0(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
@@ -58,7 +74,25 @@ class ejercicio0(ejercicio):
 
 		for i in range(len(labels)):
 			self.canvas.blit(labels[i], (2, self.height / len(labels) * i))
-
+		
+	def react(self,id,input):
+		if input == "Enter":#El alumno indica que ya encontro su nombre y grupo
+			index_teclado = self.teclados.index(id)
+			self.blocked[index_teclado] = not self.blocked[index_teclado]
+			if False not in self.blocked:
+				self.finished = True
+			if self.blocked[index_teclado]:
+				pygame.draw.rect(self.canvas,self.get_color(index_teclado),(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
+				label = self.myfont.render(alumnos[index_teclado].name, 1, self.whiteColor)
+				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
+			else:
+				pygame.draw.rect(self.canvas,self.whiteColor,(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
+				label = self.myfont.render(alumnos[index_teclado].name, 1, .get_color(index_teclado))
+				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
+		return
+		
+	def get_audio_text(self):
+		return "Busca tu grupo y nombre y presiona enter"
 
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):

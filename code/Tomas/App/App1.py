@@ -143,9 +143,11 @@ def Keyboard_event(sender, earg):
 					Setups[alumno.id] = setup_wait(Setups[alumno.id]) #Pantalla para esperar a que el grupo este listo y halla un espacio disponible
 					if len(Alumnos_grupo[alumno.grupo]) == 3:#Revisamos si el grupo esta listo
 						Grupos_Listos.append(alumno.grupo)
+						print "Grupo %s listo" % (alumno.grupo)
 					index_espacio = int(alumno.id / 3)
 					if Setups[index_espacio].waiting() and Setups[index_espacio + 1].waiting() and Setups[index_espacio + 2].waiting(): #revisamos si el espacio esta listo
 						Espacios_Listos.append(index_espacio)
+						print "Espacio %s listo" % (index_espacio)
 					if len(Grupos_Listos) > 0 and len(Espacios_Listos) > 0: #Revisamos si hay un grupo listo y un espacio en el que meterlos
 						Espacio_Listo = Espacios_Listos.pop(0)
 						Grupo_Listo = Grupos_Listos.pop(0)
@@ -153,6 +155,7 @@ def Keyboard_event(sender, earg):
 						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos para empezar
 							Grupo_Listo[i].ready = True
 						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
+						print "Asignado espacio %s a grupo %s" % (Espacio_Listo, Grupo_Listo[0].grupo)
 						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_x, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_y)) #Lo metemos a la pantalla
 						for i in range(len(Grupo_Listo)):
 							TexttoSpeech(ejercicios[Espacio_Listo].get_audio_text(), Grupo_Listo[i].audio)

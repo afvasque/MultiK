@@ -87,7 +87,7 @@ class ejercicio0(ejercicio):
 				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
 			else:
 				pygame.draw.rect(self.canvas,self.whiteColor,(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
-				label = self.myfont.render(alumnos[index_teclado].name, 1, .get_color(index_teclado))
+				label = self.myfont.render(alumnos[index_teclado].name, 1, self.get_color(index_teclado))
 				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
 		return
 		
@@ -96,6 +96,7 @@ class ejercicio0(ejercicio):
 
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.alumnos = alumnos
 		self.teclados = []
 		for i in range(len(alumnos)):
 			self.teclados.append(alumnos[i].id)
@@ -120,9 +121,9 @@ class ejercicio1(ejercicio):
 
 		self.blocked = [False, False, False]
 		
-		pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
+		pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
 		pygame.draw.rect(self.canvas,self.greenColor,(self.width / 5, 3 * self.height / 7, 3 * self.width / 5,  self.height / 7))
-		pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
+		pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 		
 		pygame.font.init()
 		
@@ -149,11 +150,11 @@ class ejercicio1(ejercicio):
 					self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
 				else:
 					if index_teclado == 0:
-						pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
+						pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
 					elif index_teclado == 1:
 						pygame.draw.rect(self.canvas,self.greenColor,(self.width / 5, 3 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 					else:
-						pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
+						pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 					self.myfont = pygame.font.SysFont("monospace", self.height / 7)
 					label = self.myfont.render(self.inputs[index_teclado], 1, (255,255,255))
 					self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
@@ -166,11 +167,11 @@ class ejercicio1(ejercicio):
 			elif input == "Back":
 				if len(self.inputs[index_teclado]) > 0:
 					if index_teclado == 0:
-						pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
+						pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
 					elif index_teclado == 1:
 						pygame.draw.rect(self.canvas,self.greenColor,(self.width / 5, 3 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 					else:
-						pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
+						pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 					self.inputs[index_teclado] = self.inputs[index_teclado][:-1]
 					self.myfont = pygame.font.SysFont("monospace", self.height / 7)
 					label = self.myfont.render(self.inputs[index_teclado], 1, (255,255,255))
@@ -178,8 +179,11 @@ class ejercicio1(ejercicio):
 		return
 
 class ejercicio2(ejercicio):
-	def __init__(self, teclados, pos_x, pos_y, width, height):
-		self.teclados = teclados
+	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.alumnos = alumnos
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.redColor = pygame.Color(255,0,0)
@@ -310,6 +314,7 @@ class ejercicio2(ejercicio):
 				self.finished = True
 			else:
 				if self.blocked[index_teclado]:
+					self.erase_circles(index_teclado)
 					self.paint_blocked_circles(index_teclado)
 				else:
 					self.paint_circles(index_teclado)
@@ -333,8 +338,11 @@ class ejercicio2(ejercicio):
 		return
 
 class ejercicio3(ejercicio):
-	def __init__(self, teclados, pos_x, pos_y, width, height):
-		self.teclados = teclados
+	def __init__(self, alumnos, pos_x, pos_y, width, height):
+		self.alumnos = alumnos
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.redColor = pygame.Color(255,0,0)

@@ -87,7 +87,7 @@ class AudioLibrary:
                 # remove the played wav file
                 os.remove(filename + ".wav")
             except Exception as e:
-                print "Exception: %s" % str(e)
+                print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_name_array[device_index], device_index, str(e))
                 pass
 
             self.semaphore.release()

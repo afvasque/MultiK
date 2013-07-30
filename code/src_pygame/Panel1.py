@@ -515,6 +515,7 @@ class Panel1(wx.Panel):
         if self.lib_play_proc is None:
             self.text_to_speech_queue = multiprocessing.Queue()
             self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
+            self.lib_play_proc.daemon = True # BETA
             self.lib_play_proc.start()          
         
         if len(text_to_speech)>0:

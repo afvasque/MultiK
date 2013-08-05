@@ -141,6 +141,13 @@ class ejercicio:
 		
 		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+		
+		myimage = pygame.image.load("Imagenes/comida.jpg")
+
+		self.new_width = ((self.height / 2) * myimage.get_width()) / myimage.get_height();
+
+		self.canvas.blit(myimage, (self.width/2-self.height/5,self.height/8,self.new_width,self.height/2))
+		pygame.display.flip()
 
 	def reproduccion_letras_alfabeto2(self,operacion):
 

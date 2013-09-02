@@ -23,6 +23,9 @@ class BasicOperacion:
         self.audio_pregunta = ""
         self.feedback_correcto = ""
         self.feedback_error=""
+        self.path_imagen = ""
+        self.contenido = ""
+        self.instrucciones_generales = ""
 
         return
     

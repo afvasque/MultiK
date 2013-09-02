@@ -272,7 +272,7 @@ class GeneradorPreguntas:
 		else:
 			alter1= self.interpal.generador_palabra_contiene("b")
 			alter2= alter1.replace("b","v")
-	
+		
 		operacion.TipoOperacion= TipoOperacion.patrones_ort_comunes
 		operacion.nivelOperacion=1
 		operacion.feedback_correcto = "Bien \n" + self.alumno.Nombre

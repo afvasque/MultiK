@@ -11,35 +11,60 @@ import subprocess
 
 import multiprocessing
 
+import sound_card
+
 
 class AudioLibrary:
-    card_name_array = [] # array containing the names of the usb sound cards
+    card_array = [] # array containing the usb sound cards
+    root_hubs_set = set('') # set containing the addresses of the root usb hubs
+    semaphore = {}
+
     finished = event.Event('Audio has finished playing.')
     reproduciendo={}
 
-    # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
-    # since our bitrate is 1.54Mbit/s,
-    # 12 / 1.54 = 7.7922 gives us that the limit is 7
-    semaphore = multiprocessing.Semaphore(7)
+
+
+
 
     def __init__(self):
-        all_cards = self.get_card_names()
-        usb_cards = self.get_usb_card_names()
-        
         reload(sys)
         sys.setdefaultencoding('utf-8')
 
-        total_cards = len(all_cards)
-        print '\033[94m' + "Detected " + str(total_cards) + " sound cards in total." + '\033[0m'
-        total_usb_cards = len(usb_cards)
-        print "Assuming " + str(total_usb_cards) + " USB sound cards in total."
+        for card_name in self.get_usb_card_names():
+            card = sound_card.SoundCard(card_name)
+            self.card_array.append(card)
 
-        self.card_name_array = usb_cards
+        self.root_hubs_set = self.get_usb_root_hub_addrs()
+
+        for hub in self.root_hubs_set:
+            # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
+            # since our bitrate is 1.54Mbit/s,
+            # 12 / 1.54 = 7.7922 gives us that the limit is 7
+            self.semaphore[hub] = multiprocessing.Semaphore(7) # TODO: change back to 7
+
+        print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
+        print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
 
 
 
     def get_total_usb_cards(self):
-        return len(self.card_name_array)
+        return len(self.card_array)
+
+
+
+    def get_total_usb_root_hubs(self):
+        return len(self.root_hubs_set)
+
+
+    def get_usb_root_hub_addrs(self):
+        hub_addrs = set('')
+
+        for card in self.card_array:
+            # Add the address to a set (with unique elements)
+            hub_addrs.add(card.get_root_hub())
+        
+        return hub_addrs
+
 
 
     def play(self, device_index, text_to_speech_queue):
@@ -47,6 +72,7 @@ class AudioLibrary:
         filename = "%s_%d" % (device_index, timestamp)
 
         while True:
+            # Get a queued text for turning into speech
             text_to_speech = text_to_speech_queue.get()
             # create the wav file
             # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
@@ -57,12 +83,12 @@ class AudioLibrary:
             os.remove("%s.tmp" % filename)
 
 
-            self.semaphore.acquire()
+            self.semaphore[ self.card_array[device_index].get_root_hub() ].acquire()
 
             try:
                 #open the audio card
-                print "Opening card \"%s\" (device_index = %d)..." % (self.card_name_array[device_index], device_index)
-                dev = alsaaudio.PCM(card="hw:CARD=" + self.card_name_array[device_index])
+                print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
+                dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
                 
                 # we hard code the values because of our sound card capabilities,
                 # audio files to be played have to match these.
@@ -86,15 +112,17 @@ class AudioLibrary:
 
                 # remove the played wav file
                 os.remove(filename + ".wav")
-            except Exception as e:
-                print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_name_array[device_index], device_index, str(e))
+            except alsaaudio.ALSAAudioError as e:
+                print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
                 pass
 
-            self.semaphore.release()
+            self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
 
             # fire 'finished' event
             values = {"id": str(device_index)}
             self.finished(values)
+
+
 
     def get_card_names(self):
         command = "cat /proc/asound/cards | grep \"]\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"
@@ -106,6 +134,8 @@ class AudioLibrary:
 
         return l
 
+
+
     def get_usb_card_names(self):
         command = "cat /proc/asound/cards | grep \"USB-Audio\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"
 
@@ -115,6 +145,8 @@ class AudioLibrary:
         l.pop() # delete the last (empty) element
 
         return l
+
+
 
     def convert_intl_characters(self, text):
         #text = unicode(text,"utf8")

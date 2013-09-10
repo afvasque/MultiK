@@ -8,7 +8,7 @@ key_pages = [
 '', '', '', '',
 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Enter', '^]', '^H',
+'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'Enter', '^]', 'Back',
 '^I', ' ', "'", '¡', '`', '+', 'ç', '>', 'ñ', '´', '°', ',', '.',
 '-', 'CapsLock', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
 'PS', 'SL', 'Pause', 'Ins', 'Home', 'PU', '^D', 'End', 'PD', '->', '<-', '-v', '-^', 'NL',
@@ -19,7 +19,7 @@ key_pages_shift = [
 '', '', '', '',
 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-'!', '"', '·', '$', '%', '&', '/', '(', ')', '=', 'Enter', '^]', '^H',
+'!', '"', '·', '$', '%', '&', '/', '(', ')', '=', 'Enter', '^]', 'Back',
 '^I', ' ', '?', '¿', '^', '*', 'Ç', '<', 'Ñ', '¨', 'ª', ';', ':',
 '_', 'CapsLock', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
 'PS', 'SL', 'Pause', 'Ins', 'Home', 'PU', '^D', 'End', 'PD', '->', '<-', '-v', '-^', 'NL',
@@ -39,7 +39,7 @@ def chunks(l, n):
 
 
 class KeyboardReader:
-	def __init__(self, vendor_id, product_id, keyboard_id, queue):
+	def __init__(self, vendor_id, product_id, global_id, local_id, queue):
 		# Save the queue as an attribute.
 		self.queue = queue
 
@@ -50,10 +50,10 @@ class KeyboardReader:
 		keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
 
 		# Get the one with the given index.
-		self.keyboard = keyboards[keyboard_id]
+		self.keyboard = keyboards[local_id]
 
 		# Save the keyboard_id
-		self.keyboard_id = keyboard_id
+		self.keyboard_id = global_id
 
 		# Remove the elements from the list (we don't want any other keyboard)
 		del keyboards[:]
@@ -107,7 +107,7 @@ class KeyboardReader:
 				data = kb._endpoint.read(kb._endpoint.wMaxPacketSize, 10) # timeout is the last argument
 
 				# map the input to a character
-				map_keys = lambda c: key_pages_shift[c[1]] if c[0] is 2 else key_pages[c[1]]
+				map_keys = lambda c: key_pages_shift[c[1]] if c[0] == 2 else key_pages[c[1]]
 				data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
 
 				# if input detected

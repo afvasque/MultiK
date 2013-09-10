@@ -65,13 +65,13 @@ def Keyboard_event(sender, earg):
   #TODO: poner thread como padre
 class ThreadKeyboard(threading.Thread):
     def run(self):
-        lib.run(0x0e8f,0x0022)
+        lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
 width = 1000
 height = 700
 
 lib.keypress += Keyboard_event
-lib.detect_all_keyboards(0x0e8f,0x0022)
+lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
 keyboardsNum= lib.get_total_keyboards()
 print "teclados: "+str(keyboardsNum)

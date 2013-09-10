@@ -39,7 +39,7 @@ def chunks(l, n):
 
 
 class KeyboardReader:
-	def __init__(self, vendor_id, product_id, keyboard_id, queue):
+	def __init__(self, vendor_id, product_id, global_id, local_id, queue):
 		# Save the queue as an attribute.
 		self.queue = queue
 
@@ -50,10 +50,10 @@ class KeyboardReader:
 		keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
 
 		# Get the one with the given index.
-		self.keyboard = keyboards[keyboard_id]
+		self.keyboard = keyboards[local_id]
 
 		# Save the keyboard_id
-		self.keyboard_id = keyboard_id
+		self.keyboard_id = global_id
 
 		# Remove the elements from the list (we don't want any other keyboard)
 		del keyboards[:]

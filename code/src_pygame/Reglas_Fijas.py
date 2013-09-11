@@ -7,20 +7,22 @@ class Reglas_Fijas:
     #Cantidad de buenas que debe tener un niño para pasar de nivel
     MinimoPasoNivel = 3
     #Cantidad de preguntas cuando hay un error
-    CantidadPreguntasNivelError = 5
+    CantidadPreguntasNivelError = 1
 
     @staticmethod
     def StringToTipoOperacion(tipoOperacion):
-        if tipoOperacion== "mayus_nombres_propios":
-            return TipoOperacion.mayus_nombres_propios
-        elif tipoOperacion=="patrones_ort_comunes":
-            return TipoOperacion.patrones_ort_comunes
-        elif tipoOperacion=="Reproduccion_letras_alfabeto":
-            return TipoOperacion.Reproduccion_letras_alfabeto
-        elif tipoOperacion=="sentido_vocales_silabas":
-            return TipoOperacion.sentido_vocales_silabas
+        if tipoOperacion== "primero":
+            return TipoOperacion.primero
+        elif tipoOperacion=="segundo":
+            return TipoOperacion.segundo
+        elif tipoOperacion=="tercero":
+            return TipoOperacion.tercero
+        elif tipoOperacion=="cuarto":
+            return TipoOperacion.cuarto
+        elif tipoOperacion=="quinto":
+            return TipoOperacion.quinto
         else:
-            return TipoOperacion.signos_int_excl
+            return TipoOperacion.sexto
 
     @staticmethod
     def CambioNivel(operacion):
@@ -32,8 +34,8 @@ class Reglas_Fijas:
         to_return = CambioNivel.Mantiene
         
         # En caso de que tenga buena prgeunta de exclamación, pasa directo a interrogacioń
-        if operacion.TipoOperacion == TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
-            return CambioNivel.Sube
+        #if operacion.TipoOperacion == TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
+        #    return CambioNivel.Sube
         
         # Si ha contestado menos de las mínimas
         if operacion.correctasTotales < Reglas_Fijas.MinimoPasoNivel and cantidad_nivel>= Reglas_Fijas.CantidadPreguntasNivelError :

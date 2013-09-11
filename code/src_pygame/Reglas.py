@@ -16,18 +16,32 @@ class Reglas:
 	
 	def __init__(self):
 		lista=list()
-		lista.append(TipoOperacionNivel(1,TipoOperacion.Reproduccion_letras_alfabeto))
-		lista.append(TipoOperacionNivel(2,TipoOperacion.Reproduccion_letras_alfabeto))
-		lista.append(TipoOperacionNivel(1, TipoOperacion.sentido_vocales_silabas))
-		lista.append(TipoOperacionNivel(2, TipoOperacion.sentido_vocales_silabas))
-		lista.append(TipoOperacionNivel(3, TipoOperacion.sentido_vocales_silabas))
-		lista.append(TipoOperacionNivel(1, TipoOperacion.signos_int_excl))
-		lista.append(TipoOperacionNivel(1, TipoOperacion.mayus_nombres_propios))		
-		lista.append(TipoOperacionNivel(1, TipoOperacion.patrones_ort_comunes)) # falta temporizador		
-		lista.append(TipoOperacionNivel(3, TipoOperacion.patrones_ort_comunes)) # falta imagen en las palabras
-		lista.append(TipoOperacionNivel(4, TipoOperacion.patrones_ort_comunes)) # pendiente 4, no hay diferencias entre palabras con r y rr
-		lista.append(TipoOperacionNivel(5, TipoOperacion.patrones_ort_comunes))
 
+		with open('Ejercicios/TipoOperacionNivel.csv', 'rb') as csvfile:
+			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
+			rownum=0
+			for row in lenguajereader:
+
+				if rownum == 0:
+					header = row
+				else:
+					lista.append(TipoOperacionNivel(int(row[0]),TipoOperacionNivel.InttoTipoOperacion(int(row[1]))))
+
+					print "agregado nivel"+row[0]						 
+				rownum += 1
+		'''
+		lista.append(TipoOperacionNivel(1,TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(2,TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(2, TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(3, TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.primero))
+		lista.append(TipoOperacionNivel(1, TipoOperacion.primero))		
+		lista.append(TipoOperacionNivel(1, TipoOperacion.primero)) # falta temporizador		
+		lista.append(TipoOperacionNivel(3, TipoOperacion.primero)) # falta imagen en las palabras
+		lista.append(TipoOperacionNivel(4, TipoOperacion.primero)) # pendiente 4, no hay diferencias entre palabras con r y rr
+		lista.append(TipoOperacionNivel(5, TipoOperacion.primero))
+		'''
 		self.modulosNivel = list()
 		self.modulosNivel.append(ModuloNivel(lista, "principal"))
 		return		
@@ -42,7 +56,7 @@ class Reglas:
 			print "misma operacion"
 			return operacion
 		
-        
+		
 		operacion.cantidadMaximaNivel= max(Reglas_Fijas.MaximoNivel, operacion.cantidadMaximaNivel)
 		
 		siguiente_nivel = operacion.nivelOperacion
@@ -66,15 +80,22 @@ class Reglas:
 			cantidad_nivel+=1
 		
 		siguiente_operacion= None
-		generador= GeneradorPreguntas(alumno)
-		
-		if tipoActual == TipoOperacion.mayus_nombres_propios:
+		generador= GeneradorPreguntas()
+		generador.SetAlumno(alumno)
+		siguiente_operacion = generador.Getsiguiente(siguiente_nivel)
+
+		if borrarCorrectas:
+			siguiente_operacion.cambio_reciente_nivel= True
+
+		print "zzoperacion generada"
+		'''
+		if tipoActual == TipoOperacion.primero:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_mayus_nombres_propios1()
 			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_mayus_nombres_propios2()
 				
-		if tipoActual == TipoOperacion.patrones_ort_comunes:
+		if tipoActual == TipoOperacion.segundo:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_patrones_ort_comunes1()
 			elif siguiente_nivel==2:
@@ -86,13 +107,13 @@ class Reglas:
 			elif siguiente_nivel==5:
 				siguiente_operacion = generador.generador_patrones_ort_comunes5()
 				
-		if tipoActual == TipoOperacion.Reproduccion_letras_alfabeto:
+		if tipoActual == TipoOperacion.tercero:
 			if siguiente_nivel==1:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto1()
 			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_reproduccion_letras_alfabeto2()
 				
-		if tipoActual == TipoOperacion.sentido_vocales_silabas:
+		if tipoActual == TipoOperacion.cuarto:
 			if siguiente_nivel==1:
 				next_num= random.randrange(1,3)
 				siguiente_operacion = generador.generador_sentido_vocales1(next_num)
@@ -105,7 +126,7 @@ class Reglas:
 				next_num= random.randrange(1,4)
 				siguiente_operacion = generador.generador_sentido_vocales3(next_num)
 			
-		if tipoActual == TipoOperacion.signos_int_excl:
+		if tipoActual == TipoOperacion.quinto:
 			if siguiente_nivel==1:
 				if operacion.TipoOperacion == TipoOperacion.sentido_vocales_silabas:
 					siguiente_operacion = generador.generador_signos_int_excl1(False)
@@ -113,19 +134,31 @@ class Reglas:
 					siguiente_operacion = generador.generador_signos_int_excl1(True)
 			elif siguiente_nivel==2:
 				siguiente_operacion = generador.generador_signos_int_excl2()
-		
+		'''
+
+		print "siguiente nivel: "+str(siguiente_nivel)
+		print "nivel operacion: "+ str(operacion.nivelOperacion)
+
 		if siguiente_nivel == operacion.nivelOperacion:
+			print "zz adentro"
 			siguiente_operacion.cantidadMaximaNivel= cantidad_maxima_nivel
+			print "zz adentro mas"
+			siguiente_operacion.puntajesNivel= operacion.puntajesNivel
 			siguiente_operacion.AgregarPuntajesNivel(operacion.puntajesNivel, operacion.puntaje)
+
 			siguiente_operacion.cantidadNivel= cantidad_nivel
 		else:
 			siguiente_operacion.cantidadNivel=1
-			
+		
+		print "zz otra pos"
+
 		if not borrarCorrectas:
 			siguiente_operacion.correctasTotales = operacion.correctasTotales
 		
 		siguiente_operacion.vecesIncorrecta = operacion.vecesIncorrecta
 		
+		print "zzotro marker"
+
 		return siguiente_operacion
 		
 	
@@ -168,473 +201,3 @@ class Reglas:
 		return 0
 		
 	
-		
-				
-
-'''        
-        public BasicOperacion GetSiguienteOperacion(BasicOperacion operacion, Alumno alumno)
-        {
-
-            if (!operacion.respuesta_correcta && operacion.CantidadVecesIncorrectaSoloEsta <= 2 && !operacion.feedback_correcto.Equals("first"))
-            {
-                return operacion;
-            }
-
-
-            operacion.CantidadMaximaNivel = Math.Max(Reglas_Fijas.MaximoNivel, operacion.CantidadMaximaNivel);
-
-            int siguiente_nivel = operacion.NivelOperacion;
-            int cantidad_nivel = operacion.CantidadNivel;
-            int cantidad_maxima_nivel = operacion.CantidadMaximaNivel;
-
-            bool borrarCorrectas = false;
-            TipoOperacion tipoActual = operacion.TipoOperacion;
-
-            switch (Reglas_Fijas.CambiaNivel(operacion))
-            {
-                case CambioNivel.Sube:
-                    {
-                        borrarCorrectas = true;
-                        siguiente_nivel++;
-                        cantidad_nivel = 1;
-
-                        Tuple<TipoOperacion, int> tupla = AlterarFlujo(operacion, siguiente_nivel);
-
-                        tipoActual = tupla.Item1;
-                        siguiente_nivel = tupla.Item2;
-
-                        break;
-                    }
-                case CambioNivel.Mantiene:
-                    {
-                        cantidad_maxima_nivel += SubidaMaximoNivel(operacion);
-                        cantidad_nivel++;
-
-                        break;
-                    }
-            }
-
-            BasicOperacion siguiente_operacion = null;
-                       
-            GeneradorPreguntas generador = new GeneradorPreguntas(alumno);
-
-            #region Siguiente Operacion
-            //TODO: Falta implementar la generación de ejercicios.
-            switch (tipoActual) 
-            {
-                case TipoOperacion.mayus_nombres_propios:
-                    {
-                        switch (siguiente_nivel)
-                        {
-                            case 1:
-                                siguiente_operacion = generador.generador_mayus_nombres_propios1();
-                                break;
-                            case 2:
-                                siguiente_operacion = generador.generador_mayus_nombres_propios2();
-                                break;
-                        }
-                        break;
-                    }
-
-                case TipoOperacion.patrones_ort_comunes:
-                    {
-                        switch (siguiente_nivel)
-                        {
-                            case 1:
-                                siguiente_operacion = generador.generador_patrones_ort_comunes1();
-                                break;
-                            case 2:
-                                siguiente_operacion = generador.generador_patrones_ort_comunes2();
-                                break;
-                            case 3:
-                                siguiente_operacion = generador.generador_patrones_ort_comunes3();
-                                break;
-                            case 4:
-                                siguiente_operacion = generador.generador_patrones_ort_comunes4();
-                                break;
-                            case 5:
-                                siguiente_operacion = generador.generador_patrones_ort_comunes5();
-                                break;
-                        }
-                        break;
-                    }
-
-                case TipoOperacion.Reproduccion_letras_alfabeto:
-                    {
-                        switch (siguiente_nivel)
-                        {
-                            case 1:
-                                siguiente_operacion = generador.generador_reproduccion_letras_alfabeto1();
-                                break;
-                            case 2:
-                                siguiente_operacion = generador.generador_reproduccion_letras_alfabeto2();
-                                break;
-                        }
-                        break;
-                    }
-
-                case TipoOperacion.sentido_vocales_silabas:
-                    {
-                        Random rand = new Random();
-                        int next = rand.Next(1, 4);
-
-                        if (next == 4)
-                            next -= 1;
-
-                        siguiente_operacion = generador.generador_sentido_vocales1(next);
-                        break;
-                    }
-                case TipoOperacion.signos_int_excl:
-                    {
-                        switch (siguiente_nivel)
-                        {
-                            case 1:
-                                {
-                                    if (operacion.TipoOperacion==TipoOperacion.sentido_vocales_silabas)
-                                        siguiente_operacion = generador.generador_signos_int_excl1(false);
-                                    else
-                                        siguiente_operacion = generador.generador_signos_int_excl1(true);
-                                }
-                                break;
-                            case 2:
-                                siguiente_operacion = generador.generador_signos_int_excl2();
-                                break;
-                        }
-                        break;
-
-                    }
-            }
-
-            #endregion
-
-            if (siguiente_nivel == operacion.NivelOperacion)
-            {
-                siguiente_operacion.CantidadMaximaNivel = cantidad_maxima_nivel;
-                siguiente_operacion.AgregarPuntajesNivel(operacion.PuntajesNivel, operacion.Puntaje);
-                siguiente_operacion.CantidadNivel = cantidad_nivel;
-            }
-            else
-            {
-                siguiente_operacion.CantidadNivel = 1;
-            }
-            if (!borrarCorrectas)
-            {
-                siguiente_operacion.CantidadCorrectasTotales = operacion.CantidadCorrectasTotales;
-            }
-
-            siguiente_operacion.CantidadVecesIncorrecta = operacion.CantidadVecesIncorrecta;
-            
-
-            return siguiente_operacion;
-        }
-
-
-        public Tuple<TipoOperacion, int> AlterarFlujo(BasicOperacion operacion, int siguienteNivel)
-        {
-            int nivelActual = siguienteNivel - 1;
-            foreach (ModuloNivel mn in modulosNivel)
-            {
-                int index = mn.ContieneTipoOperacionNivel(nivelActual, operacion.TipoOperacion);
-
-                if (index != -1)
-                {
-                    TipoOperacionNivel on = mn.GetSiguiente(index);
-
-                    if (on.IsNull)
-                    {
-                        int indexMO = modulosNivel.IndexOf(mn);
-                        indexMO++;
-
-                        if (indexMO == modulosNivel.Count)
-                        {
-                            return new Tuple<TipoOperacion, int>(operacion.TipoOperacion, nivelActual);
-                        }
-                        else
-                        {
-                            on = modulosNivel[indexMO].GetPrimerOpNivel();
-                        }
-                    }
-
-                    return on.ReturnType();
-                }
-            }
-
-            return new Tuple<TipoOperacion, int>(operacion.TipoOperacion, nivelActual);
-        }
-
-        public int SubidaMaximoNivel(BasicOperacion op)
-        {
-            if (op.CantidadCorrectasTotales < Reglas_Fijas.MinimoPasoNivel && op.CantidadNivel >= Reglas_Fijas.CantidadPreguntasNivelError)
-            {
-                return 1;
-            }
-
-            return 0;
-        }
-
-
-       
-
-
-
-        /// <summary>
-        /// Método que entrega la primera operación del primer nivel del TipoOperacion especificado 
-        /// </summary>
-        /// <param name="TipoOperacion_actual">TipoOperacion de la operación (+,-,*,/)</param>
-        /// <returns>Primera operación</returns>
-        public static BasicOperacion GetPrimeraOperacion(TipoOperacion tipo_operacion)
-        {
-            return GetPrimeraOperacion(tipo_operacion, 1);
-        }
-
-        /// <summary>
-        /// Método que entrega la primera operación del nivel etsablecido para el TipoOperacion especificado 
-        /// </summary>
-        /// <param name="TipoOperacion_actual">TipoOperacion de la operación (+,-,*,/)</param>
-        /// <param name="nivel_actual">Nivel de la operación</param>
-        /// <returns>Primera operación</returns>
-        public static BasicOperacion GetPrimeraOperacion(TipoOperacion tipo_operacion, int nivel_actual)
-        {
-            int siguiente_nivel = nivel_actual;
-            int cantidad_nivel = 1;
-
-            BasicOperacion siguiente_operacion = null;
-
-            switch (tipo_operacion)
-            {
-                case TipoOperacion.mayus_nombres_propios:
-                    {
-                        //siguiente_operacion = GetSiguienteSuma(nivel_actual, cantidad_nivel);
-                        break;
-                    }
-                case TipoOperacion.patrones_ort_comunes:
-                    {
-                        //siguiente_operacion = GetSiguienteResta(nivel_actual, cantidad_nivel);
-                        break;
-                    }
-                case TipoOperacion.Reproduccion_letras_alfabeto:
-                    {
-                        //siguiente_operacion = GetSiguienteMultiplicacion(nivel_actual, cantidad_nivel, siguiente_operacion);
-                        break;
-                    }
-                case TipoOperacion.sentido_vocales_silabas:
-                    {
-                        //siguiente_operacion = GetSiguienteDivision(nivel_actual, cantidad_nivel, siguiente_operacion);
-                        break;
-                    }
-                case TipoOperacion.signos_int_excl:
-                    {
-                        //siguiente_operacion = GetSiguienteDivision(nivel_actual, cantidad_nivel, siguiente_operacion);
-                        break;
-                    }
-            }
-
-            return siguiente_operacion;
-        }
-
-        
-
-        
-        #region Matematica
-
-        /// <summary>
-        /// Eleva un numero a un exponente
-        /// </summary>
-        /// <param name="elevado"></param>
-        /// <param name="exponente"></param>
-        /// <returns></returns>
-        private static int ElevarNumero(int elevado, int exponente)
-        {
-            int resultado = 1;
-
-            if (exponente != 0)
-            {
-                for (int i = 0; i < exponente; i++)
-                {
-                    resultado = resultado * elevado;
-                }
-            }
-
-            return resultado;
-        }
-
-        #endregion
-
-        #region Randoms
-
-
-        #region Sumas
-
-     
-        #endregion
-
-        #region Restas
-
-
-        
-        #endregion
-
-        #region Multiplicacion
-
-
-        #endregion
-
-        #region Fracciones
-
-      
-        #endregion
-
-        #region Decimal
-
-        #endregion
-
-        #region Escritura
-
-        
-        #endregion
-
-        #region Utilidades Varias
-
-        /// <summary>
-        /// Transforma una lista de bools a un arreglo de 0 o 1 en enteros
-        /// </summary>
-        /// <param name="lista_reservas"></param>
-        /// <returns></returns>
-        private static int[] TransformarBoolsInt(bool[] lista_reservas, int target_lenght)
-        {
-            int[] aux = new int[target_lenght];
-            int index = 0;
-
-            foreach (bool i in lista_reservas)
-            {
-                if (i)
-                {
-                    aux[index] = 1;
-                }
-                else
-                {
-                    aux[index] = 0;
-                }
-
-                index++;
-            }
-
-            for (int j = index; j < target_lenght; j++)
-            {
-                aux[j] = 0;
-            }
-
-            return aux;
-        }
-
-        /// <summary>
-        /// Alterna los valores de un arreglo de 2 enteros si cambiar es 1
-        /// </summary>
-        /// <param name="valores"></param>
-        /// <param name="cambiar"></param>
-        /// <returns></returns>
-        private static int[] SwapearValores(int[] valores, int cambiar)
-        {
-            if (cambiar == 1)
-            {
-                int aux = valores[0];
-                valores[0] = valores[1];
-                valores[1] = aux;
-            }
-
-            return valores;
-        }
-
-        /// <summary>
-        /// Retorna si esta dentro del arreglo el numero determinado.
-        /// </summary>
-        /// <param name="arreglo"></param>
-        /// <param name="numero"></param>
-        /// <returns></returns>
-        internal static bool NumeroEnArreglo(int[] arreglo, int numero)
-        {
-            foreach (int i in arreglo)
-            {
-                if (i == numero)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Entrega el indice del numero dentro del arreglo
-        /// </summary>
-        /// <param name="arreglo"></param>
-        /// <param name="numero"></param>
-        /// <returns></returns>
-        internal static int IndiceArreglo(int[] arreglo, int numero)
-        {
-            for (int i = 0; i < arreglo.Length; i++)
-            {
-                if (arreglo[i] == numero)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        /// <summary>
-        /// Dado un arreglo ordenado, establece en que intervalo esta el numero, entregando 0 si es menor que cualquier elemento del arreglo
-        /// y el largo del arreglo si es superior a todos.
-        /// </summary>
-        /// <param name="arreglo"></param>
-        /// <param name="numero"></param>
-        /// <returns></returns>
-        internal static int IntervaloSuperiorArreglo(int[] arreglo, int numero)
-        {
-            for (int i = 0; i < arreglo.Length; i++)
-            {
-                if (numero < arreglo[i])
-                {
-                    return i;
-                }
-            }
-
-            return arreglo.Length;
-        }
-
-       
-       
-        /// <summary>
-        /// Parsea de forma segura un string (capta las excepciones que podrían ser lanzadas). 
-        /// </summary>
-        /// <param name="parser">String a ser parseado</param>
-        /// <returns>Int parseado, 0 en caso de error</returns>
-        private static int ParsearString(string parser)
-        {
-            int resultado = 0;
-
-            if (parser != "")
-            {
-
-                try
-                {
-                    resultado = int.Parse(parser, CultureInfo.InvariantCulture);
-                }
-
-                catch (FormatException)
-                {
-                    resultado = 0;
-                }
-            }
-
-            return resultado;
-        }
-
-       
-        
-        #endregion
-    }
-}
-        #endregion
-        '''

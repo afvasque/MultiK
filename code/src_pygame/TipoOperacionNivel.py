@@ -2,12 +2,12 @@
 
 
 class TipoOperacion:
-    Reproduccion_letras_alfabeto=1
-    sentido_vocales_silabas=2
-    signos_int_excl=3
-    mayus_nombres_propios=4
-    patrones_ort_comunes=5
-    
+    primero=1
+    segundo=2
+    tercero=3
+    cuarto=4
+    quinto=5
+    sexto=6
 
 # Establece que sucede con el nivel del alumno    
 class CambioNivel:
@@ -29,61 +29,20 @@ class TipoOperacionNivel:
     def IsOpNivel(self, nivel, op):
         return (self.nivel == nivel and self.tipo_op==op)
 
-
-    '''
-
-
-    /// <summary>
-    /// Estructura que contiene un Tipo de Operacion y un nivel asociado
-    /// </summary>
-    public struct TipoOperacionNivel
-    {
-        #region Miembros Privados y Propiedades
-
-        int nivel;
-        /// <summary>
-        /// Retorna el nivel de este tipo de operacion
-        /// </summary>
-        public int Nivel { get { return nivel; } }
-
-        TipoOperacion tipoOperacion;
-        /// <summary>
-        /// Retorna el tipo de operacion de la estructura
-        /// </summary>
-        public TipoOperacion TipoOperacion { get { return tipoOperacion; } }
-
-        bool notNull;
-        /// <summary>
-        /// Booleano que determina si la estructura es vacia
-        /// </summary>
-        public bool IsNull { get { return !notNull; } }
-
-        #endregion
+    @staticmethod
+    def InttoTipoOperacion(nivel):
+        if nivel==1:
+            return TipoOperacion.primero
+        elif nivel==2:
+            return TipoOperacion.segundo
+        elif nivel==3:
+            return TipoOperacion.tercero
+        elif nivel==4:
+            return TipoOperacion.cuarto
+        elif nivel==5:
+            return TipoOperacion.quinto
+        elif nivel==6:
+            return TipoOperacion.sexto
 
 
-        #region Funciones
 
-        /// <summary>
-        /// Returna el tipo de la estructura
-        /// </summary>
-        /// <returns></returns>
-        public Tuple<TipoOperacion, int> ReturnType()
-        {
-            return new Tuple<TipoOperacion, int>(tipoOperacion, nivel);
-        }
-
-        /// <summary>
-        /// Establece si el nivel y tipoo de operación son iguales
-        /// </summary>
-        /// <param name="nivel"></param>
-        /// <param name="op"></param>
-        /// <returns></returns>
-        public bool IsOpNivel(int nivel, TipoOperacion op)
-        {
-            return (this.nivel == nivel && tipoOperacion == op);
-        }
-
-        #endregion
-    }
-}
-'''

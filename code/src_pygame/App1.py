@@ -33,7 +33,7 @@ def Keyboard_event(sender, earg):
             return
             
         for a in range(0,len(diccionario)):
-            if (diccionario[a].pareado==False) or (diccionario[a].nombre_ingresado==False):
+            if (diccionario[a].pareado==False):
                 diccionario[a].RepetirPregunta()
         return
 

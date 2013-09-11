@@ -58,12 +58,12 @@ class ejercicio:
 		self.reglas_main= Reglas()
 		
 		operacion= BasicOperacion()
-		operacion.TipoOperacion= TipoOperacion.Reproduccion_letras_alfabeto
+		operacion.TipoOperacion= TipoOperacion.primero
 		operacion.nivelOperacion= 1
 		operacion.feedback_correcto= "First"
 		self.Operacion_actual= operacion
 
-		self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+		#self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 			  
 		self.CreateGrid(self.Operacion_actual)
 
@@ -71,11 +71,23 @@ class ejercicio:
 	def CreateGrid(self, operacion):
 		self.ResetLayout()
 
+		print "audio_pregunta"+operacion.audio_pregunta
 		if self.pareado == False:
 			print "parear"
 			self.parear()
 			return
 
+		tipo_op= operacion.GetControlType()
+		print "Tipo:"+tipo_op
+
+		if tipo_op=="Texto":
+			self.SetLayoutText(operacion)
+		elif tipo_op=="Lista":
+			self.SetLayoutList(operacion)
+
+		#self.reproduccion_letras_alfabeto1(operacion)
+
+		'''
 		if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
 			if operacion.nivelOperacion == 1:
 				self.reproduccion_letras_alfabeto1(operacion)
@@ -114,7 +126,7 @@ class ejercicio:
 				self.patrones_ort_comunes4(operacion)
 			elif operacion.nivelOperacion ==5:
 				self.patrones_ort_comunes5(operacion)
-
+		'''
 
 	def ResetLayout(self):
 		self.canvas.fill(self.whiteColor)
@@ -129,15 +141,210 @@ class ejercicio:
 		self.Objects[0].react(input)
 
 
+	def SetLayoutText(self,operacion):
+
+		print"texto"
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		xtext= int(self.width/8)
+		ytext= int(self.height*(1/8))
+
+		temp=1
+		textsize= self.GetSizeHorizontal(len(operacion.pregunta))
+
+		if len(operacion.pregunta)>0:
+			temp= len(operacion.pregunta)/18
+		
+
+		print "temp:"+str(temp)
+		if len(operacion.path_imagen)>1:
+
+			myimage = pygame.image.load("Imagenes/"+operacion.path_imagen)
+
+			print "temp:"+str(temp)
+
+			self.new_width = ((self.height / (temp*2)) * myimage.get_width()) / myimage.get_height();
+
+			myimage= pygame.transform.scale(myimage, (self.new_width, self.height/(temp*2))) 
+			self.canvas.blit(myimage, (self.width/2-self.height/5,0,self.new_width,self.height/(temp*2)))
+
+			ytext= int(self.height/2)
+
+			textsize= self.GetSizeTextImg(len(operacion.pregunta))
+
+		
+		if len(operacion.pregunta)>0:
+			if temp<=1:
+				self.WriteColor(operacion.pregunta, xtext, ytext, textsize)	
+
+			elif temp<=2:
+				div= operacion.pregunta.index(" ",15)
+
+				if div ==-1:
+					div=operacion.pregunta.index(" ")
+
+				start=0
+				end= div
+
+				clean_pregunta= operacion.pregunta[:div]
+				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+
+				clean_pregunta= operacion.pregunta[(div+1):]
+				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
+
+			elif temp<=4:
+				ytext= ytext*0.6
+				div1= operacion.pregunta.index(" ",15)
+				div2= operacion.pregunta.index(" ",30)
+
+				if div2 ==-1:
+					div2= operacion.pregunta.index(" ",20)
+
+				clean_pregunta= operacion.pregunta[:div1]
+				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+
+				clean_pregunta= operacion.pregunta[(div1+1):div2]
+				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
+
+				clean_pregunta= operacion.pregunta[(div2+1):]
+				self.WriteColor(clean_pregunta, xtext, ytext+2*textsize, textsize)
+
+
+		textbox_x= int(self.width*0.05)
+		textbox_y= self.height - int(textsize*2.2)*1.5
+		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(textsize*2.2)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+
+		pygame.display.flip()
+		return
+
+	def SetLayoutList(self,operacion):
+
+		print"lista"
+		self.TexttoSpeech(operacion.audio_pregunta)
+
+		xtext= int(self.width/8)
+		ytext= int(self.height*(1/8))
+
+		temp=1
+		textsize= self.GetSizeHorizontal(len(operacion.pregunta))
+
+		if len(operacion.pregunta)>0:
+			temp= len(operacion.pregunta)/18
+
+
+		if len(operacion.path_imagen)>1:
+
+			myimage = pygame.image.load("Imagenes/"+operacion.path_imagen)
+
+			self.new_width = ((self.height / 4) * myimage.get_width()) / myimage.get_height();
+			myimage= pygame.transform.scale(myimage, (self.new_width, self.height/(temp*4))) 
+
+			self.canvas.blit(myimage, (self.width/2-self.height/5,self.height/8,self.new_width,self.height/(temp*2)))
+
+			ytext= int(self.height/2)
+
+			textsize= self.GetSizeTextImg(len(operacion.pregunta))
+		
+		print "temp: "+str(temp)
+
+		if len(operacion.pregunta)>0:
+			if temp>=2:
+				ytext= ytext*0.8
+
+			if temp<=1:
+				self.WriteColor(operacion.pregunta, xtext, ytext, textsize)	
+
+			elif temp<=2:
+				div= operacion.pregunta.index(" ",15)
+
+				if div ==-1:
+					div=operacion.pregunta.index(" ")
+
+				start=0
+				end= div
+
+				clean_pregunta= operacion.pregunta[:div]
+				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+
+				clean_pregunta= operacion.pregunta[(div+1):]
+				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
+
+			elif temp<=4:
+				ytext= ytext*0.6
+				div1= operacion.pregunta.index(" ",15)
+				div2= operacion.pregunta.index(" ",30)
+
+				if div2 ==-1:
+					div2= operacion.pregunta.index(" ",20)
+
+				clean_pregunta= operacion.pregunta[:div1]
+				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+
+				clean_pregunta= operacion.pregunta[(div1+1):div2]
+				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
+
+				clean_pregunta= operacion.pregunta[(div2+1):]
+				self.WriteColor(clean_pregunta, xtext, ytext+2*textsize, textsize)
+
+		
+
+		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height*0.55),int(self.width*0.8),int(self.height/3)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
+
+
+
+		return
+
+	def WriteColor(self, pregunta, xtext, ytext, textsize):
+
+		print "ddd:"+ pregunta
+		if "&" in pregunta:
+
+			clean_pregunta= pregunta.replace("&","")
+			self.myfont = pygame.font.SysFont("monospace", textsize)
+			label = self.myfont.render(clean_pregunta, 1, (255,0,0))
+			self.canvas.blit(label,(xtext, ytext))
+			#self.canvas.blit(label,(0,0))
+
+			masked_pregunta= pregunta
+
+			while "&" in masked_pregunta:
+
+				temp_start= masked_pregunta.index("&")
+				temp_end= masked_pregunta.index("&",temp_start+1)
+
+				for x in range(temp_start,temp_end):
+					masked_pregunta= masked_pregunta[:x]+" "+masked_pregunta[(x+1):]
+				masked_pregunta= masked_pregunta[:temp_start]+masked_pregunta[(temp_start+1):]
+				masked_pregunta= masked_pregunta[:(temp_end-1)]+masked_pregunta[(temp_end):]
+				print "eee:"+masked_pregunta
+
+			label = self.myfont.render(masked_pregunta, 1, (0,0,0))
+
+			self.canvas.blit(label,(xtext, ytext))
+
+
+		else:
+			pygame.font.init()
+			
+			self.myfont = pygame.font.SysFont("monospace", textsize)
+			label = self.myfont.render(pregunta, 1, (0,0,0))
+			self.canvas.blit(label,(xtext, ytext))
+
+		return
+
+	'''
 	def reproduccion_letras_alfabeto1(self,operacion):
 
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		pygame.font.init()
-		size= int(1.5 * self.width/len(operacion.pregunta))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
+		if len(operacion.pregunta)>0:
+			pygame.font.init()
+			size= int(1.5 * self.width/len(operacion.pregunta))
+			self.myfont = pygame.font.SysFont("monospace", size)
+			label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
+			self.canvas.blit(label,(0, 0))
 		
 		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
@@ -303,7 +510,7 @@ class ejercicio:
 		
 		return
 
-
+	'''
 
 	def arreglar_texto(self, texto):
 		
@@ -383,6 +590,7 @@ class ejercicio:
 				self.Operacion_actual.feedback_correcto= "First"
 				self.Operacion_actual.RespuestaCorrecta()
 				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+				print "siguiente op"
 				self.CreateGrid(self.Operacion_actual)
 		
 
@@ -398,24 +606,21 @@ class ejercicio:
 					
 		# reconocimiento de backspace para borrado
 		
-
-		self.Objects[0].react(text)
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		'''
 		if self.pareado==False:
-			if text=="0" or text=="1" or text=="2" or text=="3" or text=="4" or text=="5" or text=="6" or text=="7" or text=="8" or text=="9":
+			if text=="0" or text=="1" or text=="2" or text=="3" or text=="4" or text=="5" or text=="6" or text=="7" or text=="8" or text=="9" or text=="Back":
 				self.Objects[0].react(text)
 				self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		else:
 			self.Objects[0].react(text)
 			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		'''
+		
 	
 
 
 
 	def Keyboard_Pressed(self, sender, earg):
 
+		#try:
 		text= str(earg['char']).decode('utf-8')
 		text= self.arreglar_texto(text)
 		
@@ -423,14 +628,9 @@ class ejercicio:
 			return
 
 		if text == "Enter":
+
 			
-			if ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 2) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.mayus_nombres_propios and self.Operacion_actual.nivelOperacion == 1) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 1) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 3) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 4) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 1)):
-				
+			if len(self.Operacion_actual.alternativas)>0:
 				if isinstance(self.Objects[0],Listview):
 					
 					listview= self.Objects[0]
@@ -458,20 +658,9 @@ class ejercicio:
 							self.TexttoSpeech(self.Operacion_actual.feedback_error)
 							self.Operacion_actual.RespuestaIncorrecta()
 					'''
-			elif ((self.Operacion_actual.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto and self.Operacion_actual.nivelOperacion == 1) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl and self.Operacion_actual.nivelOperacion == 1) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 2) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.patrones_ort_comunes and self.Operacion_actual.nivelOperacion == 5) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 2) or
-				(self.Operacion_actual.TipoOperacion == TipoOperacion.sentido_vocales_silabas and self.Operacion_actual.nivelOperacion == 3)):
-				
-				
+			else:
+
 				textctrl= self.Objects[0]
-				
-				if self.Operacion_actual.TipoOperacion == TipoOperacion.signos_int_excl:
-					resp= self.Operacion_actual.respuesta.split(",")
-					if ((resp[0] in textctrl.Value) and (resp[1] in textctrl.Value)):
-						textctrl.Value= self.Operacion_actual.respuesta
 						
 				if textctrl.Value == self.Operacion_actual.respuesta:
 					print u"feedback: "+self.Operacion_actual.feedback_correcto
@@ -482,12 +671,17 @@ class ejercicio:
 					self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 					self.Operacion_actual.RespuestaIncorrecta()
 					textctrl.Value=""
-					
+			
+			print "zzsiguiente operacion"
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+			print "zzaudio_op: "+self.Operacion_actual.audio_pregunta
 			self.CreateGrid(self.Operacion_actual)
 		
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+		#except Exception, e:
+		#	print "result is:"+ str(e)
+
 
 
  	def RepetirPregunta(self):
@@ -511,4 +705,48 @@ class ejercicio:
 		
 		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+
+	##### Utilidades ######
+	#### funciones que obtienen el tamaño para los ejercicios
+
+	def GetSizeVertical(self, x):
+
+		if x==0:
+			return int(2.3 * self.width)
+		if x>15:
+			return int(1.5 * self.width/x)
+		elif x>10:
+			return int(1.8*self.width/x)
+		elif x>6:
+			return int(2 * self.width/x)
+		else:
+			return int(2.3 * self.width/x)
+
+	def GetSizeHorizontal(self, x):
+
+		if x==0:
+			return int(1.5 * self.width)
+		if x>40:
+			return int(2.5*self.width/x)
+		elif x>30:
+			return int(2*self.width/x)
+		elif x>25:
+			return int(1.8 * self.width/x)
+		else:
+			return int(1.5 * self.width/x)
+
+	def GetSizeTextImg(self, x):
+		if x==0:
+			return int(1.5 * self.width)
+		if x>40:
+			return int(0.8 * self.width/x)
+		elif x>30:
+			return int(self.width/x)
+		elif x>25:
+			return int(1.2 * self.width/x)
+		else:
+			return int(1.5 * self.width/x)
+
+
+
 

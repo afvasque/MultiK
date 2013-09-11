@@ -15,7 +15,6 @@ class BasicOperacion:
         self.numeroSesion = -1
         self.puntaje = -1
         self.respuesta_correcta = False
-        self.cambio_reciente_nivel = False;
         self.TipoOperacion= None
 
         self.alternativas = list()
@@ -32,9 +31,10 @@ class BasicOperacion:
     
     def AgregarPuntajesNivel(self, listvieja, nuevoPuntaje):
         
-        print "largo: "+str(len(self.puntajesNivel))
-
-        
+        if listvieja != None:
+            for i in listvieja:
+                self.puntajesNivel.append(i)
+                
         self.puntajesNivel.append(nuevoPuntaje)
                 
     def RespuestaCorrecta(self):
@@ -65,10 +65,3 @@ class BasicOperacion:
             self.cantidadMaximaNivel= Reglas_Fijas.CantidadPreguntasNivelError
             
         self.cantidadNivel+=1
-
-    def GetControlType(self):
-        
-        if len(self.alternativas)>0:
-            return "Lista"
-        else:
-            return "Texto"

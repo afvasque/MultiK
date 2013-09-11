@@ -8,11 +8,12 @@ import time
 import datetime
 import alsaaudio
 import subprocess
-
 import multiprocessing
-
 import sound_card
+import logging
 
+logging.basicConfig(filename='multik_audio.log',level=logging.INFO)
+#logging.info("[%d: [%s, %s, %s, %s, %s] ], " % (time.time(), text, op_type, op_level, user_name, temp))
 
 class AudioLibrary:
     card_array = [] # array containing the usb sound cards
@@ -40,7 +41,7 @@ class AudioLibrary:
             # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
             # since our bitrate is 1.54Mbit/s,
             # 12 / 1.54 = 7.7922 gives us that the limit is 7
-            self.semaphore[hub] = multiprocessing.Semaphore(7) # TODO: change back to 7
+            self.semaphore[hub] = multiprocessing.Semaphore(7)
 
         print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
         print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
@@ -74,6 +75,11 @@ class AudioLibrary:
         while True:
             # Get a queued text for turning into speech
             text_to_speech = text_to_speech_queue.get()
+
+
+
+            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
+
             # create the wav file
             # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
             os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
@@ -82,8 +88,17 @@ class AudioLibrary:
             # remove the temporary file
             os.remove("%s.tmp" % filename)
 
+            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
+            
+
+
+
+            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, text_to_speech))
 
             self.semaphore[ self.card_array[device_index].get_root_hub() ].acquire()
+
+            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, text_to_speech))
+
 
             try:
                 #open the audio card
@@ -98,6 +113,8 @@ class AudioLibrary:
                 dev.setperiodsize(320)
                 
                 # play the wav file
+                logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
+
                 f = wave.open(filename + ".wav" , 'rb')
                 data = f.readframes(320)
                 while data:
@@ -107,6 +124,9 @@ class AudioLibrary:
                 # close the wav file
                 f.close()
 
+                logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
+
+
                 # close the audio card
                 dev.close()
 
@@ -114,6 +134,7 @@ class AudioLibrary:
                 os.remove(filename + ".wav")
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
+                logging.exception("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', filename, text_to_speech))
                 pass
 
             self.semaphore[ self.card_array[device_index].get_root_hub() ].release()

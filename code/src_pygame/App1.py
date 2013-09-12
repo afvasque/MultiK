@@ -33,7 +33,9 @@ def Keyboard_event(sender, earg):
             return
             
         for a in range(0,len(diccionario)):
-            if (diccionario[a].pareado==False):
+            print str(a)+" estado:"+str(diccionario[a].pareado)
+            if diccionario[a].pareado==False:
+                print "repitiendo en: "+str(diccionario[a].numero_audifono)
                 diccionario[a].RepetirPregunta()
         return
 

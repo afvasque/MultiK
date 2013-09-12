@@ -543,7 +543,8 @@ class ejercicio:
 	lib_play_proc = None
 	def TexttoSpeech(self, text_to_speech):
 		#if audio_lib.reproduciendo[self.numero_audifono]==False:
-		if self.lib_play_proc is None:
+		if self.lib_play_proc is None or self.recien_pareado==True:
+			self.recien_pareado=False
 			self.text_to_speech_queue = multiprocessing.Queue()
 			self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
 			self.lib_play_proc.start()          
@@ -596,11 +597,22 @@ class ejercicio:
 
 		elif self.pareado== False and self.nombre_ingresado==False:
 			textctrl= self.Objects[0]
+			print "largo: "+str(len(textctrl.Value))
 			if text=="Enter" and len(textctrl.Value)>0:
 				temp= int(textctrl.Value)
+				print "temp:"+str(temp)
 				if temp>=0 and temp< len(diccionario):
+
+					for a in range(0,len(diccionario)):
+						if(diccionario[a].numero_audifono== temp):
+							diccionario[a].numero_audifono= self.numero_audifono
+							self.recien_pareado=True
+							print "cambiado:"+str(temp)+" por:"+str(self.numero_audifono)
+							print "diccionario:"+str(a)
+
 					self.numero_audifono=temp
 					self.pareado=True
+					self.recien_pareado=True
 					self.lib_play_proc=None
 					self.set_nombre()
 					

@@ -330,7 +330,10 @@ class ejercicio:
 	def TexttoSpeech(self, text_to_speech):
 		#if audio_lib.reproduciendo[self.numero_audifono]==False:
 
-		
+		if self.recien_pareado==True:
+			print "matando primer audio"
+			self.text_to_speech_queue.put({'tts': text_to_speech, 'terminate': True, 'tts_id': time.time()})
+			#self.lib_play_proc.join()
 
 		if self.lib_play_proc is None or self.recien_pareado==True:
 			self.recien_pareado=False
@@ -338,9 +341,7 @@ class ejercicio:
 			self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
 			self.lib_play_proc.start()          
 		
-		if self.recien_pareado==True:
-			print "matando primer audio"
-			#self.lib_play_proc.join()
+
 
 		if len(text_to_speech)>0:
 
@@ -402,10 +403,15 @@ class ejercicio:
 
 					for a in range(0,len(diccionario)):
 						if(diccionario[a].numero_audifono== temp):
-							diccionario[a].numero_audifono= self.numero_audifono
+							num_aud= str(self.numero_audifono)
+							diccionario[a].numero_audifono= int(num_aud)
 							self.recien_pareado=True
 							print "cambiado:"+str(temp)+" por:"+str(self.numero_audifono)
-							print "diccionario:"+str(a)
+							print "diccionario:"+str(diccionario[a])
+							print "teclado 1:"+str(diccionario[1].numero_audifono)
+							print "teclado 1 preg:"+str(diccionario[1].Operacion_actual.audio_pregunta)
+							diccionario[a].recien_pareado=True
+							diccionario[a].TexttoSpeech("apagando")
 
 					self.numero_audifono=temp
 					self.pareado=True

@@ -51,6 +51,7 @@ class ejercicio:
 
 		self.mayus= False
 		self.tilde=False
+		self.recien_pareado= False
 
 		self.numero_audifono= numero_audifono
 		audio_lib.reproduciendo[int(self.numero_audifono)]=False
@@ -63,7 +64,6 @@ class ejercicio:
 		operacion.feedback_correcto= "First"
 		self.Operacion_actual= operacion
 
-		#self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 			  
 		self.CreateGrid(self.Operacion_actual)
 
@@ -85,48 +85,7 @@ class ejercicio:
 		elif tipo_op=="Lista":
 			self.SetLayoutList(operacion)
 
-		#self.reproduccion_letras_alfabeto1(operacion)
 
-		'''
-		if operacion.TipoOperacion == TipoOperacion.Reproduccion_letras_alfabeto:
-			if operacion.nivelOperacion == 1:
-				self.reproduccion_letras_alfabeto1(operacion)
-			elif operacion.nivelOperacion ==2:
-				self.reproduccion_letras_alfabeto2(operacion)
-				
-		elif operacion.TipoOperacion == TipoOperacion.sentido_vocales_silabas:
-			
-			if operacion.nivelOperacion ==1:
-				self.sentido_vocales1(operacion)
-			elif operacion.nivelOperacion ==2:
-				self.sentido_vocales2(operacion)
-			elif operacion.nivelOperacion ==3:
-				self.sentido_vocales3(operacion)
-
-		elif operacion.TipoOperacion == TipoOperacion.signos_int_excl:
-			if operacion.nivelOperacion ==1:
-				self.signos_int_excl1(operacion)
-			elif operacion.nivelOperacion ==2:
-				self.signos_int_excl2(operacion)
-				
-		elif operacion.TipoOperacion == TipoOperacion.mayus_nombres_propios:
-			if operacion.nivelOperacion ==1:
-				self.mayus_nombres_propios1(operacion)
-			elif operacion.nivelOperacion ==2:
-				self.mayus_nombres_propios2(operacion)
-				
-		elif operacion.TipoOperacion == TipoOperacion.patrones_ort_comunes:
-			if operacion.nivelOperacion ==1:
-				self.patrones_ort_comunes1(operacion)            
-			elif operacion.nivelOperacion ==2:
-				self.patrones_ort_comunes2(operacion)
-			elif operacion.nivelOperacion ==3:
-				self.patrones_ort_comunes3(operacion)
-			elif operacion.nivelOperacion ==4:
-				self.patrones_ort_comunes4(operacion)
-			elif operacion.nivelOperacion ==5:
-				self.patrones_ort_comunes5(operacion)
-		'''
 
 	def ResetLayout(self):
 		self.canvas.fill(self.whiteColor)
@@ -150,11 +109,14 @@ class ejercicio:
 		ytext= int(self.height*(1/8))
 
 		temp=1
-		textsize= self.GetSizeHorizontal(len(operacion.pregunta))
+		textsize= self.height/8
 
 		if len(operacion.pregunta)>0:
 			temp= len(operacion.pregunta)/18
+			textsize= self.GetSizeHorizontal(len(operacion.pregunta))
 		
+		if temp==0:
+			temp=1
 
 		print "temp:"+str(temp)
 		if len(operacion.path_imagen)>1:
@@ -230,7 +192,7 @@ class ejercicio:
 		textsize= self.GetSizeHorizontal(len(operacion.pregunta))
 
 		if len(operacion.pregunta)>0:
-			temp= len(operacion.pregunta)/18
+			temp= len(operacion.pregunta)/15
 
 
 		if len(operacion.path_imagen)>1:
@@ -334,183 +296,7 @@ class ejercicio:
 
 		return
 
-	'''
-	def reproduccion_letras_alfabeto1(self,operacion):
-
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		if len(operacion.pregunta)>0:
-			pygame.font.init()
-			size= int(1.5 * self.width/len(operacion.pregunta))
-			self.myfont = pygame.font.SysFont("monospace", size)
-			label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-			self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		
-		myimage = pygame.image.load("Imagenes/comida.jpg")
-
-		self.new_width = ((self.height / 2) * myimage.get_width()) / myimage.get_height();
-
-		self.canvas.blit(myimage, (self.width/2-self.height/5,self.height/8,self.new_width,self.height/2))
-		pygame.display.flip()
-
-	def reproduccion_letras_alfabeto2(self,operacion):
-
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-
-
-	def sentido_vocales1(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-		
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-		
-	def sentido_vocales2(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init()
-		size= int(1.5 * self.width/len(operacion.pregunta))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-				
-	def sentido_vocales3(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init()
-		size= int(1.5 * self.width/len(operacion.pregunta))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 	
-	def signos_int_excl1(self, operacion):        
-			
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init()
-		size= int(self.height/6)
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
-	def signos_int_excl2(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-		
-		self.Objects.append(Textbox(0,20,300,40))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))       
-		
-		pygame.font.init() 
-		size= int(self.height/6)
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		
-	def mayus_nombres_propios1(self, operacion):        
-				
-		self.TexttoSpeech(operacion.audio_pregunta)
-		
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-
-	# pendiente
-	def mayus_nombres_propios2(self, operacion):        
-		
-		return
-
-	def patrones_ort_comunes1(self, operacion):        
-		
-		pygame.font.init() 
-		size= int(self.height/6)
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-		
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-		
-	
-	def patrones_ort_comunes2(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init() 
-		size= int(1.5 * self.width/len(operacion.pregunta))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		
-	
-	def patrones_ort_comunes3(self, operacion):        
-		
-		# Falta imagen!!
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", int(1.5 * self.width/len(operacion.pregunta)))
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		
-		
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-		
-	
-	def patrones_ort_comunes4(self, operacion):        
-		
-		pygame.font.init() 
-		self.myfont = pygame.font.SysFont("monospace", size= int(self.height/6))
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-		
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height/4),int(self.width*0.95),int(self.height/2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
-	
-	def patrones_ort_comunes5(self, operacion):        
-		
-		self.TexttoSpeech(operacion.audio_pregunta)
-
-		pygame.font.init() 
-		size= int(self.height/6)
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(operacion.pregunta, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.95),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		
-		return
-
-	'''
 
 	def arreglar_texto(self, texto):
 		
@@ -543,17 +329,28 @@ class ejercicio:
 	lib_play_proc = None
 	def TexttoSpeech(self, text_to_speech):
 		#if audio_lib.reproduciendo[self.numero_audifono]==False:
+
+		
+
 		if self.lib_play_proc is None or self.recien_pareado==True:
 			self.recien_pareado=False
 			self.text_to_speech_queue = multiprocessing.Queue()
 			self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
 			self.lib_play_proc.start()          
 		
+		if self.recien_pareado==True:
+			print "matando primer audio"
+			#self.lib_play_proc.join()
+
 		if len(text_to_speech)>0:
+
+			if "¿" in text_to_speech:
+				text_to_speech= text_to_speech.replace("¿","")
+
 			print "Reproduciendo en audifono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
 			audio_lib.reproduciendo[int(self.numero_audifono)]=True
 			print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
-			self.text_to_speech_queue.put(text_to_speech)
+			self.text_to_speech_queue.put({'tts': text_to_speech, 'terminate': False, 'tts_id': time.time()})
 
 	##########  PAREAMIENTO ##############
 	
@@ -656,20 +453,7 @@ class ejercicio:
 						self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 						self.Operacion_actual.RespuestaIncorrecta()
 
-					'''
-					if len(list.GetSelections())>0:
-						if list.Items[list.GetSelections()[0]] == self.Operacion_actual.respuesta:
-							list.Clear()
-							list.Append(self.Operacion_actual.feedback_correcto)
-							self.TexttoSpeech(self.Operacion_actual.feedback_correcto)
-							self.Operacion_actual.RespuestaCorrecta()
-
-						else:
-							list.Clear()
-							list.Append(self.Operacion_actual.feedback_error)
-							self.TexttoSpeech(self.Operacion_actual.feedback_error)
-							self.Operacion_actual.RespuestaIncorrecta()
-					'''
+					
 			else:
 
 				textctrl= self.Objects[0]
@@ -684,9 +468,7 @@ class ejercicio:
 					self.Operacion_actual.RespuestaIncorrecta()
 					textctrl.Value=""
 			
-			print "zzsiguiente operacion"
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-			print "zzaudio_op: "+self.Operacion_actual.audio_pregunta
 			self.CreateGrid(self.Operacion_actual)
 		
 		self.Objects[0].react(text)
@@ -738,11 +520,11 @@ class ejercicio:
 
 		if x==0:
 			return int(1.5 * self.width)
-		if x>40:
+		if x>30:
 			return int(2.5*self.width/x)
-		elif x>30:
+		elif x>20:
 			return int(2*self.width/x)
-		elif x>25:
+		elif x>15:
 			return int(1.8 * self.width/x)
 		else:
 			return int(1.5 * self.width/x)

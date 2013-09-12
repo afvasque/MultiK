@@ -21,7 +21,8 @@ class AudioLibrary:
     semaphore = {}
 
     finished = event.Event('Audio has finished playing.')
-    reproduciendo={}
+
+    reproduciendo = {}
 
 
 
@@ -69,13 +70,15 @@ class AudioLibrary:
 
 
     def play(self, device_index, text_to_speech_queue):
-        timestamp = time.mktime(datetime.datetime.now().timetuple())
-        filename = "%s_%d" % (device_index, timestamp)
-
         while True:
             # Get a queued text for turning into speech
-            text_to_speech = text_to_speech_queue.get()
+            queued_item = text_to_speech_queue.get()
+            text_to_speech = queued_item['tts']
+            terminate = queued_item['terminate']
+            tts_id = queued_item['tts_id']
 
+            timestamp = time.mktime(datetime.datetime.now().timetuple())
+            filename = "%s_%d" % (device_index, timestamp)
 
 
             logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
@@ -95,7 +98,8 @@ class AudioLibrary:
 
             logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, text_to_speech))
 
-            self.semaphore[ self.card_array[device_index].get_root_hub() ].acquire()
+            semaphore_index = self.card_array[device_index].get_root_hub()
+            self.semaphore[ semaphore_index ].acquire()
 
             logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, text_to_speech))
 
@@ -140,7 +144,7 @@ class AudioLibrary:
             self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
 
             # fire 'finished' event
-            values = {"id": str(device_index)}
+            values = {'id': device_index, 'terminate': terminate, 'tts': text_to_speech, 'tts_id': tts_id}
             self.finished(values)
 
 

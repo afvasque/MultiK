@@ -174,7 +174,7 @@ class ejercicio:
 
 		textbox_x= int(self.width*0.05)
 		textbox_y= self.height - int(textsize*2.2)*1.5
-		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(textsize*2.2)))
+		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(textsize*1.5)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 		pygame.display.flip()
@@ -523,6 +523,9 @@ class ejercicio:
 			return int(2.3 * self.width/x)
 
 	def GetSizeHorizontal(self, x):
+
+		if x<6:
+			x=8
 
 		if x==0:
 			return int(1.5 * self.width)

@@ -16,7 +16,12 @@ class LibTest:
 	def terminate_proc(self, sender, earg):
 		if earg['terminate']:
 			print "Terminando proceso %s..." % str(self.all_p[earg['id']])
-			self.all_p[earg['id']].terminate()
+			try:
+				self.all_p[earg['id']].terminate()
+			except AttributeError as e:
+				print "AttributeError: %s" % (e)
+				pass
+
 
 	def __init__(self):
 		self.lib.finished += self.imprimir_algo_en_pantalla
@@ -45,11 +50,20 @@ class LibTest:
 			text_to_speech_queue.put({'tts': text_to_speech, 'terminate': False, 'tts_id': tts_id})
 
 
-		# Iterar de nuevo por todas las colas de tarjetas y terminar los procesos cuando terminen
 		for idx, queue in enumerate(self.all_q):
 			tts_id = idx + 1000
-			text_to_speech = "Hola de nuevo, tarjeta %d." % idx
+			text_to_speech = "Hola. Tarjeta %d. Chao." % idx
+			queue.put({'tts': text_to_speech, 'terminate': False, 'tts_id': tts_id}) # True para terminar el proceso cuando termine de reproducir el audio
+
+
+		# Iterar de nuevo por todas las colas de tarjetas y terminar los procesos cuando terminen
+		for idx, queue in enumerate(self.all_q):
+			tts_id = idx + 1500
+			#text_to_speech = "Hola de nuevo, tarjeta %d." % idx
+			text_to_speech = "Hola. Tarjeta %d. Chao." % idx
 			queue.put({'tts': text_to_speech, 'terminate': True, 'tts_id': tts_id}) # True para terminar el proceso cuando termine de reproducir el audio
+
+
 
 		for p in self.all_p:
 			p.join()

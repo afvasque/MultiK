@@ -5,20 +5,22 @@ import wave
 import os
 import event
 import time
-import datetime
 import alsaaudio
 import subprocess
 import multiprocessing
 import sound_card
 import logging
 
-logging.basicConfig(filename='multik_audio.log',level=logging.INFO)
-#logging.info("[%d: [%s, %s, %s, %s, %s] ], " % (time.time(), text, op_type, op_level, user_name, temp))
+logging.basicConfig(filename='multik.log',level=logging.INFO)
+
+
+
 
 class AudioLibrary:
     card_array = [] # array containing the usb sound cards
     root_hubs_set = set('') # set containing the addresses of the root usb hubs
     semaphore = {}
+    played_files = {}
 
     finished = event.Event('Audio has finished playing.')
 
@@ -74,34 +76,48 @@ class AudioLibrary:
             # Get a queued text for turning into speech
             queued_item = text_to_speech_queue.get()
             text_to_speech = queued_item['tts']
-            terminate = queued_item['terminate']
-            tts_id = queued_item['tts_id']
 
-            timestamp = time.mktime(datetime.datetime.now().timetuple())
-            filename = "%s_%d" % (device_index, timestamp)
+            timestamp = time.time()
+            filename = "%s_%f" % (device_index, timestamp)
 
 
-            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
 
-            # create the wav file
-            # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
-            os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
-            # convert to stereo, thus doubling the bitrate
-            os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
-            # remove the temporary file
-            os.remove("%s.tmp" % filename)
 
-            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
+            # check if tts is already generated
+            if ( text_to_speech not in self.played_files ):
+                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
+                
+                # generate the wav file
+                # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
+                os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
+                # convert to stereo, thus doubling the bitrate
+                os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
+                # remove the temporary file
+                os.remove("%s.tmp" % filename)
+
+
+                # add filepath to known ttss dictionary
+                filepath = "%s.wav" % (filename)
+
+                self.played_files[text_to_speech] = filepath
+
+
+
+                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
             
 
 
+            filepath = self.played_files[text_to_speech]
 
-            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, text_to_speech))
+
+
+
+            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, text_to_speech))
 
             semaphore_index = self.card_array[device_index].get_root_hub()
             self.semaphore[ semaphore_index ].acquire()
 
-            logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, text_to_speech))
+            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, text_to_speech))
 
 
             try:
@@ -117,9 +133,9 @@ class AudioLibrary:
                 dev.setperiodsize(320)
                 
                 # play the wav file
-                logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
+                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
 
-                f = wave.open(filename + ".wav" , 'rb')
+                f = wave.open(filepath , 'rb')
                 data = f.readframes(320)
                 while data:
                     dev.write(data)
@@ -128,23 +144,23 @@ class AudioLibrary:
                 # close the wav file
                 f.close()
 
-                logging.info("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
+                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
 
 
                 # close the audio card
                 dev.close()
 
-                # remove the played wav file
-                os.remove(filename + ".wav")
+
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
-                logging.exception("[%d: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', filename, text_to_speech))
+                logging.exception("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', filename, text_to_speech))
                 pass
 
             self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
 
             # fire 'finished' event
-            values = {'id': device_index, 'terminate': terminate, 'tts': text_to_speech, 'tts_id': tts_id}
+            values = queued_item
+            values['id'] = device_index
             self.finished(values)
 
 

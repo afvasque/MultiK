@@ -1,7 +1,0 @@
-c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\bin\Debug\GeneradorTexto.dll
-c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\bin\Debug\GeneradorTexto.pdb
-c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\obj\Debug\ResolveAssemblyReference.cache
-c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\obj\Debug\GeneradorTexto.dll
-c:\users\felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\obj\Debug\GeneradorTexto.pdb
-C:\Users\Felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\bin\Debug\Biblioteca.dll
-C:\Users\Felipe\documents\visual studio 2010\Projects\Generador Español\GeneradorTexto\bin\Debug\Biblioteca.pdb

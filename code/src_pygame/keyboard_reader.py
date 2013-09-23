@@ -113,7 +113,7 @@ class KeyboardReader:
 				# if input detected
 				if data2:
 					# define the event arguments
-					values = {"id": str(self.keyboard_id), "char": data2}
+					values = {"id": self.keyboard_id, "char": data2}
 					try:
 						# put these values on the queue
 						self.queue.put_nowait(values)

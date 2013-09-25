@@ -535,7 +535,7 @@ class ejercicio:
 
 				textctrl= self.Objects[0]
 						
-				if textctrl.Value == self.Operacion_actual.respuesta:
+				if textctrl.Value == self.Operacion_actual.respuesta.strip():
 					#print u"feedback: "+self.Operacion_actual.feedback_correcto
 					logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'Respuesta Correcta', 'pregunta: '+self.Operacion_actual.pregunta,'audio_preg: '	+self.Operacion_actual.audio_pregunta , 'respuesta: '+self.Operacion_actual.respuesta))
 					self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))

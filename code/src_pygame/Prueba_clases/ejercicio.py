@@ -150,6 +150,7 @@ class ejercicio:
 
 				if div ==-1:
 					div=operacion.pregunta.index(" ")
+					print "Error encontrado :D"
 
 				start=0
 				end= div
@@ -162,11 +163,17 @@ class ejercicio:
 
 			elif temp<=4:
 				ytext= ytext*0.6
-				div1= operacion.pregunta.index(" ",15)
-				div2= operacion.pregunta.index(" ",30)
+				div1= operacion.pregunta.index(" ",12)
+
+
+				if len(operacion.pregunta)> div1+12:
+					try:
+						div2= operacion.pregunta.index(" ",div1+12)
+					except Exception, e:
+						div2 = -1
 
 				if div2 ==-1:
-					div2= operacion.pregunta.index(" ",20)
+					div2= operacion.pregunta.index(" ",18)
 
 				clean_pregunta= operacion.pregunta[:div1]
 				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
@@ -181,7 +188,13 @@ class ejercicio:
 
 		textbox_x= int(self.width*0.05)
 		textbox_y= ytext+self.height*0.02
-		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(self.height-textbox_y)))
+
+		height_textbox= int(self.height-textbox_y)
+
+		if height_textbox > int(self.height*0.3):
+			height_textbox= int(self.height*0.3)
+
+		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),height_textbox))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 		pygame.display.flip()
@@ -233,13 +246,11 @@ class ejercicio:
 			# 2 lineas
 			elif temp<=2:
 				# define el divisor por espacio de caracter
-				div= operacion.pregunta.index(" ",12)
+				if len(operacion.pregunta)>12:
+					div= operacion.pregunta.index(" ",12)
 
 				if div ==-1:
 					div=operacion.pregunta.index(" ")
-
-				start=0
-				end= div
 
 				clean_pregunta= operacion.pregunta[:div]
 				textsize= self.GetSizeHorizontal(len(clean_pregunta))
@@ -254,11 +265,15 @@ class ejercicio:
 				ytext= ytext+2*textsize
 
 			# si tiene 3 lineas
-			elif temp<=4:
+			else:
 				ytext= ytext*0.6
 				# 12 es el numero adecuado de caracteres que se ve bien con 50 teclados
 				div1= operacion.pregunta.index(" ",12)
-				div2= operacion.pregunta.index(" ",div1+12)
+				if len(operacion.pregunta)> div1+12:
+					try:
+						div2= operacion.pregunta.index(" ",div1+12)
+					except Exception, e:
+						div2 = -1
 
 				if div2 ==-1:
 					div2= operacion.pregunta.index(" ",18)
@@ -394,8 +409,8 @@ class ejercicio:
 			def EnableAudio():
 				self.speaking=False
 
-			# son 0.1 segundos por caracter, para que sea medio segundo aprox por palabra
-			t = Timer(len(text_to_speech)*0.2,EnableAudio)
+			# son 0.15 segundos por caracter, para que sea medio segundo aprox por palabra
+			t = Timer(len(text_to_speech)*0.15,EnableAudio)
 			t.start()
 
 
@@ -408,16 +423,21 @@ class ejercicio:
 
 		self.Operacion_actual.audio_pregunta= "Escribe el número %d" % self.numero_audifono
 
-		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
+		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)	
 
-		pygame.font.init()
 		frase = u"Escribe el número..."
-		size= int(1.5 * self.width/(len(frase)))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(frase, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
-		
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
+		size= int(1.5 * self.width/len(frase))		
+		self.WriteColor(frase, 0, 0, size)
+
+		textbox_x= int(self.width*0.05)
+		textbox_y= size+self.height*0.2
+
+		height_textbox= int(self.height-textbox_y)
+
+		if height_textbox > int(self.height*0.3):
+			height_textbox= int(self.height*0.3)
+
+		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),height_textbox))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	def ModificarPareamiento(self, diccionario, earg):
@@ -546,17 +566,15 @@ class ejercicio:
 	
 
 	def set_nombre(self):
+		
 		self.ResetLayout()
 		self.Operacion_actual.audio_pregunta= "Ingresa tu nombre"
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
-
-		pygame.font.init()
-		frase = u"Ingresa tu nombre"
-		size= int(1.5 * self.width/len(frase))
-		self.myfont = pygame.font.SysFont("monospace", size)
-		label = self.myfont.render(frase, 1, (0,0,0))
-		self.canvas.blit(label,(0, 0))
 		
+		frase = u"Ingresa tu nombre"
+		size= int(1.5 * self.width/len(frase))		
+		self.WriteColor(frase, 0, 0, size)
+
 		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
@@ -578,13 +596,18 @@ class ejercicio:
 
 	def GetSizeHorizontal(self, x):
 
-		return int(1.5 * self.width/x)
-
 		if x<6:
 			x=8
 
 		if x==0:
 			return int(1.5 * self.width)
+		
+		return int(1.5 * self.width/x)
+
+		if x<6:
+			x=8
+
+		
 		if x>30:
 			return int(2.8*self.width/x)
 		elif x>20:

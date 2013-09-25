@@ -12,6 +12,7 @@ import multiprocessing
 import time
 import logging
 from threading import Thread
+from threading import Timer 
 from BasicOperacion import *
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
@@ -55,6 +56,7 @@ class ejercicio:
 		self.mayus= False
 		self.tilde=False
 		self.recien_pareado= False
+		self.speaking = False
 
 		self.numero_audifono= numero_audifono
 		audio_lib.reproduciendo[int(self.numero_audifono)]=False
@@ -358,6 +360,8 @@ class ejercicio:
 		return texto
 
 
+	
+
 	lib_play_proc = None
 	def TexttoSpeech(self, text_to_speech):
 		#if audio_lib.reproduciendo[self.numero_audifono]==False:
@@ -377,6 +381,8 @@ class ejercicio:
 
 		if len(text_to_speech)>0:
 
+			self.speaking = True
+
 			if "¿" in text_to_speech:
 				text_to_speech= text_to_speech.replace("¿","")
 
@@ -384,6 +390,14 @@ class ejercicio:
 			audio_lib.reproduciendo[int(self.numero_audifono)]=True
 			print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
 			self.text_to_speech_queue.put({'tts': text_to_speech, 'terminate': False, 'tts_id': time.time()})
+
+			def EnableAudio():
+				self.speaking=False
+
+			# son 0.1 segundos por caracter, para que sea medio segundo aprox por palabra
+			t = Timer(len(text_to_speech)*0.2,EnableAudio)
+			t.start()
+
 
 	##########  PAREAMIENTO ##############
 	
@@ -474,7 +488,7 @@ class ejercicio:
 		text= str(earg['char']).decode('utf-8')
 		text= self.arreglar_texto(text)
 		
-		if len(text)==0:
+		if len(text)==0 or self.speaking==True:
 			return
 
 		if text == "Enter":
@@ -523,7 +537,7 @@ class ejercicio:
 
 
 
- 	def RepetirPregunta(self):
+	def RepetirPregunta(self):
 		#print "Repetir pregunta"
 		#print self.Operacion_actual.audio_pregunta
 		logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'Repetir pregunta', 'audio_preg: '	+self.Operacion_actual.audio_pregunta))

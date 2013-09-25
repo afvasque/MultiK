@@ -10,8 +10,11 @@ from socket import *
 import sys
 import multiprocessing
 import time
+import logging
 from threading import Thread
 from BasicOperacion import *
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 audio_lib = audio_library.AudioLibrary()
 
@@ -105,14 +108,14 @@ class ejercicio:
 		print"texto"
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		xtext= int(self.width/8)
+		xtext= 0
 		ytext= int(self.height*(1/8))
 
 		temp=1
 		textsize= self.height/8
 
 		if len(operacion.pregunta)>0:
-			temp= len(operacion.pregunta)/18
+			temp= len(operacion.pregunta)/15
 			textsize= self.GetSizeHorizontal(len(operacion.pregunta))
 		
 		if temp==0:
@@ -138,6 +141,7 @@ class ejercicio:
 		if len(operacion.pregunta)>0:
 			if temp<=1:
 				self.WriteColor(operacion.pregunta, xtext, ytext, textsize)	
+				ytext= ytext+textsize
 
 			elif temp<=2:
 				div= operacion.pregunta.index(" ",15)
@@ -150,9 +154,9 @@ class ejercicio:
 
 				clean_pregunta= operacion.pregunta[:div]
 				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
-
 				clean_pregunta= operacion.pregunta[(div+1):]
 				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
+				ytext= ytext+textsize
 
 			elif temp<=4:
 				ytext= ytext*0.6
@@ -170,11 +174,12 @@ class ejercicio:
 
 				clean_pregunta= operacion.pregunta[(div2+1):]
 				self.WriteColor(clean_pregunta, xtext, ytext+2*textsize, textsize)
+				ytext= ytext+2*textsize
 
 
 		textbox_x= int(self.width*0.05)
-		textbox_y= self.height - int(textsize*2.2)*1.5
-		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(textsize*1.5)))
+		textbox_y= ytext+self.height*0.02
+		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),int(self.height-textbox_y)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 		pygame.display.flip()
@@ -185,14 +190,15 @@ class ejercicio:
 		print"lista"
 		self.TexttoSpeech(operacion.audio_pregunta)
 
-		xtext= int(self.width/8)
+		xtext= 0
 		ytext= int(self.height*(1/8))
 
+		# la variable temp dice cuantas lineas tiene cada frase.
 		temp=1
 		textsize= self.GetSizeHorizontal(len(operacion.pregunta))
 
 		if len(operacion.pregunta)>0:
-			temp= len(operacion.pregunta)/15
+			temp= len(operacion.pregunta)/12
 
 
 		if len(operacion.path_imagen)>1:
@@ -210,15 +216,22 @@ class ejercicio:
 		
 		print "temp: "+str(temp)
 
+		# Aquí se construyen las distintas lineas de la pregunta
 		if len(operacion.pregunta)>0:
+
+			# Si es que hay más de 2 lineas, entonces hay que escribir las oraciones más arriba
 			if temp>=2:
 				ytext= ytext*0.8
-
+			
+			# 1 sola linea
 			if temp<=1:
 				self.WriteColor(operacion.pregunta, xtext, ytext, textsize)	
+				ytext= ytext+textsize
 
+			# 2 lineas
 			elif temp<=2:
-				div= operacion.pregunta.index(" ",15)
+				# define el divisor por espacio de caracter
+				div= operacion.pregunta.index(" ",12)
 
 				if div ==-1:
 					div=operacion.pregunta.index(" ")
@@ -227,31 +240,49 @@ class ejercicio:
 				end= div
 
 				clean_pregunta= operacion.pregunta[:div]
+				textsize= self.GetSizeHorizontal(len(clean_pregunta))
+				
+				clean_pregunta2= operacion.pregunta[(div+1):]
+				textsize2= self.GetSizeHorizontal(len(clean_pregunta2))
+
+				textsize= min(textsize, textsize2)
+
 				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+				self.WriteColor(clean_pregunta2, xtext, ytext+textsize, textsize)
+				ytext= ytext+2*textsize
 
-				clean_pregunta= operacion.pregunta[(div+1):]
-				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
-
+			# si tiene 3 lineas
 			elif temp<=4:
 				ytext= ytext*0.6
-				div1= operacion.pregunta.index(" ",15)
-				div2= operacion.pregunta.index(" ",30)
+				# 12 es el numero adecuado de caracteres que se ve bien con 50 teclados
+				div1= operacion.pregunta.index(" ",12)
+				div2= operacion.pregunta.index(" ",div1+12)
 
 				if div2 ==-1:
-					div2= operacion.pregunta.index(" ",20)
+					div2= operacion.pregunta.index(" ",18)
 
 				clean_pregunta= operacion.pregunta[:div1]
-				self.WriteColor(clean_pregunta, xtext, ytext, textsize)	
+				textsize= self.GetSizeHorizontal(len(clean_pregunta))
+				
+				clean_pregunta2= operacion.pregunta[(div1+1):div2]
+				textsize2= self.GetSizeHorizontal(len(clean_pregunta2))
+				
+				clean_pregunta3= operacion.pregunta[(div2+1):]
+				textsize3= self.GetSizeHorizontal(len(clean_pregunta3))
+				
+				textsize = min(textsize, textsize2, textsize3)
 
-				clean_pregunta= operacion.pregunta[(div1+1):div2]
-				self.WriteColor(clean_pregunta, xtext, ytext+textsize, textsize)
-
-				clean_pregunta= operacion.pregunta[(div2+1):]
-				self.WriteColor(clean_pregunta, xtext, ytext+2*textsize, textsize)
+				self.WriteColor(clean_pregunta, xtext, ytext, textsize)
+				self.WriteColor(clean_pregunta2, xtext, ytext+textsize, textsize)
+				self.WriteColor(clean_pregunta3, xtext, ytext+2*textsize, textsize)
+				ytext= ytext+3*textsize
 
 		
 
-		self.Objects.append(Listview(operacion.alternativas,int(self.width*0.05),int(self.height*0.55),int(self.width*0.8),int(self.height/3)))
+		listview_x= int(self.width*0.05)
+		listview_y= ytext+self.height*0.02
+
+		self.Objects.append(Listview(operacion.alternativas,listview_x,listview_y,int(self.width*0.8),int(self.height-listview_y)))
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
 
@@ -282,6 +313,7 @@ class ejercicio:
 				masked_pregunta= masked_pregunta[:(temp_end-1)]+masked_pregunta[(temp_end):]
 				print "eee:"+masked_pregunta
 
+			self.myfont = pygame.font.SysFont("monospace", textsize+1)
 			label = self.myfont.render(masked_pregunta, 1, (0,0,0))
 
 			self.canvas.blit(label,(xtext, ytext))
@@ -388,6 +420,9 @@ class ejercicio:
 				self.nombre_ingresado=True
 				self.Operacion_actual.feedback_correcto= "First"
 				self.Operacion_actual.RespuestaCorrecta()
+
+				logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'Pareamiento', 'nombre: ' +nombre_caps))
+
 				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 				print "siguiente op"
 				self.CreateGrid(self.Operacion_actual)
@@ -411,7 +446,7 @@ class ejercicio:
 							print "teclado 1:"+str(diccionario[1].numero_audifono)
 							print "teclado 1 preg:"+str(diccionario[1].Operacion_actual.audio_pregunta)
 							diccionario[a].recien_pareado=True
-							diccionario[a].TexttoSpeech("apagando")
+							#diccionario[a].TexttoSpeech("apagando")
 
 					self.numero_audifono=temp
 					self.pareado=True
@@ -449,13 +484,15 @@ class ejercicio:
 				if isinstance(self.Objects[0],Listview):
 					
 					listview= self.Objects[0]
-					print "Respuesta"
-					print  listview.answer()
-					print self.Operacion_actual.respuesta
+					#print "Respuesta"
+					#print  listview.answer()
+					#print self.Operacion_actual.respuesta
 					if listview.answer() == self.Operacion_actual.respuesta:
+						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'Respuesta Correcta', 'pregunta: '+self.Operacion_actual.pregunta,'audio_preg: '	+self.Operacion_actual.audio_pregunta , 'respuesta: '+self.Operacion_actual.respuesta))
 						self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
 						self.Operacion_actual.RespuestaCorrecta()
 					else:
+						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'Respuesta Incorrecta', 'pregunta: '+self.Operacion_actual.pregunta,'audio_preg: '	+self.Operacion_actual.audio_pregunta , 'resp_alum: '+listview.answer() ,'respuesta: '+self.Operacion_actual.respuesta))
 						self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 						self.Operacion_actual.RespuestaIncorrecta()
 
@@ -465,11 +502,13 @@ class ejercicio:
 				textctrl= self.Objects[0]
 						
 				if textctrl.Value == self.Operacion_actual.respuesta:
-					print u"feedback: "+self.Operacion_actual.feedback_correcto
+					#print u"feedback: "+self.Operacion_actual.feedback_correcto
+					logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'Respuesta Correcta', 'pregunta: '+self.Operacion_actual.pregunta,'audio_preg: '	+self.Operacion_actual.audio_pregunta , 'respuesta: '+self.Operacion_actual.respuesta))
 					self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
 					self.Operacion_actual.RespuestaCorrecta()
 					textctrl.Value=""
 				else:
+					logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'Respuesta Incorrecta', 'pregunta: '+self.Operacion_actual.pregunta,'audio_preg: '	+self.Operacion_actual.audio_pregunta , 'resp_alum: '+textctrl.Value ,'respuesta: '+self.Operacion_actual.respuesta))
 					self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 					self.Operacion_actual.RespuestaIncorrecta()
 					textctrl.Value=""
@@ -485,8 +524,9 @@ class ejercicio:
 
 
  	def RepetirPregunta(self):
-		print "Repetir pregunta"
-		print self.Operacion_actual.audio_pregunta
+		#print "Repetir pregunta"
+		#print self.Operacion_actual.audio_pregunta
+		logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'Repetir pregunta', 'audio_preg: '	+self.Operacion_actual.audio_pregunta))
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
 		
 	
@@ -524,19 +564,21 @@ class ejercicio:
 
 	def GetSizeHorizontal(self, x):
 
+		return int(1.5 * self.width/x)
+
 		if x<6:
 			x=8
 
 		if x==0:
 			return int(1.5 * self.width)
 		if x>30:
-			return int(2.5*self.width/x)
+			return int(2.8*self.width/x)
 		elif x>20:
-			return int(2*self.width/x)
+			return int(2.5*self.width/x)
 		elif x>15:
-			return int(1.8 * self.width/x)
+			return int(2 * self.width/x)
 		else:
-			return int(1.5 * self.width/x)
+			return int(1.8 * self.width/x)
 
 	def GetSizeTextImg(self, x):
 		if x==0:

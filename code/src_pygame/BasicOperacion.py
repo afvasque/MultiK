@@ -1,5 +1,6 @@
 from Reglas_Fijas import *
 
+
 class BasicOperacion:
     
         
@@ -38,7 +39,6 @@ class BasicOperacion:
         self.puntajesNivel.append(nuevoPuntaje)
                 
     def RespuestaCorrecta(self):
-        
         self.respuesta_correcta=True
         if self.feedback_correcto != "First":
             self.cantidadNivel+=1

@@ -2,10 +2,10 @@
 
 class Reglas_Fijas:
     #Cantidad maxima de operaciones por nivel
-    MaximoNivel = 10
+    MaximoNivel = 1
 
     #Cantidad de buenas que debe tener un niño para pasar de nivel
-    MinimoPasoNivel = 10
+    MinimoPasoNivel = 1
     #Cantidad de preguntas cuando hay un error
     CantidadPreguntasNivelError = 1
 

@@ -54,9 +54,6 @@ def Keyboard_event(sender, earg):
 
         timestamp = time.time()
 
-        
-        logging.info("[%d: [%s, %s, %s, %s, %s] ], " % (timestamp, text, op_type, op_level, user_name, temp))
-
         diccionario[temp].Keyboard_Pressed(sender,earg)
         window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas

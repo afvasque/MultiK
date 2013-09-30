@@ -51,12 +51,10 @@ class ejercicio:
 		self.blocked=False
 		self.Objects=[]
 
-		self.pareado= False
-		self.nombre_ingresado=False
-
+		
 		self.mayus= False
 		self.tilde=False
-		self.recien_pareado= False
+		
 		self.speaking = False
 
 		self.numero_audifono= numero_audifono
@@ -70,7 +68,8 @@ class ejercicio:
 		operacion.TipoOperacion= TipoOperacion.primero
 		operacion.nivelOperacion= 1
 		operacion.feedback_correcto= "First"
-		self.Operacion_actual= operacion
+
+		self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(operacion, self.Alumno_actual)
 
 			  
 		self.CreateGrid(self.Operacion_actual)
@@ -80,10 +79,7 @@ class ejercicio:
 		self.ResetLayout()
 
 		print "audio_pregunta"+operacion.audio_pregunta
-		if self.pareado == False:
-			print "parear"
-			self.parear()
-			return
+		
 
 		tipo_op= operacion.GetControlType()
 		print "Tipo:"+tipo_op
@@ -111,6 +107,7 @@ class ejercicio:
 	def SetLayoutText(self,operacion):
 
 		print"texto"
+		print "audio: "+operacion.audio_pregunta
 		self.TexttoSpeech(operacion.audio_pregunta)
 
 		self.xtext= 0
@@ -218,7 +215,10 @@ class ejercicio:
 				div_fin= operacion.pregunta.index(" ",div_fin+sep)
 			except Exception, e:
 				div_fin= len(operacion.pregunta)
-
+			
+			if div_inicio> div_fin:
+				break;
+			
 			clean_pregunta=" "
 			if div_fin< len(operacion.pregunta):
 				clean_pregunta= operacion.pregunta[div_inicio:div_fin]
@@ -239,7 +239,6 @@ class ejercicio:
 			self.WriteColor(list_cleanpreguntas[x], self.xtext, self.ytext, global_textsize)
 			self.ytext= self.ytext+ global_textsize
 		return	
-
 
 	def WriteColor(self, pregunta, xtext, ytext, textsize):
 
@@ -276,7 +275,7 @@ class ejercicio:
 			self.myfont = pygame.font.SysFont("monospace", textsize)
 			label = self.myfont.render(pregunta, 1, (0,0,0))
 			self.canvas.blit(label,(xtext, ytext))
-			print "escribiendo"+pregunta
+			print "escribiendo: "+pregunta
 
 		return
 
@@ -330,103 +329,16 @@ class ejercicio:
 						
 			audio_lib.play(self.numero_audifono, text_to_speech)
 
-			if self.pareado== False:
-				self.speaking=False
-
 			def EnableAudio():
 				self.speaking=False
 
 			# son 0.15 segundos por caracter, para que sea medio segundo aprox por palabra
-			t = Timer(len(text_to_speech)*0.15,EnableAudio)
+			t = Timer(len(text_to_speech)*0.0015,EnableAudio)
 			t.start()
 
 
-	##########  PAREAMIENTO ##############
+
 	
-
-	def parear(self):
-
-		self.ResetLayout()
-
-		self.Operacion_actual.audio_pregunta= "Escribe el número %d" % self.numero_audifono
-
-		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)	
-
-		frase = u"Escribe el número..."
-		size= int(1.5 * self.width/len(frase))		
-		self.WriteColor(frase, 0, 0, size)
-
-		textbox_x= int(self.width*0.05)
-		textbox_y= size+self.height*0.2
-
-		height_textbox= int(self.height-textbox_y)
-
-		if height_textbox > int(self.height*0.3):
-			height_textbox= int(self.height*0.3)
-
-		self.Objects.append(Textbox(textbox_x,textbox_y,int(self.width*0.8),height_textbox))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
-	def ModificarPareamiento(self, diccionario, earg):
-		
-		text= str(earg['char']).decode('utf-8')
-		text= self.arreglar_texto(text)
-		
-		if self.pareado== True and self.nombre_ingresado==False:
-			textctrl= self.Objects[0]
-			if text=="Enter" and len(textctrl.Value)>0:
-				temp_nombre= textctrl.Value
-				nombre_caps= temp_nombre.title()
-				self.Alumno_actual.Nombre= nombre_caps
-				self.nombre_ingresado=True
-				self.Operacion_actual.feedback_correcto= "First"
-				self.Operacion_actual.RespuestaCorrecta()
-
-				# PAREAMIENTO, nombre del alumno
-				logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'PAREAMIENTO', nombre_caps))
-
-				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
-				print "siguiente op"
-				self.CreateGrid(self.Operacion_actual)
-		
-
-		elif self.pareado== False and self.nombre_ingresado==False:
-			textctrl= self.Objects[0]
-			print "largo: "+str(len(textctrl.Value))
-			if text=="Enter" and len(textctrl.Value)>0:
-				temp= int(textctrl.Value)
-				print "temp:"+str(temp)
-				if temp>=0 and temp< len(diccionario):
-
-					if len(diccionario)>1:
-						for a in range(0,len(diccionario)):
-							if(diccionario[a].numero_audifono== temp):
-								num_aud= str(self.numero_audifono)
-								diccionario[a].numero_audifono= int(num_aud)
-								self.recien_pareado=True
-								print "cambiado:"+str(temp)+" por:"+str(self.numero_audifono)
-								print "diccionario:"+str(diccionario[a])
-								print "teclado 1:"+str(diccionario[0].numero_audifono)
-								print "teclado 1 preg:"+str(diccionario[0].Operacion_actual.audio_pregunta)
-								diccionario[a].recien_pareado=True
-								#diccionario[a].TexttoSpeech("apagando")
-
-					self.numero_audifono=temp
-					self.pareado=True
-					self.recien_pareado=True
-					self.lib_play_proc=None
-					self.set_nombre()
-					
-		# reconocimiento de backspace para borrado
-		
-		if self.pareado==False:
-			if text=="0" or text=="1" or text=="2" or text=="3" or text=="4" or text=="5" or text=="6" or text=="7" or text=="8" or text=="9" or text=="Back":
-				self.Objects[0].react(text)
-				self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		else:
-			self.Objects[0].react(text)
-			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		
 	def Keyboard_Pressed(self, sender, earg):
 
 		#try:
@@ -498,20 +410,6 @@ class ejercicio:
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
 		
 	
-
-	def set_nombre(self):
-		
-		self.ResetLayout()
-		self.Operacion_actual.audio_pregunta= "Ingresa tu nombre"
-		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)
-		
-		frase = u"Ingresa tu nombre"
-		size= int(1.5 * self.width/len(frase))		
-		self.WriteColor(frase, 0, 0, size)
-
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-
 	##### Utilidades ######
 	#### funciones que obtienen el tamaño para los ejercicios
 
@@ -538,18 +436,6 @@ class ejercicio:
 		
 		return int(1.5 * self.width/x)
 
-		if x<6:
-			x=8
-
-		
-		if x>30:
-			return int(2.8*self.width/x)
-		elif x>20:
-			return int(2.5*self.width/x)
-		elif x>15:
-			return int(2 * self.width/x)
-		else:
-			return int(1.8 * self.width/x)
 
 	def GetSizeTextImg(self, x):
 		if x==0:

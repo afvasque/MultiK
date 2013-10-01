@@ -22,10 +22,10 @@ class AudioLibrary:
     semaphore = {}
     played_files = {}
 
+    all_q = []
+    all_p = []
+
     finished = event.Event('Audio has finished playing.')
-
-    reproduciendo = {}
-
 
 
 
@@ -49,6 +49,22 @@ class AudioLibrary:
         print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
         print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
 
+        # Create a process and a queue for every card
+        for i in range(0,self.get_total_usb_cards()):
+            # Create a queue
+            text_to_speech_queue = multiprocessing.Queue()
+            # Create a process
+            p = multiprocessing.Process(target=self.read_queue, args=(i, text_to_speech_queue))
+            # Set as daemon
+            p.daemon = True
+            # Append to the process array
+            self.all_p.append(p)
+            # Start it
+            p.start()
+            # Append the queue to the queue array
+            self.all_q.append(text_to_speech_queue)
+
+
 
 
     def get_total_usb_cards(self):
@@ -71,7 +87,26 @@ class AudioLibrary:
 
 
 
-    def play(self, device_index, text_to_speech_queue):
+    def play(self, id, text_to_speech):
+        # Get the queue for the corresponding card
+        queue = self.all_q[id]
+
+        # Empty the queue
+        queue.empty()
+
+        # Put the text_to_speech in the queue
+        queue.put({
+            'tts': text_to_speech
+        })
+
+
+
+
+
+
+
+
+    def read_queue(self, device_index, text_to_speech_queue):
         while True:
             # Get a queued text for turning into speech
             queued_item = text_to_speech_queue.get()
@@ -88,24 +123,15 @@ class AudioLibrary:
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
                 
                 # generate the wav file
-                # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
-                os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
-                # convert to stereo, thus doubling the bitrate
-                os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
-                # remove the temporary file
-                os.remove("%s.tmp" % filename)
-
+                self.generate_sound_file(text_to_speech, filename)
 
                 # add filepath to known ttss dictionary
                 filepath = "%s.wav" % (filename)
 
                 self.played_files[text_to_speech] = filepath
 
-
-
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
             
-
 
             filepath = self.played_files[text_to_speech]
 
@@ -162,6 +188,16 @@ class AudioLibrary:
             values = queued_item
             values['id'] = device_index
             self.finished(values)
+
+
+    def generate_sound_file(self, text_to_speech, filename):
+        # generate the wav file
+        # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
+        os.system("echo \"%s\" | text2wave -F 48000 -o %s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
+        # convert to stereo, thus doubling the bitrate
+        os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
+        # remove the temporary file
+        os.remove("%s.tmp" % filename)
 
 
 

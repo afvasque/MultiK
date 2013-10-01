@@ -13,21 +13,75 @@ import logging
 import pygame
 from Prueba_clases.clases import *
 from Prueba_clases.ejercicio import *
+from Pareamiento import *
+import audio_library
 
 
-diccionario= {}
+diccionario= []
 lib = KeyboardLibrary()
+Pareamientos= []
+Alumnos = []
+Audio= []
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
+
+audio_lib = audio_library.AudioLibrary()
 
 
 def Keyboard_event(sender, earg):
     
+    print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
     text= str(earg['char']).decode('utf-8')
+    id_sent= int(earg['id'])
+
+    alumno = Alumnos[id_sent]
+
+    # Alumno se encuentra pareado
+    if alumno.ready:
+        print "alumno listo"
+
+        if text=="Pow": 
+            diccionario[alumno.Id].RepetirPregunta()
+
+        else:
+
+            diccionario[alumno.Id].Keyboard_Pressed(sender,earg)
+            window.blit(diccionario[alumno.Id].screen(),(diccionario[alumno.Id].width *diccionario[alumno.Id].pos_x,diccionario[alumno.Id].height *diccionario[alumno.Id].pos_y))
+
+    # Alumno no se encuentra pareado
+    else:
+        if text=="Pow": 
+            if Audio[alumno.Id] is None:
+                for i in range(len(Audio)):
+                    if i not in Audio:
+                        TexttoSpeech(i,"Escribe el número "+str(i))
+            else:
+                TexttoSpeech(Audio[alumno.Id],"Ingresa tu nombre")
+
+        else:
+            print "not par"
+            Pareamientos[alumno.Id].ModificarPareamiento(alumno,Audio,earg)
+            window.blit(Pareamientos[alumno.Id].screen(),(Pareamientos[alumno.Id].width *Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].height *Pareamientos[alumno.Id].pos_y))
+
+            if Pareamientos[alumno.Id].pareado == True and  Pareamientos[alumno.Id].nombre_ingresado == False:
+                TexttoSpeech(Audio[alumno.Id],"Ingresa tu nombre")
+
+            if Pareamientos[alumno.Id].pareado == True and  Pareamientos[alumno.Id].nombre_ingresado == True:
+                alumno.ready= True
+                ej=ejercicio(Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].pos_y,Pareamientos[alumno.Id].width,Pareamientos[alumno.Id].height,Pareamientos[alumno.Id].numero_audifono, alumno)
+                diccionario[alumno.Id]=ej
+                i= alumno.Id
+                window.blit(diccionario[i].screen(),(diccionario[i].width *diccionario[i].pos_x,diccionario[i].height *diccionario[i].pos_y))
+
+    pygame.display.flip()
+
+
+
+    '''
     if text=="Pow":
         temp= int(earg['id'])
 
-        print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+        
         if diccionario[temp].pareado==True:
             diccionario[temp].RepetirPregunta()
             return
@@ -54,14 +108,18 @@ def Keyboard_event(sender, earg):
 
         timestamp = time.time()
 
-        
-        logging.info("[%d: [%s, %s, %s, %s, %s] ], " % (timestamp, text, op_type, op_level, user_name, temp))
-
         diccionario[temp].Keyboard_Pressed(sender,earg)
         window.blit(diccionario[temp].screen(),(diccionario[temp].width *diccionario[temp].pos_x,diccionario[temp].height *diccionario[temp].pos_y))
         print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+    '''
+    
 
-    pygame.display.flip()
+
+def TexttoSpeech(audifono, tts):
+
+    print "Reproduciendo en audifono #%s: \"%s\"" % (audifono, tts)
+                    
+    audio_lib.play(audifono, tts)
 
 
   #TODO: poner thread como padre
@@ -90,28 +148,22 @@ if line_number_x * line_number_y < keyboardsNum:
 
 
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
-
-
-'''
-Alumnos = list()
-
-Alumnos.append(Alumno(1,"Andrea","Teclados"))
-Alumnos.append(Alumno(2,"Miguel","Teclados"))
-Alumnos.append(Alumno(3,"Esteban","Teclados"))
-Alumnos.append(Alumno(4,"Enzo","Teclados"))
-Alumnos.append(Alumno(5,"Felipe","Teclados"))
-Alumnos.append(Alumno(6,"Tomás","Teclados"))
-Alumnos.append(Alumno(7,"Gabriel","Teclados"))
-Alumnos.append(Alumno(8,"José","Teclados"))
-'''                     
+               
 
 for i in range(keyboardsNum):    
         
     
-    alumno= Alumno(i,"","Teclados")
-    ej=ejercicio(i%line_number_x,i/line_number_x,width/line_number_x,height/line_number_y,i,alumno)
-    diccionario[i]=ej
-    window.blit(diccionario[i].screen(),(diccionario[i].width *diccionario[i].pos_x,diccionario[i].height *diccionario[i].pos_y))
+    alumno= Alumno(i)
+    Alumnos.append(alumno)
+    Audio.append(None)
+    diccionario.append(None)
+    #ej=ejercicio(i%line_number_x,i/line_number_x,width/line_number_x,height/line_number_y,i,alumno)
+    #diccionario[i]=ej
+
+    Pareamientos.append(Pareamiento(i%line_number_x,i/line_number_x,width/line_number_x,height/line_number_y))
+    window.blit(Pareamientos[i].screen(),(Pareamientos[i].width *Pareamientos[i].pos_x,Pareamientos[i].height *Pareamientos[i].pos_y))
+
+    TexttoSpeech(i, "Escribe el número "+str(i))
 
 pygame.display.flip()
         

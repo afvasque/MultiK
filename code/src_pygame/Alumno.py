@@ -14,27 +14,10 @@ class Alumno:
     #  //Tiempo en que el niño aparece en pantalla previo a la liberacion
     #  public DateTime TiempoFinalReconocimiento;
 
-    def __init__(self, Id, Nombre, Apellido):
+    def __init__(self, Id):
         self.Id=Id
-        self.Nombre=Nombre
-        self.Apellido=Apellido
+        self.Nombre=""
+        self.Apellido=""
+        self.ready = False
         #self.simbolo= simbolo
         
-
-     
-
-        #region IComparable<Alumno> Members
-'''
-        /// <summary>
-        /// Compara alfabeticamente dos alumnos, primero por el apellido y despues por el nombre.
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
-        public int CompareTo(Alumno other)
-        {
-            return string.Compare(NombreCompleto, other.NombreCompleto, StringComparison.CurrentCultureIgnoreCase);
-        }
-
-        #endregion
-
-'''

@@ -118,6 +118,7 @@ class Pareamiento:
 							Audio[Alumno.Id]= value					
 							self.numero_audifono=value
 							self.pareado=True
+							self.recien_pareado=True
 							self.set_nombre()
 				else:
 					textctrl.value=""

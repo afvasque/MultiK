@@ -333,7 +333,7 @@ class ejercicio:
 				self.speaking=False
 
 			# son 0.15 segundos por caracter, para que sea medio segundo aprox por palabra
-			t = Timer(len(text_to_speech)*0.0015,EnableAudio)
+			t = Timer(1,EnableAudio)
 			t.start()
 
 
@@ -373,7 +373,7 @@ class ejercicio:
 
 				textctrl= self.Objects[0]
 						
-				if textctrl.Value == self.Operacion_actual.respuesta.strip():
+				if textctrl.Value.strip() == self.Operacion_actual.respuesta:
 					# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
 					logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
 					#self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
@@ -398,8 +398,7 @@ class ejercicio:
 		
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
-		#except Exception, e:
-		#	print "result is:"+ str(e)
+
 
 
 

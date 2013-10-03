@@ -10,6 +10,7 @@ import subprocess
 import multiprocessing
 import sound_card
 import logging
+import mmap
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -20,7 +21,7 @@ class AudioLibrary:
     card_array = [] # array containing the usb sound cards
     root_hubs_set = set('') # set containing the addresses of the root usb hubs
     semaphore = {}
-    played_files = {}
+    audio_mmap = {}
 
     all_q = []
     all_p = []
@@ -92,8 +93,9 @@ class AudioLibrary:
         queue = self.all_q[id]
 
         # Empty the queue
-        queue.empty()
-
+        while not queue.empty():
+            queue.get()
+        
         # Put the text_to_speech in the queue
         queue.put({
             'tts': text_to_speech
@@ -119,31 +121,33 @@ class AudioLibrary:
 
 
             # check if tts is already generated
-            if ( text_to_speech not in self.played_files ):
+            if ( text_to_speech not in self.audio_mmap ):
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
                 
                 # generate the wav file
                 self.generate_sound_file(text_to_speech, filename)
 
-                # add filepath to known ttss dictionary
+                # write audio file into memory
                 filepath = "%s.wav" % (filename)
 
-                self.played_files[text_to_speech] = filepath
+                # open the generated audio file
+                f = open(filepath, "r+b")
+                # memory-map the file, size 0 means whole file
+                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0)
 
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
             
 
-            filepath = self.played_files[text_to_speech]
+            # mmap of the generated file
+            file_mmap = self.audio_mmap[text_to_speech]
 
 
-
-
-            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, text_to_speech))
 
             semaphore_index = self.card_array[device_index].get_root_hub()
-            self.semaphore[ semaphore_index ].acquire()
 
-            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, text_to_speech))
+            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, semaphore_index))
+            self.semaphore[ semaphore_index ].acquire()
+            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, semaphore_index))
 
 
             try:
@@ -161,14 +165,23 @@ class AudioLibrary:
                 # play the wav file
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
 
-                f = wave.open(filepath , 'rb')
-                data = f.readframes(320)
+                fwav = wave.open(file_mmap)
+                data = fwav.readframes(320)
                 while data:
                     dev.write(data)
-                    data = f.readframes(320)
+                    data = fwav.readframes(320)
 
-                # close the wav file
+                fwav.close()
+                # f = wave.open(filepath , 'rb')
+                # data = f.readframes(320)
+                # while data:
+                #     dev.write(data)
+                #     data = f.readframes(320)
+
+                # close the memory mapped audio
+                file_mmap.close()
                 f.close()
+
 
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
 
@@ -198,7 +211,6 @@ class AudioLibrary:
         os.system("sox %s.tmp -c 2 %s.wav" % (filename, filename))
         # remove the temporary file
         os.remove("%s.tmp" % filename)
-
 
 
     def get_card_names(self):

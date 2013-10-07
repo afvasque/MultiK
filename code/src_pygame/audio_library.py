@@ -133,13 +133,16 @@ class AudioLibrary:
                 # open the generated audio file
                 f = open(filepath, "r+b")
                 # memory-map the file, size 0 means whole file
-                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0)
+                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
             
 
             # mmap of the generated file
             file_mmap = self.audio_mmap[text_to_speech]
+
+            # rewind the audio
+            file_mmap.seek(0)
 
             semaphore_index = self.card_array[device_index].get_root_hub()
 
@@ -158,36 +161,18 @@ class AudioLibrary:
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
 
 
-                file_mmap.seek(0)
-                fwav = wave.open(file_mmap, "rb")
-
-                print fwav
-
                 # we hard code the values because of our sound card capabilities,
                 # audio files to be played have to match these.
                 dev.setchannels(2) # hard-coded 2 channels (stereo).
-                dev.setrate(fwav.getframerate())  # hard-coded sample rate 48000 Hz.
+                dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
                 dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
                 dev.setperiodsize(320)
 
-                data = fwav.readframes(320)
+                data = file_mmap.read(320)
                 while data:
                     dev.write(data)
-                    data = fwav.readframes(320)
-                    print "%d" % fwav.tell()
+                    data = file_mmap.read(320)
                 
-
-                fwav.close()
-                # f = wave.open(filepath , 'rb')
-                # data = f.readframes(320)
-                # while data:
-                #     dev.write(data)
-                #     data = f.readframes(320)
-
-                # close the memory mapped audio
-                file_mmap.close()
-                f.close()
-
 
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
 

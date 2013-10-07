@@ -141,8 +141,6 @@ class AudioLibrary:
             # mmap of the generated file
             file_mmap = self.audio_mmap[text_to_speech]
 
-
-
             semaphore_index = self.card_array[device_index].get_root_hub()
 
             logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, semaphore_index))
@@ -155,21 +153,29 @@ class AudioLibrary:
                 print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
                 dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
                 
-                # we hard code the values because of our sound card capabilities,
-                # audio files to be played have to match these.
-                dev.setchannels(2) # hard-coded 2 channels (stereo).
-                dev.setrate(48000)  # hard-coded sample rate 48000 Hz.
-                dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
-                dev.setperiodsize(320)
                 
                 # play the wav file
                 logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
 
-                fwav = wave.open(file_mmap)
+
+                file_mmap.seek(0)
+                fwav = wave.open(file_mmap, "rb")
+
+                print fwav
+
+                # we hard code the values because of our sound card capabilities,
+                # audio files to be played have to match these.
+                dev.setchannels(2) # hard-coded 2 channels (stereo).
+                dev.setrate(fwav.getframerate())  # hard-coded sample rate 48000 Hz.
+                dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
+                dev.setperiodsize(320)
+
                 data = fwav.readframes(320)
                 while data:
                     dev.write(data)
                     data = fwav.readframes(320)
+                    print "%d" % fwav.tell()
+                
 
                 fwav.close()
                 # f = wave.open(filepath , 'rb')

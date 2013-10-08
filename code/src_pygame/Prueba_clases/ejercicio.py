@@ -44,10 +44,11 @@ class ejercicio:
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.whiteColor = pygame.Color(255,255,255)
+		self.backColor = pygame.Color(random.randint(100, 255),random.randint(100, 255),random.randint(100, 255))
 		self.width = width
 		self.height = height
 		self.canvas = pygame.Surface((self.width,self.height))
-		self.canvas.fill(self.whiteColor)
+		self.canvas.fill(self.backColor)
 		self.blocked=False
 		self.Objects=[]
 
@@ -92,7 +93,7 @@ class ejercicio:
 
 
 	def ResetLayout(self):
-		self.canvas.fill(self.whiteColor)
+		self.canvas.fill(self.backColor)
 		self.Objects= []
 
 		

@@ -43,10 +43,10 @@ class Textbox:
 				label = self.myfont.render(self.Value, 1, self.blackColor)
 				#self.canvas.blit(label,(1, 1))
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2, self.height - 2))
-		if self.width > label.get_width():
+		if self.width > label.width:
 			self.canvas.blit(label,(1, 1))
 		else:
-			self.canvas.blit(label,(self.width - label.get_width() - 1, 1))		
+			self.canvas.blit(label,(self.width - label.width - 1, 1))		
 		return
 
 class Listview:

@@ -105,9 +105,26 @@ class AudioLibrary:
         while not queue.empty():
             queue.get()
         
+        text_to_speech_array = []
+        text_to_speech_array.append( text_to_speech )
+
         # Put the text_to_speech in the queue
         queue.put({
-            'tts': text_to_speech
+            'tts_concatenated': text_to_speech_array
+        })
+
+
+    def play_concatenated(self, id, text_to_speech_array):
+        # Get the queue for the corresponding card
+        queue = self.all_q[id]
+
+        # Empty the queue
+        while not queue.empty():
+            queue.get()
+        
+        # Put the text_to_speech in the queue
+        queue.put({
+            'tts_concatenated': text_to_speech_array
         })
 
 
@@ -153,55 +170,30 @@ class AudioLibrary:
         while True:
             # Get a queued text for turning into speech
             queued_item = text_to_speech_queue.get()
-            text_to_speech = queued_item['tts']
-
-            timestamp = time.time()
-            filename = "%s_%f" % (device_index, timestamp)
-
-
-
-
-            # check if tts is already generated
-            if ( text_to_speech not in self.audio_mmap ):
-                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
-                
-                # generate the wav file
-                self.generate_sound_file(text_to_speech, filename)
-
-                # write audio file into memory
-                filepath = "%s.wav" % (filename)
-
-                # open the generated audio file
-                f = open(filepath, "r+b")
-                # memory-map the file, size 0 means whole file
-                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
-
-                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
+            tts_concatenated = queued_item['tts_concatenated']
             
+            for text_to_speech in tts_concatenated:
+                timestamp = time.time()
+                filename = "%s_%f" % (device_index, timestamp)
 
-            # mmap of the generated file
-            file_mmap = self.audio_mmap[text_to_speech]
+                # check if tts is not generated already
+                if ( text_to_speech not in self.audio_mmap ):
+                    # generate and mmap it
+                    self.generate_and_mmap_file(text_to_speech, filename, device_index)
 
-            # rewind the audio
-            file_mmap.seek(0)
-
+            # acquire semaphore
             semaphore_index = self.card_array[device_index].get_root_hub()
-
-            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', filename, semaphore_index))
+            logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', semaphore_index))
             self.semaphore[ semaphore_index ].acquire()
-            logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', filename, semaphore_index))
+            logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', semaphore_index))
 
-
+            # write audios to the sound card
             try:
                 #open the audio card
                 print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
                 dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
                 
-                
-                # play the wav file
-                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', filename, text_to_speech))
-
-
+                # set it up
                 # we hard code the values because of our sound card capabilities,
                 # audio files to be played have to match these.
                 dev.setchannels(2) # hard-coded 2 channels (stereo).
@@ -209,24 +201,31 @@ class AudioLibrary:
                 dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
                 dev.setperiodsize(320)
 
-                data = file_mmap.read(320)
-                while data:
-                    dev.write(data)
+                for text_to_speech in tts_concatenated:
+                    # get the mmap of the generated file
+                    file_mmap = self.audio_mmap[text_to_speech]
+
+                    # play the wav file
+                    logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', text_to_speech))
+                    # read and write
                     data = file_mmap.read(320)
-                
-
-                logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', filename, text_to_speech))
-
+                    while data:
+                        dev.write(data)
+                        data = file_mmap.read(320)
+                    logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', text_to_speech))
+                    
+                    # rewind the audio
+                    file_mmap.seek(0)
 
                 # close the audio card
                 dev.close()
 
-
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
-                logging.exception("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', filename, text_to_speech))
+                logging.exception("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
                 pass
 
+            # release semaphore
             self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
 
             # fire 'finished' event
@@ -244,6 +243,25 @@ class AudioLibrary:
         # remove the temporary file
         os.remove("%s.tmp" % filename)
 
+    def generate_and_mmap_file(self, text_to_speech, filename, device_index):
+        logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
+                
+        # generate the wav file
+        self.generate_sound_file(text_to_speech, filename)
+
+        # write audio file into memory
+        filepath = "%s.wav" % (filename)
+
+        # open the generated audio file
+        f = open(filepath, "r+b")
+        # memory-map the file, size 0 means whole file
+        self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+
+        logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
+
+
+
+            
 
     def get_card_names(self):
         command = "cat /proc/asound/cards | grep \"]\" | cut -d \"[\" -f 2 | cut -d \" \" -f 1"

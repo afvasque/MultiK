@@ -315,20 +315,25 @@ class ejercicio:
 		if len(text_to_speech)>0:
 
 			self.speaking = True
+			# para concatenar los audios sin regenerarlos
+			text_to_speech_conc = []
 
 			if "¿" in text_to_speech:
 				text_to_speech= text_to_speech.replace("¿","")
+			
 
 			if self.resp_correct:
-				text_to_speech= self.Operacion_actual.feedback_correcto.decode('utf8')+". "+text_to_speech
+				text_to_speech_conc.append(self.Operacion_actual.feedback_correcto.decode('utf8')+". ")
 				self.resp_correct=False
 			elif self.resp_incorrect:
-				text_to_speech= self.Operacion_actual.feedback_error.decode('utf8')+". "+text_to_speech
+				text_to_speech_conc.append(self.Operacion_actual.feedback_error.decode('utf8')+". ")
 				self.resp_incorrect=False
+
+			text_to_speech_conc.append(text_to_speech)
 
 			print "Reproduciendo en audifono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
 						
-			audio_lib.play(self.numero_audifono, text_to_speech)
+			audio_lib.play_concatenated(self.numero_audifono, text_to_speech_conc)
 
 			def EnableAudio():
 				self.speaking=False

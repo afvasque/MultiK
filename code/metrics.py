@@ -27,14 +27,14 @@ class Metrics:
 		# Capture and write data to files
 		try:
 			while True:
-				timestamp_millis = time.time() * 1000
+				timestamp_millis = time.time()
 				cpu_p = psutil.cpu_percent(interval=float(options.interval), percpu=False) #used cpu
 				mem_p = psutil.virtual_memory().percent #memory in use
 
 
 				print "USED_CPU=%d \t USED_MEM=%d" % (cpu_p, mem_p)
-				self.cpu_data_file.write("[%d, %d], " % (timestamp_millis, cpu_p))
-				self.mem_data_file.write("[%d, %d], " % (timestamp_millis, mem_p))
+				self.cpu_data_file.write("[%f, %d], " % (timestamp_millis, cpu_p))
+				self.mem_data_file.write("[%f, %d], " % (timestamp_millis, mem_p))
 
 		# Close data files and generate html file.
 		except(KeyboardInterrupt):

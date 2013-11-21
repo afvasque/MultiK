@@ -1,16 +1,17 @@
 # coding=utf-8
 
-import sys
-import wave
-import os
-import event
-import time
 import alsaaudio
-import subprocess
+import csv
+import event
+import logging
+import os
+import mmap
 import multiprocessing
 import sound_card
-import logging
-import mmap
+import subprocess
+import sys
+import time
+import wave
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -20,11 +21,11 @@ logging.basicConfig(filename='multik.log',level=logging.INFO)
 class AudioLibrary:
     card_array = [] # array containing the usb sound cards
     root_hubs_set = set('') # set containing the addresses of the root usb hubs
-    semaphore = {}
-    audio_mmap = {}
+    semaphore = {} # dictionary containing one semaphore for each root usb hub
+    audio_mmap = {} # dictionary containing 'text_to_speech': corresponding_mmap
 
-    all_q = []
-    all_p = []
+    all_q = [] # array containing all queues
+    all_p = [] # array containing all processes
 
     finished = event.Event('Audio has finished playing.')
 
@@ -35,20 +36,28 @@ class AudioLibrary:
         reload(sys)
         sys.setdefaultencoding('utf-8')
 
+        # Create a representation for every usb sound card
         for card_name in self.get_usb_card_names():
             card = sound_card.SoundCard(card_name)
             self.card_array.append(card)
 
+        # Populate the set containing the addresses of the root usb hubs
         self.root_hubs_set = self.get_usb_root_hub_addrs()
 
+        # Create a semaphore for every root hub
         for hub in self.root_hubs_set:
             # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
             # since our bitrate is 1.54Mbit/s,
             # 12 / 1.54 = 7.7922 gives us that the limit is 7
             self.semaphore[hub] = multiprocessing.Semaphore(7)
 
+        # Print some info to console
         print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
         print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
+
+        # Load the cached sound files into memory
+        self.load_sound_files('audio_cache.csv','sounds')
+
 
         # Create a process and a queue for every card
         for i in range(0,self.get_total_usb_cards()):
@@ -105,7 +114,39 @@ class AudioLibrary:
 
 
 
+    def load_sound_files(self, dictionary_filepath, sound_dir_path):
+        print "Loading sound files..."
+ 
 
+        with open(dictionary_filepath, 'rb') as csvfile:
+            reader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
+            
+            total_bytes = 0
+            i = 0
+            for line in reader:
+                text_to_speech = line[0].decode('latin-1')
+                filename = line[1].decode('latin-1')
+                
+                filepath = "%s/%s" % (sound_dir_path, filename)
+
+                # open the generated audio file
+                f = open(filepath, "r+b")
+
+                # memory-map the file, size 0 means whole file
+                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+                
+                # update the total loaded size
+                total_bytes = total_bytes + len(self.audio_mmap[text_to_speech])
+
+
+                # print some output to show progress
+                sys.stdout.write('.')
+                sys.stdout.flush()
+                
+                i = i + 1
+
+        print ""
+        print "%d sound files loaded into memory, total %d KiB" % (i, total_bytes / 1024)
 
 
     def read_queue(self, device_index, text_to_speech_queue):

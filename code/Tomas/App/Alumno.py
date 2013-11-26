@@ -4,5 +4,5 @@ class Alumno:
 		self.name = ""
 		self.audio = ""
 		self.ready = False
-		self.grupo = 0
+		self.grupo = -1
 		

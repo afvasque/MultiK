@@ -42,6 +42,12 @@ class ejercicio:
 	def next(self):
 		return ejercicio0(self.alumnos, self.pos_x, self.pos_y, self.width, self.height)
 	
+	def finished(self):
+		return True
+
+	def correct(self):
+		return True
+
 class ejercicio0(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
 		self.teclados = []
@@ -83,16 +89,25 @@ class ejercicio0(ejercicio):
 				self.finished = True
 			if self.blocked[index_teclado]:
 				pygame.draw.rect(self.canvas,self.get_color(index_teclado),(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
-				label = self.myfont.render(alumnos[index_teclado].name, 1, self.whiteColor)
+				label = self.myfont.render(self.alumnos[index_teclado].name, 1, self.whiteColor)
 				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
 			else:
 				pygame.draw.rect(self.canvas,self.whiteColor,(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
-				label = self.myfont.render(alumnos[index_teclado].name, 1, self.get_color(index_teclado))
+				label = self.myfont.render(self.alumnos[index_teclado].name, 1, self.get_color(index_teclado))
 				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
 		return
 		
 	def get_audio_text(self):
 		return "Busca tu grupo y nombre y presiona enter"
+
+	def finished(self):
+		if self.blocked[0] and self.blocked[1] and self.blocked[2]:
+			return True
+		else:
+			return False
+
+	def next(self):
+		return ejercicio1(self.alumnos, self.pos_x,self.pos_y, self.width, self.height)
 
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):

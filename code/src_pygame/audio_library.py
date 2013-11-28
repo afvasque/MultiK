@@ -172,6 +172,8 @@ class AudioLibrary:
             queued_item = text_to_speech_queue.get()
             tts_concatenated = queued_item['tts_concatenated']
             
+            print "Dictionary size for device_index=%s is %d" % (device_index, len(self.audio_mmap))
+
             for text_to_speech in tts_concatenated:
                 timestamp = time.time()
                 filename = "%s_%f" % (device_index, timestamp)

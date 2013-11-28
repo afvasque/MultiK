@@ -178,6 +178,7 @@ class AudioLibrary:
 
                 # check if tts is not generated already
                 if ( text_to_speech not in self.audio_mmap ):
+                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
                     # generate and mmap it
                     self.generate_and_mmap_file(text_to_speech, filename, device_index)
 
@@ -206,13 +207,13 @@ class AudioLibrary:
                     file_mmap = self.audio_mmap[text_to_speech]
 
                     # play the wav file
-                    logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', text_to_speech))
+                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', text_to_speech))
                     # read and write
                     data = file_mmap.read(320)
                     while data:
                         dev.write(data)
                         data = file_mmap.read(320)
-                    logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', text_to_speech))
+                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', text_to_speech))
                     
                     # rewind the audio
                     file_mmap.seek(0)
@@ -222,7 +223,7 @@ class AudioLibrary:
 
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
-                logging.exception("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
+                logging.exception("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
                 pass
 
             # release semaphore
@@ -244,7 +245,7 @@ class AudioLibrary:
         os.remove("%s.tmp" % filename)
 
     def generate_and_mmap_file(self, text_to_speech, filename, device_index):
-        logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_START', filename, text_to_speech))
+        logging.info("[%f: [%d, %s, '%s', '%s'] ], " % (time.time(), device_index, 'GENERATE_AND_MMAP_FILE_START', filename, text_to_speech))
                 
         # generate the wav file
         self.generate_sound_file(text_to_speech, filename)
@@ -257,7 +258,7 @@ class AudioLibrary:
         # memory-map the file, size 0 means whole file
         self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
-        logging.info("[%f: [%d, %s, %s, %s] ], " % (time.time(), device_index, 'GENERATE_FILE_COMPLETE', filename, text_to_speech))
+        logging.info("[%f: [%d, %s, '%s', '%s'] ], " % (time.time(), device_index, 'GENERATE_AND_MMAP_FILE_COMPLETE', filename, text_to_speech))
 
 
 

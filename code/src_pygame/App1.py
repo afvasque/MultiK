@@ -16,6 +16,10 @@ from Prueba_clases.ejercicio import *
 from Pareamiento import *
 import audio_library
 
+logging.basicConfig(filename='multik.log',level=logging.INFO)
+
+logging.info("[%f: [%s] ], " % (time.time(),'APP_START'))
+
 
 diccionario= []
 lib = KeyboardLibrary()
@@ -23,7 +27,6 @@ Pareamientos= []
 Alumnos = []
 Audio= []
 
-logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 audio_lib = audio_library.AudioLibrary()
 

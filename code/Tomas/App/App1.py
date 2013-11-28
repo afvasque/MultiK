@@ -100,8 +100,9 @@ def Keyboard_event(sender, earg):
 		else:
 			ejercicios[alumno.grupo].react(int(earg['id']),text)
 		if(ejercicios[alumno.grupo].finished):#Vemos si avanzamos al siguiente ejercicio
-			ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
-		window.blit(ejercicios[alumno.grupo].screen(),(ejercicios[alumno.grupo].width * ejercicios[alumno.grupo].pos_x, ejercicios[alumno.grupo].height * ejercicios[alumno.grupo].pos_y)) #Actualizamos el ejercicio
+			if ejercicios[alumno.grupo].correct:
+				ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
+		window.blit(ejercicios[alumno.grupo].screen(),(ejercicios[alumno.grupo].width * ejercicios[alumno.grupo].pos_y, ejercicios[alumno.grupo].height * ejercicios[alumno.grupo].pos_x)) #Actualizamos el ejercicio
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto
 			if Audio[alumno.id] is None:#Repetirselo a todos lo que no estan pareados
@@ -131,7 +132,7 @@ def Keyboard_event(sender, earg):
 					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
 				else: #Se le repite la instruccion
 					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
-			elif alumno.grupo == 0: #Lo ultimo que queda es que sea la formacion de grupos
+			elif alumno.grupo == -1: #Lo ultimo que queda es que sea la formacion de grupos
 				value = Setups[alumno.id].value()
 				if value < 0 or value >= num_grupos: #Ingresado un valor no valido
 					TexttoSpeech("Ese grupo no existe", alumno.audio)#Se le avisa que no existe
@@ -141,11 +142,12 @@ def Keyboard_event(sender, earg):
 					alumno.grupo = value
 					Alumnos_grupo[value].append(alumno)
 					Setups[alumno.id] = setup_wait(Setups[alumno.id]) #Pantalla para esperar a que el grupo este listo y halla un espacio disponible
+					window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
 					if len(Alumnos_grupo[alumno.grupo]) == 3:#Revisamos si el grupo esta listo
 						Grupos_Listos.append(alumno.grupo)
 						print "Grupo %s listo" % (alumno.grupo)
 					index_espacio = int(alumno.id / 3)
-					if Setups[index_espacio].waiting() and Setups[index_espacio + 1].waiting() and Setups[index_espacio + 2].waiting(): #revisamos si el espacio esta listo
+					if Setups[3 * index_espacio].waiting() and Setups[3 * index_espacio + 1].waiting() and Setups[3 * index_espacio + 2].waiting(): #revisamos si el espacio esta listo
 						Espacios_Listos.append(index_espacio)
 						print "Espacio %s listo" % (index_espacio)
 					if len(Grupos_Listos) > 0 and len(Espacios_Listos) > 0: #Revisamos si hay un grupo listo y un espacio en el que meterlos
@@ -154,14 +156,18 @@ def Keyboard_event(sender, earg):
 						Grupo_Listo = Alumnos_grupo[Grupo_Listo]
 						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos para empezar
 							Grupo_Listo[i].ready = True
+							print "Alumnos %s listo" % (Grupo_Listo[i].name)
 						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
+						print "%s %s" % (Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y)
 						print "Asignado espacio %s a grupo %s" % (Espacio_Listo, Grupo_Listo[0].grupo)
-						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_x, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_y)) #Lo metemos a la pantalla
+						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_y, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_x)) #Lo metemos a la pantalla
+						print "%s %s" % (ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_y, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_x)
 						for i in range(len(Grupo_Listo)):
 							TexttoSpeech(ejercicios[Espacio_Listo].get_audio_text(), Grupo_Listo[i].audio)
 		else:
 			Setups[alumno.id].react(text)
-		window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
+		if alumno.grupo == -1:
+			window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
 	pygame.display.flip()
 
 lib.keypress += Keyboard_event

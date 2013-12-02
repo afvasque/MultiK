@@ -1,6 +1,5 @@
 import pygame
 
-
 class Textbox:
 	def __init__(self, pos_x, pos_y, width, height):
 		self.pos_x = pos_x

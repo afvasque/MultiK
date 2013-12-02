@@ -12,6 +12,8 @@ from threading import Thread
 from Alumno import *
 from Setups import *
 import audio_library
+from Manager import *
+from PreguntaColaborativa import *
 
 audio_lib = audio_library.AudioLibrary()
 
@@ -39,7 +41,7 @@ if line_number_x * line_number_y < num_grupos:
 
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
-ejercicios = []
+#ejercicios = []
 
 #Pareamiento y grupos
 
@@ -48,6 +50,7 @@ Alumnos_grupo = []
 Audio = []
 Setups = []
 Alumnos = []
+Managers = []
 
 Grupos_Listos = []
 Espacios_Listos = []
@@ -64,7 +67,8 @@ for i in range(num_teclados):
 
 for i in range(num_grupos):
 	Alumnos_grupo.append([])
-	ejercicios.append(False)
+	#ejercicios.append(False)
+	#Manejo de no multiplos de 3, completar
 	if num_teclados >= 3 * i + 2:
 		Grupos_inicial.append([3 * i, 3 * i + 1, 3 * i + 2])
 	elif num_teclados == 3 * i + 1:
@@ -96,13 +100,14 @@ def Keyboard_event(sender, earg):
 	text = str(earg['char']).decode('utf-8')
 	if alumno.ready:
 		if text=="Pow":#Repetir la instruccion
-			TexttoSpeech(ejercicios[alumno.grupo].get_audio_text(), alumno.audio)
+			TexttoSpeech(Managers[alumno.grupo].getAudio(), alumno.audio)
 		else:
-			ejercicios[alumno.grupo].react(int(earg['id']),text)
-		if(ejercicios[alumno.grupo].finished):#Vemos si avanzamos al siguiente ejercicio
-			if ejercicios[alumno.grupo].correct:
-				ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
-		window.blit(ejercicios[alumno.grupo].screen(),(ejercicios[alumno.grupo].width * ejercicios[alumno.grupo].pos_y, ejercicios[alumno.grupo].height * ejercicios[alumno.grupo].pos_x)) #Actualizamos el ejercicio
+			Managers[alumno.grupo].ejercicio.react(int(earg['id']),text)
+		if(Managers[alumno.grupo].ejercicio.finished):#Vemos si avanzamos al siguiente ejercicio
+			if Managers[alumno.grupo].correct:
+				Managers[alumno.grupo].advance()
+				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
+		window.blit(Managers[alumno.grupo].ejercicio.screen(),(Managers[alumno.grupo].width * Managers[alumno.grupo].pos_y, Managers[alumno.grupo].height * Managers[alumno.grupo].pos_x)) #Actualizamos el ejercicio
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto
 			if Audio[alumno.id] is None:#Repetirselo a todos lo que no estan pareados
@@ -157,13 +162,11 @@ def Keyboard_event(sender, earg):
 						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos para empezar
 							Grupo_Listo[i].ready = True
 							print "Alumnos %s listo" % (Grupo_Listo[i].name)
-						ejercicios[Espacio_Listo] = ejercicio0(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
-						print "%s %s" % (Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y)
+						Managers[Grupo_Listo[0].grupo] = Manager(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
 						print "Asignado espacio %s a grupo %s" % (Espacio_Listo, Grupo_Listo[0].grupo)
-						window.blit(ejercicios[Espacio_Listo].screen(),(ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_y, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_x)) #Lo metemos a la pantalla
-						print "%s %s" % (ejercicios[Espacio_Listo].width * ejercicios[Espacio_Listo].pos_y, ejercicios[Espacio_Listo].height * ejercicios[Espacio_Listo].pos_x)
+						window.blit(Managers[Grupo_Listo[0].grupo].ejercicio.screen(),(Managers[Grupo_Listo[0].grupo].width * Managers[Grupo_Listo[0].grupo].pos_y, Managers[Grupo_Listo[0].grupo].height * Managers[Grupo_Listo[0].grupo].pos_x)) #Lo metemos a la pantalla
 						for i in range(len(Grupo_Listo)):
-							TexttoSpeech(ejercicios[Espacio_Listo].get_audio_text(), Grupo_Listo[i].audio)
+							TexttoSpeech(Managers[Grupo_Listo[0].grupo].getAudio(), Grupo_Listo[i].audio)
 		else:
 			Setups[alumno.id].react(text)
 		if alumno.grupo == -1:

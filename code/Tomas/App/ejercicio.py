@@ -19,6 +19,9 @@ class ejercicio:
 		self.canvas = pygame.Surface((self.width,self.height))
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		self.inputs = []
+		
 		self.finished = False
 		
 	def screen(self):
@@ -66,6 +69,9 @@ class ejercicio0(ejercicio):
 		self.canvas = pygame.Surface((self.width,self.height))
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, self.height / 4, self.width - 2,  3 * self.height / 4 - 2))
+		
+		self.inputs = []
+		
 		self.finished = False
 
 		self.blocked = [False, False, False]
@@ -211,6 +217,9 @@ class ejercicio2(ejercicio):
 		self.canvas = pygame.Surface((self.width,self.height))
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		self.inputs = []
+		
 		self.finished = False
 		
 		#Sector especifico para el inicio
@@ -370,6 +379,9 @@ class ejercicio3(ejercicio):
 		self.canvas = pygame.Surface((self.width,self.height))
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		self.inputs = []
+		
 		self.finished = False
 		
 		#Sector especifico para el inicio

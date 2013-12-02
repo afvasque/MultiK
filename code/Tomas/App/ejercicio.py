@@ -22,7 +22,7 @@ class ejercicio:
 		
 		self.inputs = []
 		
-		self.finished = False
+		#self.finished = False
 		
 	def screen(self):
 		return self.canvas
@@ -72,7 +72,7 @@ class ejercicio0(ejercicio):
 		
 		self.inputs = []
 		
-		self.finished = False
+		#self.finished = False
 
 		self.blocked = [False, False, False]
 
@@ -91,9 +91,10 @@ class ejercicio0(ejercicio):
 		if input == "Enter":#El alumno indica que ya encontro su nombre y grupo
 			index_teclado = self.teclados.index(id)
 			self.blocked[index_teclado] = not self.blocked[index_teclado]
-			if False not in self.blocked:
-				self.finished = True
+			#if False not in self.blocked:
+				#self.finished = True
 			if self.blocked[index_teclado]:
+				print "Bloqueado alumno"
 				pygame.draw.rect(self.canvas,self.get_color(index_teclado),(1, self.height / 4 * (1 + index_teclado), self.width - 2,  self.height / 4 - 2))
 				label = self.myfont.render(self.alumnos[index_teclado].name, 1, self.whiteColor)
 				self.canvas.blit(label, (2, self.height / 4 * (1 + index_teclado)))
@@ -108,8 +109,10 @@ class ejercicio0(ejercicio):
 
 	def finished(self):
 		if self.blocked[0] and self.blocked[1] and self.blocked[2]:
+			print "Finished"
 			return True
 		else:
+			print "Not Finished"
 			return False
 
 	def next(self):
@@ -134,7 +137,7 @@ class ejercicio1(ejercicio):
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
 		
-		self.finished = False
+		#self.finished = False
 		
 		#Sector especifico para el inicio
 		
@@ -161,24 +164,24 @@ class ejercicio1(ejercicio):
 		index_teclado = self.teclados.index(id)
 		if input == "Enter":
 			self.blocked[index_teclado] = not self.blocked[index_teclado]
-			if self.blocked[0] and self.blocked[1] and self.blocked[2]:
-				self.finished = True
+			#if self.blocked[0] and self.blocked[1] and self.blocked[2]:
+				#self.finished = True
+			#else:
+			if self.blocked[index_teclado]:
+				pygame.draw.rect(self.canvas,self.whiteColor,(self.width / 5 + 3, (2 * index_teclado + 1) * self.height / 7 + 3, 3 * self.width / 5 - 6,  self.height / 7 - 6))
+				self.myfont = pygame.font.SysFont("monospace", self.height / 7)
+				label = self.myfont.render(self.inputs[index_teclado], 1, (0,0,0))
+				self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
 			else:
-				if self.blocked[index_teclado]:
-					pygame.draw.rect(self.canvas,self.whiteColor,(self.width / 5 + 3, (2 * index_teclado + 1) * self.height / 7 + 3, 3 * self.width / 5 - 6,  self.height / 7 - 6))
-					self.myfont = pygame.font.SysFont("monospace", self.height / 7)
-					label = self.myfont.render(self.inputs[index_teclado], 1, (0,0,0))
-					self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
+				if index_teclado == 0:
+					pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
+				elif index_teclado == 1:
+					pygame.draw.rect(self.canvas,self.greenColor,(self.width / 5, 3 * self.height / 7, 3 * self.width / 5,  self.height / 7))
 				else:
-					if index_teclado == 0:
-						pygame.draw.rect(self.canvas,self.redColor,(self.width / 5, self.height / 7, 3 * self.width / 5,  self.height / 7))
-					elif index_teclado == 1:
-						pygame.draw.rect(self.canvas,self.greenColor,(self.width / 5, 3 * self.height / 7, 3 * self.width / 5,  self.height / 7))
-					else:
-						pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
-					self.myfont = pygame.font.SysFont("monospace", self.height / 7)
-					label = self.myfont.render(self.inputs[index_teclado], 1, (255,255,255))
-					self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
+					pygame.draw.rect(self.canvas,self.blueColor,(self.width / 5, 5 * self.height / 7, 3 * self.width / 5,  self.height / 7))
+				self.myfont = pygame.font.SysFont("monospace", self.height / 7)
+				label = self.myfont.render(self.inputs[index_teclado], 1, (255,255,255))
+				self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
 		elif not self.blocked[index_teclado]:
 			if len(input) == 1:
 				self.inputs[index_teclado] = self.inputs[index_teclado] + input
@@ -198,6 +201,11 @@ class ejercicio1(ejercicio):
 					label = self.myfont.render(self.inputs[index_teclado], 1, (255,255,255))
 					self.canvas.blit(label,(self.width / 5, (2 * index_teclado + 1) * self.height / 7))
 		return
+
+	def finished(self):
+		if self.blocked[0] and self.blocked[1] and self.blocked[2]:
+			return True
+		return False
 
 class ejercicio2(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):

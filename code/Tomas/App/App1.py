@@ -67,6 +67,7 @@ for i in range(num_teclados):
 
 for i in range(num_grupos):
 	Alumnos_grupo.append([])
+	Managers.append(None)
 	#ejercicios.append(False)
 	#Manejo de no multiplos de 3, completar
 	if num_teclados >= 3 * i + 2:
@@ -103,10 +104,19 @@ def Keyboard_event(sender, earg):
 			TexttoSpeech(Managers[alumno.grupo].getAudio(), alumno.audio)
 		else:
 			Managers[alumno.grupo].ejercicio.react(int(earg['id']),text)
-		if(Managers[alumno.grupo].ejercicio.finished):#Vemos si avanzamos al siguiente ejercicio
-			if Managers[alumno.grupo].correct:
+		if(Managers[alumno.grupo].ejercicio.finished()):#Vemos si avanzamos al siguiente ejercicio
+			print "Grupo Listo"
+			if Managers[alumno.grupo].correct():
+				print "Grupo respuesta correcta"
 				Managers[alumno.grupo].advance()
+				for a in Alumnos_grupo[alumno.grupo]:
+					TexttoSpeech("Muy bien", a.audio)
+					TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
 				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
+			else:
+				for a in Alumnos_grupo[alumno.grupo]:
+					TexttoSpeech("Intentelo de nuevo", a.audio)
+				print "Grupo respuesta incorrecta"
 		window.blit(Managers[alumno.grupo].ejercicio.screen(),(Managers[alumno.grupo].width * Managers[alumno.grupo].pos_y, Managers[alumno.grupo].height * Managers[alumno.grupo].pos_x)) #Actualizamos el ejercicio
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto

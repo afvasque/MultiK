@@ -1,8 +1,10 @@
 from PreguntaIndividual import *
 import csv
 
-CSVinstance = None
+
 class LectorCSV:
+	instance = None
+	
 	def __init__(self):
 		self.preguntas = list()
 		with open('Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
@@ -11,7 +13,7 @@ class LectorCSV:
 			for row in lenguajereader:
 				if rownum > 0:
 					pregunta = PreguntaIndividual()
-					pregunta.nivel = int(row[0])
+					pregunta.nivel = row[0]
 					pregunta.pregunta = row[1].decode('latin-1')
 					for x in range(2,5):
 						if len(row[x])>0:
@@ -27,7 +29,6 @@ class LectorCSV:
 	
 	@staticmethod
 	def getInstance():
-		global CSVinstance
-		if CSVinstance is None:
-			CSVinstance = LectorCSV()
-		return CSVinstance
+		if instance is None:
+			instance = LectorCSV()
+		return instance

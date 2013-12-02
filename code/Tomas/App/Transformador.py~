@@ -5,7 +5,7 @@ import random
 
 class Transformador:
 	def __init__(self):
-		self.lector = LectorCSV.getInstance()
+		self.lector = LectorCSV.Instance()
 		return
 		
 	def oneToOne(self, nivel):
@@ -53,7 +53,7 @@ class Transformador:
 	def threeToOne(self, nivel, orden):
 		preguntasI = filter(lambda x: x.nivel == nivel, self.lector.preguntas)
 		rand = random.randint(0, len(preguntasI)-1)
-		preguntas = [None,None,None]
+		preguntas = []
 		preguntas[0] = preguntasI[rand]
 		if not orden:
 			preguntasI = filter(lambda x: x.audio == preguntas[0].audio, preguntasI)

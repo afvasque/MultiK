@@ -25,25 +25,27 @@ class Manager:
 		return
 		
 	def correct(self):
-		if nivel == 0:
+		if self.nivel == 0:
 			return True
-		
+		print "Nivel de comprobacion mayor a 0"
 		if not self.pregunta.orden:
+			print "El orden no importa"
 			self.pregunta.respuestas.sort()
 			self.ejercicio.inputs.sort()
 		
 		for i in range(3):
-			if not self.preguntas.respuestas[i] == self.ejercicio.inputs[i]:
+			if not self.pregunta.respuestas[i] == self.ejercicio.inputs[i]:
+				print "Encontrado inconsistencia"
 				return False
+		print "No encontrado inconsistencias"
 		return True
 	
 	def advance(self):
-		if self.correctas_current >= self.correctas_nivel:
+		if self.correctas_current >= self.correctas_nivel or self.nivel == 0:
 			self.nivel+=1
 			self.correctas_current = 0
 			if self.nivel > self.nivel_max:
 				self.nivel = 1
-		
 		self.malas_current = 0
 		self.getPregunta()
 		
@@ -54,10 +56,10 @@ class Manager:
 			
 	def getAudio(self):
 		audio = ""
-		if nivel == 0:
+		if self.nivel == 0:
 			return "Busca tu grupo y nombre y presiona enter"
 		if self.pregunta.individualCount == 3 and self.pregunta.orden:
 			for i in range(3):
-				audio += self.alumnos[i].nombre + " " + self.pregunta.audios[i] + " "
+				audio += self.alumnos[i].name + " " + self.pregunta.audios[i] + "."
 		return audio
 	

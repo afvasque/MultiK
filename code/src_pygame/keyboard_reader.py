@@ -39,6 +39,11 @@ def chunks(l, n):
 
 
 class KeyboardReader:
+	vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+	vowels_acute = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú']
+	vowels_diaeresis = ['ä', 'ë', 'ï', 'ö', 'ü', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü']
+ 
+
 	def __init__(self, vendor_id, product_id, global_id, local_id, queue):
 		# Save the queue as an attribute.
 		self.queue = queue
@@ -101,6 +106,10 @@ class KeyboardReader:
 
 
 	def read_keyboard_input(self):
+		# diacritic symbols
+		diaeresis = False
+		acute = False
+
 		while True:
 			try:
 				kb = self.keyboard
@@ -110,16 +119,41 @@ class KeyboardReader:
 				map_keys = lambda c: key_pages_shift[c[1]] if c[0] == 2 else key_pages[c[1]]
 				data2 = "".join(map(map_keys, [(d[0], d[2]) for d in chunks(data, 8)]))
 
+				
 				# if input detected
 				if data2:
-					# define the event arguments
-					values = {"id": self.keyboard_id, "char": data2}
-					try:
-						# put these values on the queue
-						self.queue.put_nowait(values)
-					except Queue.Full:
-						print "Queue full. Lost values: %s", str(values)
-						pass
+					if data2 == '¨':
+						diaeresis = True
+						acute = False
+					elif data2 == '´':
+						diaeresis = False
+						acute = True
+					else:
+						data3 = data2
+
+						# if a diacritic symbol key was pressed before
+						if diaeresis or acute:
+							# if a bowel is pressed
+							if data2 in self.vowels:
+								vowel_idx = self.vowels.index(data2)
+								if diaeresis:
+									data3 = self.vowels_diaeresis[vowel_idx]
+								elif acute:
+									data3 = self.vowels_acute[vowel_idx]
+
+						# define the event arguments
+						values = {"id": self.keyboard_id, "char": data3}
+						try:
+							# put these values on the queue
+							self.queue.put_nowait(values)
+						except Queue.Full:
+							print "Queue full. Lost values: %s", str(values)
+							pass
+
+						# reset diacritic symbols
+						diaeresis = False
+						acute = False
+
 
 			except usb.core.USBError as e:
 				pass

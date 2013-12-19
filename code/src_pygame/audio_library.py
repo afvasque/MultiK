@@ -141,8 +141,8 @@ class AudioLibrary:
             total_bytes = 0
             i = 0
             for line in reader:
-                text_to_speech = line[0].decode('latin-1')
-                filename = line[1].decode('latin-1')
+                text_to_speech = line[0].decode('utf-8')
+                filename = line[1].decode('utf-8')
                 
                 filepath = "%s/%s" % (sound_dir_path, filename)
 
@@ -163,6 +163,10 @@ class AudioLibrary:
                 i = i + 1
 
         print ""
+        # DEBUG *************
+        #for key in self.audio_mmap.keys():
+        #    print "key: %s" % key
+        # END DEPUG *********
         print "%d sound files loaded into memory, total %d KiB" % (i, total_bytes / 1024)
 
 
@@ -226,6 +230,8 @@ class AudioLibrary:
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
                 logging.exception("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
+                # close the audio card
+                dev.close()
                 pass
 
             # release semaphore

@@ -1,0 +1,11 @@
+Instalar python (obvio!)
+Instalar libusb (carpeta en este directorio)
+Instalar pyusb (carpeta en este directorio)
+sudo apt-get intall python-pygame
+sudo apt-get install libasound2-dev
+sudo apt-get python-dev
+Instalar pyalsaaudio (carpeta en este directorio)
+----------
+Versión marzo 2014
+Andrea
+

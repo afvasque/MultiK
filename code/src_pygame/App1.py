@@ -16,9 +16,15 @@ from Prueba_clases.ejercicio import *
 from Pareamiento import *
 import audio_library
 
-logging.basicConfig(filename='multik.log',level=logging.INFO)
 
+
+
+
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 logging.info("[%f: [%s] ], " % (time.time(),'APP_START'))
+
+
 
 
 diccionario= []
@@ -26,14 +32,18 @@ lib = KeyboardLibrary()
 Pareamientos= []
 Alumnos = []
 Audio= []
-
-
 audio_lib = audio_library.AudioLibrary()
+
+
+
+
+
+
 
 
 def Keyboard_event(sender, earg):
     
-    print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
+    print "#%s : %s" % (earg['id'], earg['char'])
     text= str(earg['char']).decode('utf-8')
     id_sent= int(earg['id'])
 
@@ -81,16 +91,24 @@ def Keyboard_event(sender, earg):
 
 
 def TexttoSpeech(audifono, tts):
-
-    print "Reproduciendo en audifono #%s: \"%s\"" % (audifono, tts)
-                    
     audio_lib.play(audifono, tts)
 
 
-  #TODO: poner thread como padre
+
+
+#TODO: poner thread como padre
 class ThreadKeyboard(threading.Thread):
     def run(self):
         lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+
+
+
+
+
+
+
+
+
 
 width = 1000
 height = 700
@@ -99,7 +117,7 @@ lib.keypress += Keyboard_event
 lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
 keyboardsNum= lib.get_total_keyboards()
-print "teclados: "+str(keyboardsNum)
+print "Total de teclados: "+str(keyboardsNum)
 
 
 line_number_x= int(math.sqrt(keyboardsNum))
@@ -116,8 +134,7 @@ window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
                
 
 for i in range(keyboardsNum):    
-        
-    
+    # Crear tantos alumnos como teclados se hayan detectado
     alumno= Alumno(i)
     Alumnos.append(alumno)
     Audio.append(None)
@@ -128,10 +145,10 @@ for i in range(keyboardsNum):
 
     TexttoSpeech(i, "Escribe el número "+str(i))
 
+
+
 pygame.display.flip()
         
 
 t = ThreadKeyboard()
 t.start()
-
-  

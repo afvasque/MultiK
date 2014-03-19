@@ -17,7 +17,9 @@ with open('multik.log', 'rb') as csvfile:
 				if  "WRONG_ANSWER" in row[1]:
 					report_list[pregunta]["malas"] += 1
 				report_list[pregunta]["totales"] += 1
-				
+			elif "LEVEL_UP" in row[1]:
+				id_alumno = row[0][row[0].find(" ") + 2:]
+				report_by_student[id_alumno] = row[2][:-3]
 				#print(row[1])
 				#print("Id alumno: ", row[0][row[0].find(" ") + 2:])
 				#print("Pregunta: ", row[3])
@@ -35,5 +37,9 @@ with open('results.csv', 'wb') as f:
 	for k in report_list:
 		f.write(k + "," + str(report_list[k]["malas"]) + "," + str(report_list[k]["totales"]) + "," + str(report_list[k]["porcentaje_error"])  + "\n")
 
+with open('avance_alumnos.csv', 'wb') as f:
+	f.write("Id alumno, Nivel\n")
+	for k in report_by_student:
+		f.write(k + "," + report_by_student[k] + "\n")
 
 			

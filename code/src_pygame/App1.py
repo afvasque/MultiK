@@ -42,10 +42,8 @@ audio_lib = audio_library.AudioLibrary()
 
 
 def Keyboard_event(sender, earg):
-    
-    print "#%s : %s" % (earg['id'], earg['char'])
-    text= str(earg['char']).decode('utf-8')
     id_sent= int(earg['id'])
+    text= str(earg['char']).decode('utf-8')
     time_pressed = earg['time_pressed']
 
     alumno = Alumnos[id_sent]

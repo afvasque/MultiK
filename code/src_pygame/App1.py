@@ -46,8 +46,12 @@ def Keyboard_event(sender, earg):
     print "#%s : %s" % (earg['id'], earg['char'])
     text= str(earg['char']).decode('utf-8')
     id_sent= int(earg['id'])
+    time_pressed = earg['time_pressed']
 
     alumno = Alumnos[id_sent]
+
+    # Action to take is being determined. Log as event.
+    logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), id_sent, time_pressed, 'CHAR_ACTION_DETERMINATION', text))
 
     # Alumno se encuentra pareado
     if alumno.ready:

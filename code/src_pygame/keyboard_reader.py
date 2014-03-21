@@ -2,6 +2,12 @@
 
 import usb.core
 import usb.util
+import time
+import logging
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
+
+
 
 # keycode mapping (for a latin american keyboard layout)
 key_pages = [
@@ -122,6 +128,10 @@ class KeyboardReader:
 				
 				# if input detected
 				if data2:
+					time_pressed = time.time()
+
+					logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, self.keyboard_id, 'KEYPRESS', data2))
+
 					if data2 == '¨':
 						diaeresis = True
 						acute = False
@@ -142,7 +152,10 @@ class KeyboardReader:
 									data3 = self.vowels_acute[vowel_idx]
 
 						# define the event arguments
-						values = {"id": self.keyboard_id, "char": data3}
+						values = {"id": self.keyboard_id, "char": data3, "time_pressed": time_pressed}
+
+						logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), values['id'], values['time_pressed'], 'CHAR_DETECTED', values['char']))
+
 						try:
 							# put these values on the queue
 							self.queue.put_nowait(values)

@@ -510,8 +510,11 @@ class Panel1(wx.Panel):
     
        
     def TexttoSpeech(self, text_to_speech):
-        print "reproduciendo"
-        #if audio_lib.reproduciendo[self.numero_audifono]==False:
+        if len(text_to_speech)>0:
+            audio_lib.reproduciendo[int(self.numero_audifono)]=True
+            audio_lib.play(self.numero_audifono, text_to_speech)
+        
+        '''
         if self.lib_play_proc is None:
             self.text_to_speech_queue = multiprocessing.Queue()
             self.lib_play_proc = multiprocessing.Process(target=audio_lib.play, args=(self.numero_audifono, self.text_to_speech_queue))
@@ -519,10 +522,11 @@ class Panel1(wx.Panel):
             self.lib_play_proc.start()          
         
         if len(text_to_speech)>0:
-            print "Reproduciendo en audí­fono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
+            #print "Reproduciendo en audí­fono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
             audio_lib.reproduciendo[int(self.numero_audifono)]=True
-            print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
+            #print str(self.numero_audifono)+" "+str(audio_lib.reproduciendo[self.numero_audifono])
             self.text_to_speech_queue.put(text_to_speech)
-        
+        '''
+
         
 

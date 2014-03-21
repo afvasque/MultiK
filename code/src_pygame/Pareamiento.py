@@ -68,11 +68,7 @@ class Pareamiento:
 	def parear(self):
 
 		self.ResetLayout()
-
-		#self.Operacion_actual.audio_pregunta= "Escribe el número %d" % self.numero_audifono
-
-		#self.TexttoSpeech(self.Operacion_actual.audio_pregunta)	
-
+		
 		frase = u"Escribe el número..."
 		size= int(1.5 * self.width/len(frase))		
 		self.Write(frase, 0, 0, size)

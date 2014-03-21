@@ -98,23 +98,19 @@ class AudioLibrary:
 
 
     def play(self, id, text_to_speech):
-        # Get the queue for the corresponding card
-        queue = self.all_q[id]
+        # Plays a single text as speech
 
-        # Empty the queue
-        while not queue.empty():
-            queue.get()
-        
+        # Use the concatenated interface to avoid repeated code.
         text_to_speech_array = []
         text_to_speech_array.append( text_to_speech )
 
-        # Put the text_to_speech in the queue
-        queue.put({
-            'tts_concatenated': text_to_speech_array
-        })
+        self.play_concatenated(id, text_to_speech_array)
 
 
     def play_concatenated(self, id, text_to_speech_array):
+        time_received = time.time()
+        logging.info("[%f: [%d, %s, %s] ], " % (time_received, id, 'AUDIO_PLAY_INSTRUCTION_RECEIVED', text_to_speech_array))
+
         # Get the queue for the corresponding card
         queue = self.all_q[id]
 
@@ -124,7 +120,8 @@ class AudioLibrary:
         
         # Put the text_to_speech in the queue
         queue.put({
-            'tts_concatenated': text_to_speech_array
+            'tts_concatenated': text_to_speech_array,
+            'time_received': time_received
         })
 
 
@@ -132,7 +129,7 @@ class AudioLibrary:
 
 
     def load_sound_files(self, dictionary_filepath, sound_dir_path):
-        print "Loading sound files..."
+        print "Loading sound files... "
  
 
         with open(dictionary_filepath, 'rb') as csvfile:
@@ -175,6 +172,7 @@ class AudioLibrary:
             # Get a queued text for turning into speech
             queued_item = text_to_speech_queue.get()
             tts_concatenated = queued_item['tts_concatenated']
+            time_received = queued_item['time_received']
             
             print "Dictionary size for device_index=%s is %d" % (device_index, len(self.audio_mmap))
 
@@ -184,15 +182,15 @@ class AudioLibrary:
 
                 # check if tts is not generated already
                 if ( text_to_speech not in self.audio_mmap ):
-                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
+                    logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
                     # generate and mmap it
-                    self.generate_and_mmap_file(text_to_speech, filename, device_index)
+                    self.generate_and_mmap_file(text_to_speech, filename, device_index, time_received)
 
             # acquire semaphore
             semaphore_index = self.card_array[device_index].get_root_hub()
-            logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_START', semaphore_index))
+            logging.info("[%f: [%d, %f, %s, %s] ], " % (time.time(), device_index, time_received, 'SEMAPHORE_WAIT_START', semaphore_index))
             self.semaphore[ semaphore_index ].acquire()
-            logging.info("[%f: [%d, %s, %s] ], " % (time.time(), device_index, 'SEMAPHORE_WAIT_COMPLETE', semaphore_index))
+            logging.info("[%f: [%d, %f, %s, %s] ], " % (time.time(), device_index, time_received, 'SEMAPHORE_WAIT_COMPLETE', semaphore_index))
 
             # write audios to the sound card
             try:
@@ -213,13 +211,13 @@ class AudioLibrary:
                     file_mmap = self.audio_mmap[text_to_speech]
 
                     # play the wav file
-                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_START', text_to_speech))
+                    logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_START', text_to_speech))
                     # read and write
                     data = file_mmap.read(320)
                     while data:
                         dev.write(data)
                         data = file_mmap.read(320)
-                    logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_COMPLETE', text_to_speech))
+                    logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_COMPLETE', text_to_speech))
                     
                     # rewind the audio
                     file_mmap.seek(0)
@@ -229,7 +227,7 @@ class AudioLibrary:
 
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
-                logging.exception("[%f: [%d, %s, '%s'] ], " % (time.time(), device_index, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
+                logging.exception("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
                 # close the audio card
                 dev.close()
                 pass
@@ -252,8 +250,8 @@ class AudioLibrary:
         # remove the temporary file
         os.remove("%s.tmp" % filename)
 
-    def generate_and_mmap_file(self, text_to_speech, filename, device_index):
-        logging.info("[%f: [%d, %s, '%s', '%s'] ], " % (time.time(), device_index, 'GENERATE_AND_MMAP_FILE_START', filename, text_to_speech))
+    def generate_and_mmap_file(self, text_to_speech, filename, device_index, time_received):
+        logging.info("[%f: [%d, %f, %s, '%s', '%s'] ], " % (time.time(), device_index, time_received, 'GENERATE_AND_MMAP_FILE_START', filename, text_to_speech))
                 
         # generate the wav file
         self.generate_sound_file(text_to_speech, filename)
@@ -266,7 +264,7 @@ class AudioLibrary:
         # memory-map the file, size 0 means whole file
         self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
-        logging.info("[%f: [%d, %s, '%s', '%s'] ], " % (time.time(), device_index, 'GENERATE_AND_MMAP_FILE_COMPLETE', filename, text_to_speech))
+        logging.info("[%f: [%d, %f, %s, '%s', '%s'] ], " % (time.time(), device_index, time_received, 'GENERATE_AND_MMAP_FILE_COMPLETE', filename, text_to_speech))
 
 
 

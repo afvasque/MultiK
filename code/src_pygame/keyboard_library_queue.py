@@ -8,10 +8,6 @@ import Queue
 import keyboard_reader
 import event
 import time
-import logging
-
-
-logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 
 
@@ -110,7 +106,6 @@ class KeyboardLibrary:
 				# Get the values for the event.
 				val = queue.get()
 				# Fire the event
-				logging.info("[%f: [%d, %s, '%s'] ], " % (time.time(), val['id'], 'KEYPRESS', val['char']))
 				self.keypress(val) # Piuuu!
 			except Queue.Empty as e:
 				pass

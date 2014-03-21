@@ -98,6 +98,7 @@ class Pareamiento:
 				self.nombre_ingresado=True
 
 				# PAREAMIENTO, nombre del alumno
+				# TOOO Agregar ID de teclado (para usar con KEYPRESS)
 				logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'PAREAMIENTO', nombre_caps))
 		
 

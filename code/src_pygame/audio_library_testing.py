@@ -10,6 +10,8 @@ class LibTest:
 		print "Terminó audio. Datos: " + str(earg)
 
 	def __init__(self):
+		
+		#while True:
 		self.lib.finished += self.print_finished_event
 
 		for i in range(0,self.lib.get_total_usb_cards()):

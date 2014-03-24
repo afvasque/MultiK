@@ -346,10 +346,9 @@ class ejercicio:
 
 	
 	def Keyboard_Pressed(self, sender, earg):
-
-		#try:
 		text= str(earg['char']).decode('utf-8')
 		text= self.arreglar_texto(text)
+		time_pressed = earg['time_pressed']
 		
 		if len(text)==0 or self.speaking==True:
 			return
@@ -405,7 +404,7 @@ class ejercicio:
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		# Tiempo respuesta desde decision de Pucca
-		logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
+		logging.info("[%f: [%d, %f, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, time_pressed, 'COCOYOC', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
 
 
 

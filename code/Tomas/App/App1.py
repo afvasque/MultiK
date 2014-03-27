@@ -79,7 +79,8 @@ for i in range(num_grupos):
 
 for i in range(num_grupos):
 	for j in range(len(Grupos_inicial[i])):
-		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x,i/line_number_x + j,width/line_number_x,height/(3 * line_number_y)))
+		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x, (3 * i) / line_number_y + j - i%line_number_x, width/line_number_x,height/(3 * line_number_y)))
+		Setups[3 * i + j].value = 3*i+j
 		window.blit(Setups[3 * i + j].screen(),(Setups[3 * i + j].width *Setups[3 * i + j].pos_x,Setups[3 * i + j].height *Setups[3 * i + j].pos_y))
 
 pygame.display.flip()
@@ -104,7 +105,7 @@ def Keyboard_event(sender, earg):
 			TexttoSpeech(Managers[alumno.grupo].getAudio(), alumno.audio)
 		else:
 			Managers[alumno.grupo].ejercicio.react(int(earg['id']),text)
-		if(Managers[alumno.grupo].ejercicio.finished()):#Vemos si avanzamos al siguiente ejercicio
+		if(Managers[alumno.grupo].ejercicio.finished):#Vemos si avanzamos al siguiente ejercicio
 			print "Grupo Listo"
 			if Managers[alumno.grupo].correct():
 				print "Grupo respuesta correcta"

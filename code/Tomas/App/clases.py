@@ -1,12 +1,13 @@
 import pygame
 
 class Textbox:
-	def __init__(self, pos_x, pos_y, width, height, backColor):
+	def __init__(self, pos_x, pos_y, width, height, backColor = pygame.Color(0,0,0)):
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.Color = pygame.Color(0,255,0)
 		self.whiteColor = pygame.Color(255,255,255)
 		self.blackColor = pygame.Color(0,0,0)
+		self.backColor = backColor
 		self.width = width
 		self.height = height
 		self.canvas = pygame.Surface((self.width,self.height))
@@ -40,7 +41,7 @@ class Textbox:
 				self.canvas.blit(label,(1, 1))
 			else:
 				self.canvas.blit(label,(self.width - label.get_width() - 1, 1))
-		elif input == "Enter":
+		if input == "Enter":
 			self.blocked = not self.blocked
 			pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2, self.height - 2))
 			label = self.myfont.render(self.Value, 1, self.backColor)

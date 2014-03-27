@@ -1,6 +1,8 @@
 # coding: utf-8
 import pygame
+import random
 from Alumno import *
+from clases import *
 
 class ejercicio:
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
@@ -118,6 +120,155 @@ class ejercicio0(ejercicio):
 	def next(self):
 		return ejercicio1(self.alumnos, self.pos_x,self.pos_y, self.width, self.height)
 
+class ejercicioAlternativas(ejercicio):
+	def __init__(self, alumnos, pos_x, pos_y, width, height, preguntaC):
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = width
+		self.height = height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		pygame.font.init()
+		
+		self.pregunta = preguntaC
+		
+		self.inputs = []
+		#self.xs = []
+		self.ys = []
+		self.blocked = []
+		
+		for i in range(len(alumnos)):
+			self.ys[i] = random.randint(0, len(preguntaC.alternativas)-1)
+			self.inputs[i] = self.pregunta.alternativas[self.ys[i]]
+			self.blocked[i] = False
+			
+		self.top_limit = 0
+		if len(self.preguntaC.preguntas) > 0:
+			self.top_limit = self.height / (len(preguntaC.alternativas) + 1)
+			texto_pregunta = self.preguntaC.preguntas[0]
+			myfont = pygame.font.SysFont("monospace", self.top_limit - 4)
+			label_pregunta = self.myfont.render(texto_pregunta, 1, self.blackColor)
+			size_multiplier = 100
+			while label_pregunta.width > (self.width - 4) or label_pregunta.height > (self.top_limit - 4):
+				size_multiplier -= 10
+				myfont = pygame.font.SysFont("monospace", ((self.top_limit - 4) * 100) / size_multiplier)
+				label_pregunta = self.myfont.render(texto_pregunta, 1, self.blackColor)
+			self.canvas.blit(label_pregunta, (self.width / 2 - label_pregunta.width / 2, self.height / 2 - label_pregunta.height / 2))
+		
+		self.draw_rectangles()
+		self.finished = False
+		
+	def draw_rectangles(self):
+		rect_height = (self.height - self.top_limit) / len(self.preguntaC.alternativas)
+		for i in range(len(alumnos)):
+			delta = 2 * (i + 1)
+			pygame.draw.rect(self.canvas,self.get_color(i),(delta, self.top_limit + delta + rect_height * self.ys[i], self.width - 2 * delta,  rect_height - 2 * delta))
+			if not self.blocked[i]:
+				pygame.draw.rect(self.canvas,self.whiteColor,(delta + 2, self.top_limit + delta + rect_height * self.ys[i] + 2, self.width - 2 * delta - 4,  rect_height - 2 * delta - 4))
+			else:
+				pygame.draw.rect(self.canvas,self.whiteColor,(delta + 4, self.top_limit + delta + rect_height * self.ys[i] + 4, self.width - 2 * delta - 8,  rect_height - 2 * delta - 8))
+		word_width = self.width - 14
+		word_height = rect_height - 14
+		for i in range(len(self.preguntaC.alternativas)):
+			myfont = pygame.font.SysFont("monospace", word_height)
+			label_alternativa = self.myfont.render(self.preguntaC.alternativas[i], 1, self.blackColor)
+			size_multiplier = 100
+			while label_alternativa.width > word_width or label_alternativa.height > word_height:
+				size_multiplier -= 10
+				myfont = pygame.font.SysFont("monospace", (100 * word_height) / size_multiplier)
+	
+	def erase_rectangles(self):
+		pygame.draw.rect(self.canvas,self.whiteColor,(2, self.top_limit + 1, self.width - 4,  self.height -  self.top_limit - 4))
+		
+	def react(self, id, input):
+		index_teclado = self.teclados.index(id)
+		if input == "Enter":
+			self.blocked[index_teclado] = not self.blocked[index_teclado]
+			self.finished = False not in self.blocked
+			self.erase_rectangles()
+			self.draw_rectangles()
+		elif not self.blocked[index_teclado]:
+			self.erase_rectangles()
+			if input == "-^":
+				if self.ys[index_teclado] == 0:
+					self.ys[index_teclado] = len(self.preguntaC.alternativas) - 1
+				else:
+					self.ys[index_teclado] -= 1
+			elif input == "-v":
+				self.ys[index_teclado] = (self.ys[index_teclado] + 1)%len(self.preguntaC.alternativas)
+			self.draw_rectangles()
+			
+		self.inputs[index_teclado] = self.preguntaC.alternativas[self.ys[index_teclado]]
+	
+class ejercicioTexto(ejercicio):	
+	def __init__(self, alumnos, pos_x, pos_y, width, height, preguntaC):
+		self.teclados = []
+		for i in range(len(alumnos)):
+			self.teclados.append(alumnos[i].id)
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = width
+		self.height = height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
+		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
+		
+		pygame.font.init()
+		
+		self.pregunta = preguntaC
+		self.inputs = []
+		self.blocked = []
+		
+		for i in range(len(alumnos)):
+			self.inputs[i] = ""
+			self.blocked[i] = False
+			
+		self.top_limit = 0
+		if len(self.preguntaC.preguntas) > 0:
+			self.top_limit = self.height / (len(self.teclados))
+			texto_pregunta = self.preguntaC.preguntas[0]
+			myfont = pygame.font.SysFont("monospace", self.top_limit - 4)
+			label_pregunta = self.myfont.render(texto_pregunta, 1, self.blackColor)
+			size_multiplier = 100
+			while label_pregunta.width > (self.width - 4) or label_pregunta.height > (self.top_limit - 4):
+				size_multiplier -= 10
+				myfont = pygame.font.SysFont("monospace", ((self.top_limit - 4) * 100) / size_multiplier)
+				label_pregunta = self.myfont.render(texto_pregunta, 1, self.blackColor)
+			self.canvas.blit(label_pregunta, (self.width / 2 - label_pregunta.width / 2, self.height / 2 - label_pregunta.height / 2))
+		
+		self.textBoxs = []
+		
+		textHeight = ((self.height - 2) - self.top_limit) / len(self.alumnos)
+		textWidth = self.width - 6
+		
+		for i in range(len(self.alumnos)):
+			pos_y = self.top_limit + 2 + i * textHeight
+			self.textBoxs[i] = Textbox(3, pos_y, textWidth, textHeight - 2, self.self.get_color(i))
+			self.canvas.blit(self.textBoxs[i],(pos_y, 3))
+		self.finished = False
+		
+	def react(self, id, input):
+		index_teclado = self.teclados.index(id)
+		self.textBoxs[index_teclado].react(input)
+		self.blocked[index_teclado] = self.textBoxs[index_teclado].blocked
+		
+		self.inputs[index_teclado] = self.textBoxs[index_teclado].Value
+		
+		self.finished = False not in self.blocked
+		
+		self.canvas.blit(self.textBoxs[index_teclado],(self.textBoxs[index_teclado].pos_y, 3))
+		
+	
+	
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
 		self.alumnos = alumnos

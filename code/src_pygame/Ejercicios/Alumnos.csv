@@ -1,0 +1,139 @@
+id;Curso;Nombre;Apellido;usuario
+1;2A;Jose;Jimenez;josej
+2;2A;Alumno;1;alumno1
+3;2A;Alumno;2;alumno2
+4;2A;Alumno;3;alumno3
+5;2A;Alumno;4;alumno4
+6;2A;Alumno;5;alumno5
+7;2A;Alumno;6;alumno6
+8;2A;Alumno;7;alumno7
+9;2A;Alumno;8;alumno8
+10;2A;Alumno;9;alumno9
+11;2A;Alumno;10;alumno10
+12;2A;Alumno;11;alumno11
+13;2A;Alumno;12;alumno12
+14;2A;Alumno;13;alumno13
+15;2A;Alumno;14;alumno14
+16;2A;Alumno;15;alumno15
+17;2A;Alumno;16;alumno16
+18;2A;Alumno;17;alumno17
+19;2A;Alumno;18;alumno18
+20;2A;Alumno;19;alumno19
+21;2A;Alumno;20;alumno20
+22;2A;Alumno;21;alumno21
+23;2A;Alumno;22;alumno22
+24;2A;Alumno;23;alumno23
+25;2A;Alumno;24;alumno24
+26;2A;Alumno;25;alumno25
+27;2A;Alumno;26;alumno26
+28;2A;Alumno;27;alumno27
+29;2A;Alumno;28;alumno28
+30;2A;Alumno;29;alumno29
+31;2A;Alumno;30;alumno30
+32;2A;Alumno;31;alumno31
+33;2A;Alumno;32;alumno32
+34;2A;Alumno;33;alumno33
+35;2A;Alumno;34;alumno34
+36;2A;Alumno;35;alumno35
+37;2A;Alumno;36;alumno36
+38;2A;Alumno;37;alumno37
+39;2A;Alumno;38;alumno38
+40;2A;Alumno;39;alumno39
+41;2A;Alumno;40;alumno40
+42;2A;Alumno;41;alumno41
+43;2A;Alumno;42;alumno42
+44;2A;Alumno;43;alumno43
+45;2A;Alumno;44;alumno44
+46;2A;Alumno;45;alumno45
+47;2A;Alumno;46;alumno46
+48;2A;Alumno;47;alumno47
+49;2A;Alumno;48;alumno48
+50;2BE;constanza lissette yacihara;campos;constanzacampos
+51;2AC;ninosca estefania;acevedo;ninoscaa
+52;2A;leonardo enrique;alcaino;leonardoa
+53;2AC;damary fernanda;araya;damarya
+54;2AE;benjamin alejandro;aroca;benjamina
+55;2AE;matilde paz;belman;matildeb
+56;2AC;elías david;donoso;eliasd
+57;2AC;javier alonso;farias;javierf
+58;2AC;matías joaquín;figueroa;matiasf
+59;2AE;bastian esteban;figueroa;bastianf
+60;2AE;gonzalo alejandro;gallardo;gonzalog
+61;2AE;millaray constanza;gomez;millarayg
+62;2AE;maximo santino;guajardo;maximog
+63;2AE;martina anais;gutierrez;martinag
+64;2AE;nicolas andres;gutiérrez;nicolasg
+65;2A;axel johan;jerez;axelj
+66;2AC;antonia andrea;jorquera;antoniaj
+67;2AC;nataly catalina;lara;natalyl
+68;2AE;miguel angel sebastian;melillan;miguelm
+69;2AC;paula camila paz;mesas;paulam
+70;2AC;sergio ariel;miranda;sergiom
+71;2AC;antonella catalina daniela;olate;antonellao
+72;2A;antonio alfredo;ortega;antonioo
+73;2AE;carmen paz;ortiz;carmeno
+74;2AC;joshua cristopher;pavez;joshuap
+75;2AC;benjamin ignacio;peñaloza;benjaminp
+76;2AE;josefa ignacia;perez;josefap
+77;2AE;martin andres;perez;martinp
+78;2AE;estephani constanza;perez;estephanip
+79;2AE;barbara yazmin;quiroga;barbaraq
+80;2AE;pablo alonso;ramirez;pablor
+81;2AC;karoline elida;reyes;karoliner
+82;2AE;francisca de los angeles;reyes;franciscar
+83;2AC;valentina paz;rojas;valentinar
+84;2AE;antonia valentin;romero;antoniar
+85;2AE;matias bastian;salazar;matiass
+86;2AC;patrick fernando;silva;patricks
+87;2AE;maura asiel;suazo;mauras
+88;2AE;sefora trinidad;tello;seforat
+89;2AC;felipe isaias;valenzuela;felipev
+90;2AC;katherine ivette;vargas;katherinev
+91;2AE;anais ignacia;vargas;anaisv
+92;2AE;martin inacio;garrido;martingarrido
+93;2AC;cristian alexis;alvarado;cristiana
+94;2AE;kelly almendra;cerda;kellyc
+95;2BE;antonia arantzazu;adasme;antoniaa
+96;2BC;diego alonso;alvarez;diegoa
+97;2BE;thomas martin jesus;brito;thomasb
+98;2B;constanza lissette yacihara;campos;constanzal
+99;2BC;carolina alejandra;canales;carolinaa
+100;2BE;alondra ignacia;cárcamo;alondrac
+101;2BE;constanza elizabeth;castilllo;constanzacastillo
+102;2BE;sebastian ignacio;catalan;sebastianc
+103;2B;constanza alejandra;cerda;constanzacerda
+104;2BE;camila ignacia;curihual;camilac
+105;2BC;luna;delgado;lunad
+106;2BC;trinidad francisca;díaz;trinidadd
+107;2B;martin alonso;gana;marting
+108;2BE;jusset chenneyere;garcia;jussetg
+109;2BE;juan pablo;garcía;juang
+110;2B;antonella fernanda;godoy;antonellag
+111;2BC;scarlet giarella;hernandez;scarleth
+112;2BC;alondra millaray;hernández;alondrah
+113;2BE;daniela de los angeles;hidalgo;danielah
+114;2BE;bruno alonso;lillo;brunol
+115;2BE;jeanel ignacia;moya;janelm
+116;2BE;gustavo edmundo;muñoz;gustavom
+117;2BC;josefa antonia;muñoz;josefam
+118;2BE;pia ignacia;olivares;piao
+119;2BE;ayleen andrea;paillan;ayleenp
+120;2BE;paula isidora andrea;pallahuala;paulap
+121;2BC;catalina monserrat;perez;catalinap
+122;2BC;yanara millaray;puebla;yanarap
+123;2BE;valentino antonio;puga;valentinop
+124;2BC;paulo andres;ramirez;paulor
+125;2B;benjamin eduardo;retamal;benjaminr
+126;2BC;alvaro nicolas;rivera;alvaror
+127;2BE;nicolas bastian;salinas;nicolass
+128;2BE;giannella angelinna;salinas;giannellas
+129;2BC;francisca andrea;san martin;franciscas
+130;2BE;valentina gabriela;toledo;valentinat
+131;2BC;antonella simoney;vargas;antonellav
+132;2BC;samantha antonnella;velasquez;samanthav
+133;2B;valentina ignacia;veliz;valentinav
+134;2BE;jared fernando;viera;jaredv
+135;2BC;marla valentina;villanueva;marlav
+136;2B;maura constanza;becerra;maurab
+137;2BE;eydan franco;bustamante;eydanb
+138;2BE;silvio tomás;peralta;silviop

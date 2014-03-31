@@ -14,8 +14,11 @@ from Setups import *
 import audio_library
 from Manager import *
 from PreguntaColaborativa import *
+import logging
 
 audio_lib = audio_library.AudioLibrary()
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 #Setup inicial
 width = 900
@@ -109,8 +112,15 @@ def Keyboard_event(sender, earg):
 			print "Grupo Listo"
 			if Managers[alumno.grupo].correct():
 				print "Grupo respuesta correcta"
+				for a in Alumnos_grupo[alumno.grupo]:
+					if Managers[alumno.grupo].nivel > 0:
+						# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
+						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), a.audio, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
 				Managers[alumno.grupo].advance()
 				for a in Alumnos_grupo[alumno.grupo]:
+					if Managers[alumno.grupo].nivel > 0:
+						# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
+						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), a.audio, 'WRONG_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)],Managers[alumno.grupo].ejercicio.preguntaC.respuestas[0]))	
 					TexttoSpeech("Muy bien", a.audio)
 					TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
 				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()

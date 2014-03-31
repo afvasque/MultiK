@@ -88,6 +88,7 @@ class Pareamiento:
 	def ModificarPareamiento(self, Alumno ,Audio, earg):
 		
 		text= str(earg['char']).decode('utf-8')
+		id_teclado = earg['id']
 		
 		if self.pareado== True and self.nombre_ingresado==False:
 			textctrl= self.Objects[0]
@@ -97,9 +98,7 @@ class Pareamiento:
 				Alumno.Nombre= nombre_caps
 				self.nombre_ingresado=True
 
-				# PAREAMIENTO, nombre del alumno
-				# TOOO Agregar ID de teclado (para usar con KEYPRESS)
-				logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'PAREAMIENTO', nombre_caps))
+				logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', nombre_caps))
 		
 
 		elif self.pareado== False and self.nombre_ingresado==False:

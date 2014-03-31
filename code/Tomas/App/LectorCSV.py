@@ -4,7 +4,8 @@ import csv
 CSVinstance = None
 class LectorCSV:
 	def __init__(self):
-		self.preguntas = list()
+		self.preguntas = {}
+		nivel_anterior = -1
 		with open('Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
 			rownum=0
@@ -12,6 +13,9 @@ class LectorCSV:
 				if rownum > 0:
 					pregunta = PreguntaIndividual()
 					pregunta.nivel = int(row[0])
+					if pregunta.nivel != nivel_anterior:
+						self.preguntas[pregunta.nivel] = list()
+						nivel_anterior = pregunta.nivel
 					pregunta.pregunta = row[1].decode('latin-1')
 					for x in range(2,5):
 						if len(row[x])>0:
@@ -20,7 +24,7 @@ class LectorCSV:
 					pregunta.audio = row[6].decode('latin-1')
 					pregunta.imagen= row[7].decode('latin-1')
 					
-					self.preguntas.append(pregunta)
+					self.preguntas[pregunta.nivel].append(pregunta)
 				rownum += 1
 
 		return

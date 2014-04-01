@@ -15,6 +15,7 @@ import audio_library
 from Manager import *
 from PreguntaColaborativa import *
 import logging
+import time
 
 audio_lib = audio_library.AudioLibrary()
 
@@ -82,8 +83,8 @@ for i in range(num_grupos):
 
 for i in range(num_grupos):
 	for j in range(len(Grupos_inicial[i])):
-		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x, 3 * (i/line_number_x) + j, width/line_number_x,height/(3 * line_number_y)))
-		Setups[3 * i + j].value = 3*i+j
+		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x, 3 * (i / line_number_x) + j, width/line_number_x,height/(3 * line_number_y)))
+		#hhhffhtyytyrtySetups[3 * i + j].value = 3*i+j
 		window.blit(Setups[3 * i + j].screen(),(Setups[3 * i + j].width *Setups[3 * i + j].pos_x,Setups[3 * i + j].height *Setups[3 * i + j].pos_y))
 
 pygame.display.flip()
@@ -115,12 +116,12 @@ def Keyboard_event(sender, earg):
 				for a in Alumnos_grupo[alumno.grupo]:
 					if Managers[alumno.grupo].nivel > 0:
 						# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
-						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), a.audio, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
+						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), a.nombre, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
 				Managers[alumno.grupo].advance()
 				for a in Alumnos_grupo[alumno.grupo]:
 					if Managers[alumno.grupo].nivel > 0:
 						# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
-						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), a.audio, 'WRONG_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)],Managers[alumno.grupo].ejercicio.preguntaC.respuestas[0]))	
+						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), a.nombre, 'WRONG_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)],Managers[alumno.grupo].ejercicio.preguntaC.respuestas[0]))	
 					TexttoSpeech("Muy bien", a.audio)
 					TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
 				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()

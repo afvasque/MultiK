@@ -3,12 +3,13 @@
 class Reglas_Fijas:
     #Cantidad maxima de operaciones por nivel
     MaximoNivel = 5
-
     #Cantidad de buenas que debe tener un niño para pasar de nivel
-    MinimoPasoNivel = 5
+    MinimoPasoNivel = 10
     #Cantidad de preguntas cuando hay un error
-    CantidadPreguntasNivelError = 1
+    CantidadPreguntasNivelError = 15
 
+    #Buenas seguidas
+    
     @staticmethod
     def StringToTipoOperacion(tipoOperacion):
         if tipoOperacion== "primero":

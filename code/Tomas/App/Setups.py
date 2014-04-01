@@ -83,7 +83,7 @@ class setup_nombre:
 		return self.canvas
 		
 	def get_audio_text(self):
-		return "Ingresa tu nombre"
+		return "Ingresa tu numero de lista"
 		
 	def react(self, input):
 		self.text_box.react(input)

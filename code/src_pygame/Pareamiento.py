@@ -16,6 +16,7 @@ import logging
 from threading import Thread
 from threading import Timer 
 from BasicOperacion import *
+import lector_csv
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -37,6 +38,9 @@ class Pareamiento:
 		self.pareado= False
 		self.nombre_ingresado=False
 		self.recien_pareado= False
+
+		#TO-DO Cambiar nombre curso mas user-friendly
+		self.numero_alumno = lector_csv.obtener_lista("3B")
 
 		self.parear()
 
@@ -93,9 +97,12 @@ class Pareamiento:
 		if self.pareado== True and self.nombre_ingresado==False:
 			textctrl= self.Objects[0]
 			if text=="Enter" and len(textctrl.Value)>0:
-				temp_nombre= textctrl.Value
-				nombre_caps= temp_nombre.title()
-				Alumno.Nombre= nombre_caps
+				# Buscamos el numero de lista en el CSV del curso
+				temp_numero= textctrl.Value
+				#Variable nombre_caps por legacy
+				nombre_caps = self.numero_alumno[temp_numero]
+				Alumno.Nombre= self.numero_alumno[temp_numero]
+
 				self.nombre_ingresado=True
 
 				logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', nombre_caps))
@@ -133,7 +140,7 @@ class Pareamiento:
 		
 		self.ResetLayout()
 		
-		frase = u"Ingresa tu nombre"
+		frase = u"Ingresa tu número de lista"
 		size= int(1.5 * self.width/len(frase))		
 		self.Write(frase, 0, 0, size)
 

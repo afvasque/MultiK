@@ -71,7 +71,7 @@ def Keyboard_event(sender, earg):
                     if i not in Audio:
                         TexttoSpeech(i,"Escribe el número "+str(i))
             else:
-                TexttoSpeech(Audio[alumno.Id],"Ingresa tu nombre")
+                TexttoSpeech(Audio[alumno.Id],"Ingresa tu número de lista")
 
         else:
             print "not par"
@@ -79,7 +79,7 @@ def Keyboard_event(sender, earg):
             window.blit(Pareamientos[alumno.Id].screen(),(Pareamientos[alumno.Id].width *Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].height *Pareamientos[alumno.Id].pos_y))
 
             if Pareamientos[alumno.Id].recien_pareado == True:
-                TexttoSpeech(Audio[alumno.Id],"Ingresa tu nombre")
+                TexttoSpeech(Audio[alumno.Id],"Ingresa tu número de lista")
                 Pareamientos[alumno.Id].recien_pareado= False 
 
             if Pareamientos[alumno.Id].pareado == True and  Pareamientos[alumno.Id].nombre_ingresado == True:

@@ -40,7 +40,9 @@ class Pareamiento:
 		self.recien_pareado= False
 
 		#TO-DO Cambiar nombre curso mas user-friendly
-		self.numero_alumno = lector_csv.obtener_lista("3B")
+		self.numero_alumno = lector_csv.obtener_lista("3A")
+		#self.numero_alumno = lector_csv.obtener_lista("3B")
+		#self.numero_alumno = lector_csv.obtener_lista("3C")
 
 		self.parear()
 
@@ -100,13 +102,15 @@ class Pareamiento:
 				# Buscamos el numero de lista en el CSV del curso
 				temp_numero= textctrl.Value
 				#Variable nombre_caps por legacy
-				nombre_caps = self.numero_alumno[temp_numero]
-				Alumno.Nombre= self.numero_alumno[temp_numero]
+				if temp_numero in self.numero_alumno:
+					nombre_caps = self.numero_alumno[temp_numero]
+					Alumno.Nombre= self.numero_alumno[temp_numero]
 
-				self.nombre_ingresado=True
+					self.nombre_ingresado=True
 
-				logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', nombre_caps))
-		
+					logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', nombre_caps))
+				else:
+					self.set_nombre()
 
 		elif self.pareado== False and self.nombre_ingresado==False:
 			textctrl= self.Objects[0]
@@ -135,6 +139,9 @@ class Pareamiento:
 		else:
 			self.Objects[0].react(text)
 			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+
+	
+	def set_mensaje
 
 	def set_nombre(self):
 		

@@ -76,7 +76,7 @@ class setup_nombre:
 		self.canvas.fill(self.blackColor)
 		pygame.draw.rect(self.canvas,self.whiteColor,(1, 1, self.width - 2,  self.height - 2))
 		
-		self.text_box = Textbox(int(self.width / 7), 10,  int(5 * self.width / 7),  int(self.height - 20))
+		self.text_box = Numbox(int(self.width / 7), 10,  int(5 * self.width / 7),  int(self.height - 20))
 		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 		
 	def screen(self):
@@ -90,7 +90,7 @@ class setup_nombre:
 		self.canvas.blit(self.text_box.screen(), (self.text_box.pos_x, self.text_box.pos_y))
 	
 	def value(self):
-		return self.text_box.Value
+		return self.text_box.value
 	
 	def waiting(self):
 		return False

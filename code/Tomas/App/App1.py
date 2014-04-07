@@ -146,13 +146,13 @@ def Keyboard_event(sender, earg):
 			else:
 				TexttoSpeech(Setups[alumno.id].get_audio_text(), Audio[alumno.id])
 		elif text=="Enter":#Recibir el input
-			if Audio[alumno.id] is None:#Revisar si esta pareando el audio
+			if alumno.audio == "":#Revisar si esta pareando el audio
 				value = Setups[alumno.id].value
 				if value < 0 or value >= len(Audio):#Revisar que sea un valor valido
 					while Setups[alumno.id].value > 0:
 						Setups[alumno.id].react("Back")#Borramos lo que haya metido
-				elif value not in Audio: #Revisar que nadie mas tenga ese audio
-					Audio[alumno.id] = value
+				elif Audio[value] is None: #Revisar que nadie mas tenga ese audio
+					Audio[value] = alumno.id
 					alumno.audio = value
 					Setups[alumno.id] = setup_nombre(Setups[alumno.id])#Siguiente setup
 					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion

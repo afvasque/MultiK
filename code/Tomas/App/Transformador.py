@@ -1,3 +1,4 @@
+# coding=utf-8
 from PreguntaIndividual import *
 from PreguntaColaborativa import *
 from LectorCSV import *

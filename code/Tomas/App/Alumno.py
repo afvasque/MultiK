@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from LectorCSV import *
 class Alumno:
 	def __init__(self,id):

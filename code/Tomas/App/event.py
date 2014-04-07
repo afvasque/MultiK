@@ -1,3 +1,4 @@
+# coding=utf-8
 # event.py (improved)
 
 class Event(object):

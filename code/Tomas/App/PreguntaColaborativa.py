@@ -1,3 +1,4 @@
+# coding=utf-8
 class PreguntaColaborativa:
 	def __init__(self):
 		self.nivel = 0

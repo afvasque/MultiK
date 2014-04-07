@@ -34,7 +34,7 @@ class LectorCSV:
 		with open(filepath, 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
 			for row in lenguajereader:
-				self.alumnos[int(row[0])] = row[1]
+				self.alumnos[int(row[0])] = row[1].decode('latin-1')
 		
 		return
 	

@@ -1,3 +1,4 @@
+# coding=utf-8
 class PreguntaIndividual:
 	def __init__(self):
 		self.nivel = 0

@@ -316,4 +316,6 @@ class AudioLibrary:
 
         text = text.replace(u"Ñ", "~N")
 
+        text = text.replace(u"¿", " ")
+
         return text

@@ -113,7 +113,7 @@ def Keyboard_event(sender, earg):
 	text = str(earg['char']).decode('utf-8')
 	if alumno.ready:
 		if text=="Pow":#Repetir la instruccion
-			TexttoSpeech(Managers[alumno.grupo].getAudio(), alumno.audio)
+			TexttoSpeech(u"%s" % Managers[alumno.grupo].getAudio(), alumno.audio)
 		else:
 			Managers[alumno.grupo].ejercicio.react(int(earg['id']),text)
 		if(Managers[alumno.grupo].ejercicio.finished):#Vemos si avanzamos al siguiente ejercicio
@@ -123,15 +123,15 @@ def Keyboard_event(sender, earg):
 				if Managers[alumno.grupo].nivel > 0:
 					for a in Alumnos_grupo[alumno.grupo]:				
 						# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
-						logging.info("[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), a.name, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.pregunta.preguntas[0],Managers[alumno.grupo].ejercicio.pregunta.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
+						logging.info(u"[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), a.name, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.pregunta.preguntas[0],Managers[alumno.grupo].ejercicio.pregunta.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
 				Managers[alumno.grupo].advance()
 				for a in Alumnos_grupo[alumno.grupo]:
-					TexttoSpeech("Muy bien.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
+					TexttoSpeech(u"Muy bien.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
 					#TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
 				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
 			else:
 				for a in Alumnos_grupo[alumno.grupo]:
-					TexttoSpeech("Intentelo de nuevo.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
+					TexttoSpeech(u"Intentelo de nuevo.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
 					if Managers[alumno.grupo].nivel > 0:
 						for a in Alumnos_grupo[alumno.grupo]:
 							# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta

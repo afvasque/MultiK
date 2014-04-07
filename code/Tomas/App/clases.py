@@ -108,7 +108,10 @@ class Numbox:
 		
 		self.myfont = pygame.font.SysFont("monospace", self.height - 2)
 		label = self.myfont.render("%i" % self.value, 1, self.blackColor)
-		self.canvas.blit(label,(1, 1))
+		if self.width > label.get_width():
+			self.canvas.blit(label,(1, 1))
+		else:
+			self.canvas.blit(label,(self.width - label.get_width() - 1, 1))
 		
 		return
 

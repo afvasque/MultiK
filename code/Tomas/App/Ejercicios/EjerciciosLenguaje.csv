@@ -21,14 +21,14 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 1;;;;;s;Presiona la letra s;
 1;;;;;t;Presiona la letra t;
 1;;;;;u;Presiona la letra u;
-1;;;;;v;Presiona la letra b corta;
+1;;;;;v;Presiona la letra v;
 1;;;;;w;Presiona la letra doble b;
 1;;;;;x;Presiona la letra x;
 1;;;;;y;Presiona la letra y griega;
 1;;;;;z;Presiona la letra z;
 2;La tía de Sofía es muy bonita.;tía;Sofía;bonita;bonita;¿Cuál de las palabras tiene como inicial la letra b?;
 2;Las hojas de los árboles se caen en otoño.;hojas;árboles;otoño;árboles;¿Cuál de las palabras tiene como inicial la letra b?;
-2;La escoba de mi tía está muy sucia. ;escoba;tía;sucia;escoba;¿Cuál de las palabras tiene como inicial la letra b?;
+2;La escoba de mi tía está muy sucia. ;escoba;tía;sucia;escoba;¿En cuál de estas palabras se encuentra la letra b?;
 2;En el sur de Chile hay lindos bosques. ;sur;Chile;bosques;bosques;¿Cuál de las palabras tiene como inicial la letra b?;
 2;Muchas botellas de plástico se reciclan.;botellas;plástico;reciclan;botellas;¿Cuál de las palabras tiene como inicial la letra b?;
 2;Carlos toma jarabe para sentirse mejor. ;Carlos;jarabe;mejor;jarabe;¿Cuál de las palabras tiene como inicial la letra b?;
@@ -36,7 +36,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;La boca de ese payaso está pintada de rojo.;boca;payaso;rojo;boca;¿Cuál de las palabras tiene como inicial la letra b?;
 2;Fabián es el mejor amigo de Carlos.;Fabián;amigo;Carlos;Fabián;¿Cuál de las palabras tiene como inicial la letra b?;
 2;En mi barrio hay muchas flores en primavera. ;barrio;muchas;primavera;barrio;¿Cuál de las palabras tiene como inicial la letra b?;
-2;Mi casa está cerca del colegio.;casa;del;colegio;colegio;¿Cuál de las palabras tiene como inicial la letra C?;
+2;Mi casa está cerca del colegio.;está;del;colegio;colegio;¿Cuál de las palabras tiene como inicial la letra C?;
 2;Me gusta mucho pintar con lápices de cera.;gusta;pintar;cerca;cerca;¿Cuál de las palabras tiene como inicial la letra C?;
 2;Mi colación favortita es el yogurt con cereales.;colación;es;yogurt;colación;¿Cuál de las palabras tiene como inicial la letra C?;
 2;Cuando fui a la playa dimos un paseo en caballo.;dimos;paseo;caballo;caballo;¿Cuál de las palabras tiene como inicial la letra C?;
@@ -75,7 +75,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;En mi estuche tengo lápices y goma.;estuche;lápices;goma;goma;¿En cuál de estas palabras se encuentra la letra G?;
 2;Siempre al llegar del colegio guardo mi mochila.;Siempre;colegio;mochila;colegio;¿En cuál de estas palabras se encuentra la letra G?;
 2;El séptimo día de la semana es el domingo.;día;semana;domingo;domingo;¿En cuál de estas palabras se encuentra la letra G?;
-2;Hoy está de cumpleaños mi prima Constanza.;Hoy;cumpleaños;Conztanza;Hoy;¿En cuál de estas palabras se encuentra la letra H?;
+2;Hoy está de cumpleaños mi prima Constanza.;Hoy;cumpleaños;Constanza;Hoy;¿En cuál de estas palabras se encuentra la letra H?;
 2;En el Polo Norte hay mucha nieve.;Polo;hay;nieve;hay;¿En cuál de estas palabras se encuentra la letra H?;
 2;Me gusta beber jugo con dos cubitos de hielo.;gusta;jugo;hielo;hielo;¿En cuál de estas palabras se encuentra la letra H?;
 2;La exposición de arte dura hasta mañana.;exposición;dura;hasta;hasta;¿En cuál de estas palabras se encuentra la letra H?;

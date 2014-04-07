@@ -65,12 +65,15 @@ class ejercicio:
 			if text == "killr":
 				self.alumnos[0].real = False
 				self.blocked[0] = True
+				self.inputs[0] = self.pregunta.respuestas[0]
 			elif text == "killg":
 				self.alumnos[1].real = False
 				self.blocked[1] = True
+				self.inputs[1] = self.pregunta.respuestas[0]
 			elif text == "killb":
 				self.alumnos[2].real = False
 				self.blocked[2] = True
+				self.inputs[2] = self.pregunta.respuestas[0]
 		else:
 			self.input_memory[index] = ""
 
@@ -109,7 +112,10 @@ class ejercicio0(ejercicio):
 		labels.append(self.myfont.render(alumnos[2].name, 1, self.blueColor))
 
 		for i in range(len(labels)):
-			if self.alumnos[i].real:
+			if i > 0:
+				if self.alumnos[i - 1].real:
+					self.canvas.blit(labels[i], (2, self.height / len(labels) * i))
+			else:
 				self.canvas.blit(labels[i], (2, self.height / len(labels) * i))
 		
 	def react(self,id,input):
@@ -179,7 +185,7 @@ class ejercicioAlternativas(ejercicio):
 			self.ys.append(random.randint(0, len(preguntaC.alternativas)-1))
 			if self.alumnos[i].real:
 				self.inputs.append(self.pregunta.alternativas[self.ys[i]])
-			else
+			else:
 				self.inputs.append(self.pregunta.respuestas[0])
 			self.blocked.append(not self.alumnos[i].real)
 			
@@ -277,7 +283,7 @@ class ejercicioTexto(ejercicio):
 				self.inputs.append("")
 				self.blocked.append(False)
 			else:
-				self.inputs.append(self.pregunta.alternativas[0])
+				self.inputs.append(self.pregunta.respuestas[0])
 				self.blocked.append(True)
 			
 		self.top_limit = 0
@@ -306,8 +312,8 @@ class ejercicioTexto(ejercicio):
 		self.finished = False
 		
 	def react(self, id, input):
-		self.memory_react(index_teclado, input)
 		index_teclado = self.teclados.index(id)
+		self.memory_react(index_teclado, input)
 		self.textBoxs[index_teclado].react(input)
 		self.blocked[index_teclado] = self.textBoxs[index_teclado].blocked
 		

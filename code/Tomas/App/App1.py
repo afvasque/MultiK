@@ -120,31 +120,33 @@ def Keyboard_event(sender, earg):
 			print "Grupo Listo"
 			if Managers[alumno.grupo].correct():
 				print "Grupo respuesta correcta"
-				for a in Alumnos_grupo[alumno.grupo]:
-					if Managers[alumno.grupo].nivel > 0:
+				if Managers[alumno.grupo].nivel > 0:
+					for a in Alumnos_grupo[alumno.grupo]:				
 						# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
-						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), a.nombre, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
+						logging.info("[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), a.name, 'CORRECT_ANSWER', Managers[alumno.grupo].ejercicio.pregunta.preguntas[0],Managers[alumno.grupo].ejercicio.pregunta.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)]))	
 				Managers[alumno.grupo].advance()
 				for a in Alumnos_grupo[alumno.grupo]:
-					if Managers[alumno.grupo].nivel > 0:
-						# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
-						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), a.nombre, 'WRONG_ANSWER', Managers[alumno.grupo].ejercicio.preguntas[0],Managers[alumno.grupo].ejercicio.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)],Managers[alumno.grupo].ejercicio.preguntaC.respuestas[0]))	
-					TexttoSpeech("Muy bien", a.audio)
-					TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
+					TexttoSpeech("Muy bien.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
+					#TexttoSpeech(Managers[alumno.grupo].getAudio(), a.audio)
 				#ejercicios[alumno.grupo] = ejercicios[alumno.grupo].next()
 			else:
 				for a in Alumnos_grupo[alumno.grupo]:
-					TexttoSpeech("Intentelo de nuevo", a.audio)
+					TexttoSpeech("Intentelo de nuevo.. %s" % Managers[alumno.grupo].getAudio(), a.audio)
+					if Managers[alumno.grupo].nivel > 0:
+						for a in Alumnos_grupo[alumno.grupo]:
+							# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
+							logging.info("[%f: [%s, %s, %s, %s, %s, %s] ], " % (time.time(), a.name, 'WRONG_ANSWER', Managers[alumno.grupo].ejercicio.pregunta.preguntas[0],Managers[alumno.grupo].ejercicio.pregunta.audios[0],Managers[alumno.grupo].ejercicio.inputs[Managers[alumno.grupo].ejercicio.teclados.index(a.id)],Managers[alumno.grupo].ejercicio.pregunta.respuestas[0]))	
+					
 				print "Grupo respuesta incorrecta"
 		window.blit(Managers[alumno.grupo].ejercicio.screen(),(Managers[alumno.grupo].width * Managers[alumno.grupo].pos_y, Managers[alumno.grupo].height * Managers[alumno.grupo].pos_x)) #Actualizamos el ejercicio
 	else: #Todo lo que es el pareamiento y organizacion en grupos
 		if text=="Pow":#Repetir el texto
-			if Audio[alumno.id] is None:#Repetirselo a todos lo que no estan pareados
+			if alumno.audio == "":#Repetirselo a todos lo que no estan pareados
 				for i in range(num_teclados):
 					if Audio[i] is None:
 						TexttoSpeech("Escribe el número %d" % i, i)
 			else:
-				TexttoSpeech(Setups[alumno.id].get_audio_text(), Audio[alumno.id])
+				TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)
 		elif text=="Enter":#Recibir el input
 			if alumno.audio == "":#Revisar si esta pareando el audio
 				value = Setups[alumno.id].value

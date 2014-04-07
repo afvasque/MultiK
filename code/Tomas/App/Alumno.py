@@ -1,3 +1,4 @@
+from LectorCSV import *
 class Alumno:
 	def __init__(self,id):
 		self.id = id
@@ -7,7 +8,7 @@ class Alumno:
 		self.grupo = -1
 		self.real = True
 		
-	def set_nombre(self, numero_lista):
+	def set_name(self, numero_lista):
 		if numero_lista == 17090326:
 			self.name = "bot"
 			self.real = False

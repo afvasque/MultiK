@@ -141,7 +141,7 @@ class Pareamiento:
 			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	
-	def set_mensaje
+	#def set_mensaje
 
 	def set_nombre(self):
 		

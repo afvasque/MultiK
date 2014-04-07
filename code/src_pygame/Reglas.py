@@ -1,4 +1,4 @@
-﻿
+﻿	
 from TipoOperacionNivel import *
 from ModuloNivel import ModuloNivel
 from BasicOperacion import *
@@ -7,16 +7,11 @@ from GeneradorPreguntas import *
 
 class Reglas:
 
-
-	# pendiente 2 mayus
-	# pendiente 2 otr (no hay palabras terminadas en aba en la base de datos)
-	#pendiente 2 int
-	#lista = list()
-	
 	
 	def __init__(self):
-		lista=list()
-
+		
+		lista = list()		
+		
 		with open('Ejercicios/TipoOperacionNivel.csv', 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
 			rownum=0
@@ -41,7 +36,6 @@ class Reglas:
 		
 		print "correcta:"+str(operacion.respuesta_correcta)	
 		if (not operacion.respuesta_correcta)  and (operacion.CantidadVecesIncorrectaSoloEsta <= 2) and (operacion.feedback_correcto != "First") :
-			print "misma operacion"
 			return operacion
 		
 		
@@ -56,38 +50,43 @@ class Reglas:
 		cambia_nivel= Reglas_Fijas.CambioNivel(operacion)
 		
 		if cambia_nivel == CambioNivel.Sube:
+			#Cambio nivel
 			borrarCorrectas = True
 			siguiente_nivel+=1
 			cantidad_nivel = 1
 			op= self.AlterarFlujo(operacion, siguiente_nivel)
 			tipoActual = op.TipoOperacion
-			siguiente_nivel = op.nivelOperacion
+			siguiente_nivel = op.nivelOperacion + 1
 		
 		elif cambia_nivel == CambioNivel.Mantiene:
 			cantidad_maxima_nivel += self.SubidaMaximoNivel(operacion)
 			cantidad_nivel+=1
 		
 		siguiente_operacion= None
+		
 		generador= GeneradorPreguntas()
 		generador.SetAlumno(alumno)
-		siguiente_operacion = generador.Getsiguiente(siguiente_nivel)
+		
+
+		#Obtenemos el siguiente nivel a partir del nivel actual
+		tipop = self.modulosNivel[0].GetSiguiente(siguiente_nivel)
+
+		siguiente_operacion = generador.Getsiguiente(siguiente_nivel, tipop)
 
 		if borrarCorrectas:
 			siguiente_operacion.cambio_reciente_nivel= True
-
-		
-
-		print "siguiente nivel: "+str(siguiente_nivel)
-		print "nivel operacion: "+ str(operacion.nivelOperacion)
+			siguiente_operacion.correctasTotales = 0
 
 		if siguiente_nivel == operacion.nivelOperacion:
 			siguiente_operacion.cantidadMaximaNivel= cantidad_maxima_nivel
-			siguiente_operacion.puntajesNivel= operacion.puntajesNivel
 			siguiente_operacion.AgregarPuntajesNivel(operacion.puntajesNivel, operacion.puntaje)
-
 			siguiente_operacion.cantidadNivel= cantidad_nivel
+			siguiente_operacion.puntajesNivel= operacion.puntajesNivel
+			siguiente_operacion.correctas_seguidas += operacion.correctas_seguidas
+
 		else:
 			siguiente_operacion.cantidadNivel=1
+			siguiente_operacion.correctas_seguidas = 0
 
 		if not borrarCorrectas:
 			siguiente_operacion.correctasTotales = operacion.correctasTotales

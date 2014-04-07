@@ -6,12 +6,13 @@ class BasicOperacion:
         
     def __init__(self):
         self.operacionTotal = ""
-        self.nivelOperacion = 3
+        self.nivelOperacion = 0
         self.puntajesNivel = list()
         self.cantidadNivel = 0
         self.cantidadMaximaNivel = None
         self.vecesIncorrecta = 0
         self.CantidadVecesIncorrectaSoloEsta = 0
+        self.correctas_seguidas = 0
         self.correctasTotales = 0
         self.numeroSesion = -1
         self.puntaje = -1
@@ -40,6 +41,7 @@ class BasicOperacion:
                 
     def RespuestaCorrecta(self):
         self.respuesta_correcta=True
+        self.correctas_seguidas += 1
         if self.feedback_correcto != "First":
             self.cantidadNivel+=1
         self.SetearPuntaje()
@@ -57,7 +59,7 @@ class BasicOperacion:
             self.puntaje= 2- self.CantidadVecesIncorrectaSoloEsta
         
     def RespuestaIncorrecta(self):
-        
+        self.correctas_seguidas = 0
         self.vecesIncorrecta+=1
         self.CantidadVecesIncorrectaSoloEsta+=1
         

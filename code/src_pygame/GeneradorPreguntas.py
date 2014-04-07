@@ -49,9 +49,7 @@ class GeneradorPreguntas(object):
 						operacion.pregunta= row[1].decode('latin-1')
 						for x in range(2,5):
 							if len(row[x])>0:
-								print "agregada"
 								operacion.alternativas.append(row[x].decode('latin-1').strip())
-								print row[x].decode('latin-1')
 
 						operacion.respuesta= row[5].decode('latin-1').strip()
 						operacion.audio_pregunta= row[6].decode('latin-1')
@@ -64,7 +62,8 @@ class GeneradorPreguntas(object):
 
 		return
 	
-	def Getsiguiente(self, niveloperacion):
+	#TO-DO: que no se repitan al tiro las preguntas
+	def Getsiguiente(self, niveloperacion, tipo_operacion):
 		operaciones= filter(lambda x: x.nivelOperacion== niveloperacion,self.preguntas)
 
 		rand= random.randint(0, len(operaciones)-1)
@@ -72,10 +71,7 @@ class GeneradorPreguntas(object):
 		print "operaciones"+str(len(operaciones))
 		operacion= operaciones[rand]
 
-		for x in operaciones:
-			print "lista: "+x.audio_pregunta
-
-		operacion.TipoOperacion = TipoOperacion.primero
+		operacion.TipoOperacion = tipo_operacion
 		operacion.feedback_correcto = "Bien, " + self.alumno.Nombre
 		operacion.feedback_error = "Inténtalo de nuevo"
 		print "op: "+operacion.audio_pregunta

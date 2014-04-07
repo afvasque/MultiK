@@ -7,8 +7,8 @@ class Reglas_Fijas:
     MinimoPasoNivel = 10
     #Cantidad de preguntas cuando hay un error
     CantidadPreguntasNivelError = 15
-
     #Buenas seguidas
+    BuenasSeguidas = 5
     
     @staticmethod
     def StringToTipoOperacion(tipoOperacion):
@@ -30,57 +30,17 @@ class Reglas_Fijas:
         siguiente_nivel = operacion.nivelOperacion
         cantidad_nivel = operacion.cantidadNivel
         cantidad_maxima_nivel = operacion.cantidadMaximaNivel
-        print "cantidad: "+str(cantidad_nivel)
-        print "maximo: "+str(cantidad_maxima_nivel)
-        to_return = CambioNivel.Mantiene
-        
-        # En caso de que tenga buena prgeunta de exclamación, pasa directo a interrogacioń
-        #if operacion.TipoOperacion == TipoOperacion.signos_int_excl and operacion.nivelOperacion==1 and "?" in operacion.respuesta:
-        #    return CambioNivel.Sube
-        
+        correctas_seguidas = operacion.correctas_seguidas
+        to_return = CambioNivel.Mantiene        
+    
         # Si ha contestado menos de las mínimas
         if operacion.correctasTotales < Reglas_Fijas.MinimoPasoNivel and cantidad_nivel>= Reglas_Fijas.CantidadPreguntasNivelError :
             return CambioNivel.Mantiene
         
         #si ya no tiene que contestar más
-        if cantidad_nivel +1 > cantidad_maxima_nivel:
-            to_return= CambioNivel.Sube
-        elif operacion.correctasTotales >= Reglas_Fijas.MinimoPasoNivel and cantidad_nivel >= Reglas_Fijas.CantidadPreguntasNivelError:
+        if operacion.correctasTotales >= Reglas_Fijas.MinimoPasoNivel and cantidad_nivel >= Reglas_Fijas.CantidadPreguntasNivelError and  correctas_seguidas >= Reglas_Fijas.BuenasSeguidas:
             to_return = CambioNivel.Sube
             
         return to_return
             
-          
-
-
-'''	
-			
-			
-        /// <summary>
-        /// Traduce de un string a Enum Pperando
-        /// </summary>
-        /// <param name="TipoOperacion">Suma, Resta, Division, Multiplicacion</param>
-        /// <returns>TipoOperacion.Suma, TipoOperacion.Resta, TipoOperacion.Division, TipoOperacion.Multiplicacion</returns>
-        public static TipoOperacion StringToTipoOperacion(string tipoOperacion)
-        {
-            switch (tipoOperacion)
-            {
-                case "mayus_nombres_propios": { return TipoOperacion.mayus_nombres_propios; }
-                case "patrones_ort_comunes": { return TipoOperacion.patrones_ort_comunes; }
-                case "Reproduccion_letras_alfabeto": { return TipoOperacion.Reproduccion_letras_alfabeto; }
-                case "sentido_vocales_silabas": { return TipoOperacion.sentido_vocales_silabas; }
-                case "signos_int_excl": { return TipoOperacion.signos_int_excl; }
-                default: { return TipoOperacion.mayus_nombres_propios; }
-            }
-        }
-
-     
-
-        public static IEnumerable<T> Randomize<T>(this IEnumerable<T> source)
-        {
-            Random rnd = new Random();
-            return source.OrderBy<T, int>((item) => rnd.Next());
-        }
-    }
-}
-'''
+        

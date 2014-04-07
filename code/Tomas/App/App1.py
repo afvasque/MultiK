@@ -1,21 +1,26 @@
 # coding=utf-8
+
+from Alumno import *
 import usb.core
 import threading
 import math
 from keyboard_library_queue import *
 import event
-import sys
+import time
+import logging
+
 import pygame
+import audio_library
+
+import sys
 from ejercicio import *
 import multiprocessing
 from threading import Thread
-from Alumno import *
 from Setups import *
-import audio_library
 from Manager import *
 from PreguntaColaborativa import *
-import logging
-import time
+
+
 
 audio_lib = audio_library.AudioLibrary()
 
@@ -27,7 +32,8 @@ height = 700
 
 lib = KeyboardLibrary()
 
-lib.detect_all_keyboards(0x0e8f,0x0022)
+#lib.detect_all_keyboards(0x0e8f,0x0022)
+lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 num_teclados = lib.get_total_keyboards()
 
 num_grupos = int(num_teclados/3)
@@ -91,14 +97,15 @@ pygame.display.flip()
 
 
 def TexttoSpeech(text_to_speech, id_audifono):
-	global lib_play_proc
-	global text_to_speech_queue        
+	audio_lib.play(id_audifono, text_to_speech)
+	#global lib_play_proc
+	#global text_to_speech_queue        
 		
-	if len(text_to_speech)>0:
-		print "Reproduciendo en audifono #%s: \"%s\"" % (id_audifono, text_to_speech)
-		audio_lib.reproduciendo[id_audifono]=True
-		print str(id_audifono)+" "+str(audio_lib.reproduciendo[id_audifono])
-		text_to_speech_queue[id_audifono].put(text_to_speech)
+	#if len(text_to_speech)>0:
+	#	print "Reproduciendo en audifono #%s: \"%s\"" % (id_audifono, text_to_speech)
+	#	audio_lib.reproduciendo[id_audifono]=True
+	#	print str(id_audifono)+" "+str(audio_lib.reproduciendo[id_audifono])
+	#	text_to_speech_queue[id_audifono].put(text_to_speech)
 
 def Keyboard_event(sender, earg):
 	print "#%s : %s" % (earg['id'], earg['char'])  # 0: id, 1: teclas
@@ -153,8 +160,8 @@ def Keyboard_event(sender, earg):
 					while Setups[alumno.id].value > 0:
 						Setups[alumno.id].react("Back")#Borramos lo que haya metido
 			elif alumno.name == "": #Si ya tiene audio puede que este metiendo su nombre
-				if(len(Setups[alumno.id].value()) > 0): #Si ingreso su nombre
-					alumno.name = Setups[alumno.id].value()
+				if(Setups[alumno.id].value() > 0): #Si ingreso su nombre
+					alumno.set_name(Setups[alumno.id].value())
 					Setups[alumno.id] = setup_grupo(Setups[alumno.id])#Siguiente setup
 					TexttoSpeech(Setups[alumno.id].get_audio_text(), alumno.audio)#Le mandamos la instruccion
 				else: #Se le repite la instruccion
@@ -195,9 +202,17 @@ def Keyboard_event(sender, earg):
 			window.blit(Setups[alumno.id].screen(),(Setups[alumno.id].width * Setups[alumno.id].pos_x, Setups[alumno.id].height * Setups[alumno.id].pos_y))
 	pygame.display.flip()
 
+class ThreadKeyboard(threading.Thread):
+    def run(self):
+        lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+
+	
 lib.keypress += Keyboard_event
 
-lib.run(0x0e8f,0x0022)
+t = ThreadKeyboard()
+t.start()
+
+#lib.run(0x0e8f,0x0022)
 		
 '''
 for i in range(num_grupos):

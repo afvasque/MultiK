@@ -4,6 +4,8 @@ import csv
 CSVinstance = None
 class LectorCSV:
 	def __init__(self):
+		curso = "3A"
+		#Leer los ejercicios
 		self.preguntas = {}
 		nivel_anterior = -1
 		with open('Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
@@ -26,7 +28,14 @@ class LectorCSV:
 					
 					self.preguntas[pregunta.nivel].append(pregunta)
 				rownum += 1
-
+		#Leer los alumnos
+		self.alumnos = {}
+		filepath = "ListasCSV/"+ curso + ".csv"
+		with open(filepath, 'rb') as csvfile:
+			lenguajereader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
+			for row in lenguajereader:
+				self.alumnos[int(row[0])] = row[1]
+		
 		return
 	
 	@staticmethod

@@ -4,7 +4,7 @@ import csv
 CSVinstance = None
 class LectorCSV:
 	def __init__(self):
-		curso = "3A"
+		curso = "3D"
 		#Leer los ejercicios
 		self.preguntas = {}
 		nivel_anterior = -1

@@ -40,10 +40,10 @@ class Pareamiento:
 		self.recien_pareado= False
 
 		#TO-DO Cambiar nombre curso mas user-friendly
-		self.numero_alumno = lector_csv.obtener_lista("3A")
+		#self.numero_alumno = lector_csv.obtener_lista("3A")
 		#self.numero_alumno = lector_csv.obtener_lista("3B")
 		#self.numero_alumno = lector_csv.obtener_lista("3C")
-
+		self.numero_alumno = lector_csv.obtener_lista("3D")
 		self.parear()
 
 	def react(self,input):

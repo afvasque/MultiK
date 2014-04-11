@@ -322,8 +322,11 @@ class ejercicioTexto(ejercicio):
 		self.finished = False not in self.blocked
 		
 		self.canvas.blit(self.textBoxs[index_teclado].screen(),(3, self.textBoxs[index_teclado].pos_y))
-		
 	
+	def set_max_length(self, max_length):
+		for i in range(len(self.alumnos)):
+			self.textBoxs[i].max_length = max_length
+			
 	
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):

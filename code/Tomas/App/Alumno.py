@@ -9,8 +9,10 @@ class Alumno:
 		self.ready = False
 		self.grupo = -1
 		self.real = True
+		self.numero_lista = 0
 		
 	def set_name(self, numero_lista):
+		self.numero_lista = numero_lista
 		if numero_lista == 17090326:
 			self.name = "bot"
 			self.real = False

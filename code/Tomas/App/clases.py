@@ -17,6 +17,8 @@ class Textbox:
 		self.blocked = False
 		#Sector especifico para el inicio
 		
+		self.max_length = 1000
+		
 		self.Value = ""
 		
 		pygame.font.init()
@@ -29,7 +31,7 @@ class Textbox:
 	def react(self,input):
 		self.myfont = pygame.font.SysFont("monospace", self.height - 2)
 		if not self.blocked:
-			if len(input)==1:
+			if len(input)==1 and len(self.Value) < self.max_length:
 				self.Value = self.Value + input
 				print "valor: " + self.Value
 			elif input == "Back":

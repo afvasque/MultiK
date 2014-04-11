@@ -33,7 +33,7 @@ class Manager:
 			return True
 		print "Nivel de comprobacion mayor a 0"
 		for i in range(len(self.alumnos)):
-			if self.pregunta.respuestas[0] != self.ejercicio.inputs[i]:
+			if (u"%s" % self.pregunta.respuestas[0]) != (u"%s" % self.ejercicio.inputs[i]):
 				print "Encontrado inconsistencia"
 				self.streak_current = 0
 				self.malas_current += 1
@@ -70,6 +70,8 @@ class Manager:
 			self.ejercicio = ejercicioAlternativas(self.alumnos, self.pos_x, self.pos_y, self.width, self.height, self.pregunta)
 		else:
 			self.ejercicio = ejercicioTexto(self.alumnos, self.pos_x, self.pos_y, self.width, self.height, self.pregunta)
+			if self.nivel == 1:
+				self.ejercicio.set_max_length(1)
 		#if self.nivel == 1:
 		#	self.pregunta = self.transformador.threeToOne(1, True)
 		#	self.ejercicio = ejercicio1(self.alumnos, self.pos_x, self.pos_y, self.width, self.height)

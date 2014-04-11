@@ -95,7 +95,17 @@ def Keyboard_event(sender, earg):
 def TexttoSpeech(audifono, tts):
     audio_lib.play(audifono, tts)
 
-
+class PygameThread(threading.Thread):    
+    def run(self):
+        print("RUNNING")
+        running = True
+        while running:
+            for e in pygame.event.get():
+                if e.type == pygame.MOUSEBUTTONUP:
+                    print("SALIR")
+                    running = False
+        pygame.quit()
+        sys.exit()
 
 
 #TODO: poner thread como padre
@@ -112,8 +122,8 @@ class ThreadKeyboard(threading.Thread):
 
 
 
-width = 1000
-height = 700
+width = 1280
+height = 800
 
 lib.keypress += Keyboard_event
 lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
@@ -132,7 +142,7 @@ if line_number_x * line_number_y < keyboardsNum:
     line_number_y+=1
 
 
-window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
                
 
 for i in range(keyboardsNum):    
@@ -151,6 +161,12 @@ for i in range(keyboardsNum):
 
 pygame.display.flip()
         
+try:
+    t = ThreadKeyboard()
+    t.start()
 
-t = ThreadKeyboard()
-t.start()
+    pygame_thread = PygameThread()
+    pygame_thread.start()
+
+except:
+    print("-----===== EXCEPTION threading exception =====-----")

@@ -95,11 +95,15 @@ for i in range(num_grupos):
 	pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONUP])
 
 #Agregar los espacios que sobran a los espacios disponibles
-if line_number_x * line_number_y > num_grupos:
-	for i in range((line_number_x * line_number_y) - num_grupos):
+if (line_number_x * line_number_y) > num_grupos:
+	espacios_sobrantes = (line_number_x * line_number_y) - num_grupos
+	print "Espacios sobrantes: %d" % espacios_sobrantes
+	for i in range(espacios_sobrantes):
 		indice = num_grupos + i
-		Setups.append(empty_setup(indice%line_number_x, 3 * (indice / line_number_x), width/line_number_x,height/(3 * line_number_y)))
+		print indice
+		Setups.append(empty_setup(indice/line_number_x, (indice % line_number_x), width/line_number_x,height/(3 * line_number_y)))
 		Espacios_Listos.append(len(Setups) - 1)
+		#window.blit(Setups[len(Setups) - 1].screen(),(Setups[len(Setups) - 1].width *Setups[len(Setups) - 1].pos_x,Setups[len(Setups) - 1].height *Setups[len(Setups) - 1].pos_y))
 		
 		
 pygame.display.flip()
@@ -201,9 +205,10 @@ def Keyboard_event(sender, earg):
 						Grupo_Listo = Alumnos_grupo[Grupo_Listo]
 						for i in range(len(Grupo_Listo)): #Setemos a los alumnos como listos para empezar
 							Grupo_Listo[i].ready = True
-							print "Alumnos %s listo" % (Grupo_Listo[i].name)
+							print "Alumno %s listo" % (Grupo_Listo[i].name)
 						Managers[Grupo_Listo[0].grupo] = Manager(Grupo_Listo, Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y, Setups[Espacio_Listo].width, 3 * Setups[Espacio_Listo].height) #Creamos el primer ejercicio
 						print "Asignado espacio %s a grupo %s" % (Espacio_Listo, Grupo_Listo[0].grupo)
+						print "Posicion x:%d y:%d" %(Setups[Espacio_Listo].pos_x, Setups[Espacio_Listo].pos_y)
 						window.blit(Managers[Grupo_Listo[0].grupo].ejercicio.screen(),(Managers[Grupo_Listo[0].grupo].width * Managers[Grupo_Listo[0].grupo].pos_y, Managers[Grupo_Listo[0].grupo].height * Managers[Grupo_Listo[0].grupo].pos_x)) #Lo metemos a la pantalla
 						for i in range(len(Grupo_Listo)):
 							TexttoSpeech(Managers[Grupo_Listo[0].grupo].getAudio(), Grupo_Listo[i].audio)

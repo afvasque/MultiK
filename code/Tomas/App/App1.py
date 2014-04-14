@@ -98,7 +98,7 @@ for i in range(num_grupos):
 if line_number_x * line_number_y > num_grupos:
 	for i in range((line_number_x * line_number_y) - num_grupos):
 		indice = num_grupos + i
-		Setups.append(empty_setup(i%line_number_x, 3 * (i / line_number_x), width/line_number_x,height/(3 * line_number_y)))
+		Setups.append(empty_setup(indice%line_number_x, 3 * (indice / line_number_x), width/line_number_x,height/(3 * line_number_y)))
 		Espacios_Listos.append(len(Setups) - 1)
 		
 		

@@ -27,7 +27,7 @@ audio_lib = audio_library.AudioLibrary()
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 #Setup inicial
-width = 900
+width = 1000
 height = 700
 
 lib = KeyboardLibrary()
@@ -49,7 +49,7 @@ if line_number_x * line_number_y < num_grupos:
 if line_number_x * line_number_y < num_grupos:
     line_number_y+=1
 
-window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
 
 #ejercicios = []
 
@@ -92,7 +92,16 @@ for i in range(num_grupos):
 		Setups.append(Pareamiento(Grupos_inicial[i][j],i%line_number_x, 3 * (i / line_number_x) + j, width/line_number_x,height/(3 * line_number_y)))
 		#hhhffhtyytyrtySetups[3 * i + j].value = 3*i+j
 		window.blit(Setups[3 * i + j].screen(),(Setups[3 * i + j].width *Setups[3 * i + j].pos_x,Setups[3 * i + j].height *Setups[3 * i + j].pos_y))
+	pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONUP])
 
+#Agregar los espacios que sobran a los espacios disponibles
+if line_number_x * line_number_y > num_grupos:
+	for i in range((line_number_x * line_number_y) - num_grupos):
+		indice = num_grupos + i
+		Setups.append(empty_setup(i%line_number_x, 3 * (i / line_number_x), width/line_number_x,height/(3 * line_number_y)))
+		Espacios_Listos.append(len(Setups) - 1)
+		
+		
 pygame.display.flip()
 
 
@@ -208,11 +217,31 @@ class ThreadKeyboard(threading.Thread):
     def run(self):
         lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
+class PygameThread(threading.Thread):    
+    def run(self):
+        clock = pygame.time.Clock()
+        print("RUNNING")
+        running = True
+        while running:
+            for ev in pygame.event.get():
+                if ev.type == pygame.MOUSEBUTTONUP:
+                    print("SALIR")
+                    running = False
+            clock.tick(20)            
+        pygame.quit()
+        sys.exit()
+		
 	
 lib.keypress += Keyboard_event
 
-t = ThreadKeyboard()
-t.start()
+try:
+    t = ThreadKeyboard()
+    t.start() 
+
+    pygame_thread = PygameThread()
+    pygame_thread.start()
+except:
+    print("-----===== EXCEPTION threading exception =====-----")
 
 #lib.run(0x0e8f,0x0022)
 		

@@ -108,4 +108,5 @@ class KeyboardLibrary:
 				# Fire the event
 				self.keypress(val) # Piuuu!
 			except Queue.Empty as e:
+				print("-----===== EXCEPTION Empty queue =====-----")
 				pass

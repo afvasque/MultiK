@@ -161,4 +161,18 @@ class setup_wait:
 	
 	def waiting(self):
 		return True
+		
+class empty_setup:
+	def __init__(self, pos_x, pos_y, width, height):
+		self.pos_x = pos_x
+		self.pos_y = pos_y
+		self.redColor = pygame.Color(255,0,0)
+		self.greenColor = pygame.Color(0,255,0)
+		self.blueColor = pygame.Color(0,0,255)
+		self.whiteColor = pygame.Color(255,255,255)
+		self.blackColor = pygame.Color(0,0,0)
+		self.width = width
+		self.height = height
+		self.canvas = pygame.Surface((self.width,self.height))
+		self.canvas.fill(self.blackColor)
 	

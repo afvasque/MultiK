@@ -97,13 +97,15 @@ def TexttoSpeech(audifono, tts):
 
 class PygameThread(threading.Thread):    
     def run(self):
+        clock = pygame.time.Clock()
         print("RUNNING")
         running = True
         while running:
-            for e in pygame.event.get():
-                if e.type == pygame.MOUSEBUTTONUP:
+            for ev in pygame.event.get():
+                if ev.type == pygame.MOUSEBUTTONUP:
                     print("SALIR")
                     running = False
+            clock.tick(20)            
         pygame.quit()
         sys.exit()
 
@@ -122,8 +124,8 @@ class ThreadKeyboard(threading.Thread):
 
 
 
-width = 1280
-height = 800
+width = 1000
+height = 700
 
 lib.keypress += Keyboard_event
 lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
@@ -143,7 +145,7 @@ if line_number_x * line_number_y < keyboardsNum:
 
 
 window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
-               
+
 
 for i in range(keyboardsNum):    
     # Crear tantos alumnos como teclados se hayan detectado
@@ -156,17 +158,19 @@ for i in range(keyboardsNum):
     window.blit(Pareamientos[i].screen(),(Pareamientos[i].width *Pareamientos[i].pos_x,Pareamientos[i].height *Pareamientos[i].pos_y))
 
     TexttoSpeech(i, "Escribe el número "+str(i))
-
-
-
-pygame.display.flip()
         
+    pygame.event.set_allowed([pygame.QUIT, pygame.MOUSEBUTTONUP])
+
+pygame.display.flip()               
+
+
 try:
     t = ThreadKeyboard()
-    t.start()
+    t.start() 
 
     pygame_thread = PygameThread()
     pygame_thread.start()
-
 except:
     print("-----===== EXCEPTION threading exception =====-----")
+
+

@@ -43,8 +43,8 @@ class ejercicio:
 		print "ejercicio"
 		self.pos_x = pos_x
 		self.pos_y = pos_y
-		self.whiteColor = pygame.Color(255,255,255, 100)
-		self.backColor = pygame.Color(random.randint(100, 255),random.randint(100, 255),random.randint(100, 255))
+		self.whiteColor = pygame.Color(255,255,255)
+		self.backColor = pygame.Color(random.randint(200, 255),random.randint(200, 255),random.randint(200, 255))
 		self.width = width
 		self.height = height
 		self.canvas = pygame.Surface((self.width,self.height))

@@ -74,7 +74,6 @@ def Keyboard_event(sender, earg):
                 TexttoSpeech(Audio[alumno.Id],"Ingresa tu número de lista")
 
         else:
-            print "not par"
             Pareamientos[alumno.Id].ModificarPareamiento(alumno,Audio,earg)
             window.blit(Pareamientos[alumno.Id].screen(),(Pareamientos[alumno.Id].width *Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].height *Pareamientos[alumno.Id].pos_y))
 

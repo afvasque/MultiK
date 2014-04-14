@@ -151,7 +151,8 @@ class Pareamiento:
 		size= int(1.5 * self.width/len(frase))		
 		self.Write(frase, 0, 0, size)
 
-		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/2),int(self.width*0.9),int(size*1.2)))
-		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
+		# Textbox que pregunta nombre
+		self.Objects.append(Textbox(int(self.width*0.05),int(self.height/4),int(self.width*0.9),int(size*6)))
+		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y))
 
 	

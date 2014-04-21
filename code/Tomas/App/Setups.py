@@ -174,5 +174,8 @@ class empty_setup:
 		self.width = width
 		self.height = height
 		self.canvas = pygame.Surface((self.width,self.height))
-		self.canvas.fill(self.blackColor)
+		self.canvas.fill(self.greenColor)
+
+	def screen(self):
+		return self.canvas
 	

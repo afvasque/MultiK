@@ -27,14 +27,16 @@ audio_lib = audio_library.AudioLibrary()
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 #Setup inicial
-width = 1000
-height = 700
+width = 800
+height = 600
 
 lib = KeyboardLibrary()
 
 #lib.detect_all_keyboards(0x0e8f,0x0022)
-lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
-num_teclados = lib.get_total_keyboards()
+#lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+
+#num_teclados = lib.get_total_keyboards()
+num_teclados = lib.total_keyboards
 
 num_grupos = int(num_teclados/3)
 if num_teclados%3 > 0:
@@ -49,7 +51,7 @@ if line_number_x * line_number_y < num_grupos:
 if line_number_x * line_number_y < num_grupos:
     line_number_y+=1
 
-window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 #ejercicios = []
 

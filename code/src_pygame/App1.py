@@ -2,6 +2,9 @@
 #Boa:Frame:Frame2
 
 from Alumno import *
+
+import os
+
 import usb.core
 import threading
 import math
@@ -15,6 +18,7 @@ from Prueba_clases.clases import *
 from Prueba_clases.ejercicio import *
 from Pareamiento import *
 import audio_library
+
 
 
 
@@ -35,12 +39,6 @@ Audio= []
 audio_lib = audio_library.AudioLibrary()
 
 
-
-
-
-
-
-
 def Keyboard_event(sender, earg):
     id_sent= int(earg['id'])
     text= str(earg['char']).decode('utf-8')
@@ -53,16 +51,14 @@ def Keyboard_event(sender, earg):
 
     # Alumno se encuentra pareado
     if alumno.ready:
-        print "alumno listo"
-
         if text=="Pow": 
             diccionario[alumno.Id].RepetirPregunta()
 
         else:
-
+            # Se envia la tecla presionada al ejercicio actual del alumno
             diccionario[alumno.Id].Keyboard_Pressed(sender,earg)
             window.blit(diccionario[alumno.Id].screen(),(diccionario[alumno.Id].width *diccionario[alumno.Id].pos_x,diccionario[alumno.Id].height *diccionario[alumno.Id].pos_y))
-
+            
     # Alumno no se encuentra pareado
     else:
         if text=="Pow": 
@@ -109,27 +105,13 @@ class PygameThread(threading.Thread):
         sys.exit()
 
 
-#TODO: poner thread como padre
-class ThreadKeyboard(threading.Thread):
-    def run(self):
-        lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
-
-
-
-
-
-
-
-
-
-
-width = 1000
-height = 700
+width = 800
+height = 600
 
 lib.keypress += Keyboard_event
-lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+#lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
-keyboardsNum= lib.get_total_keyboards()
+keyboardsNum= lib.total_keyboards #lib.get_total_keyboards()
 print "Total de teclados: "+str(keyboardsNum)
 
 
@@ -143,7 +125,7 @@ if line_number_x * line_number_y < keyboardsNum:
     line_number_y+=1
 
 
-window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 
 for i in range(keyboardsNum):    
@@ -162,14 +144,12 @@ for i in range(keyboardsNum):
 
 pygame.display.flip()               
 
-
 try:
-    t = ThreadKeyboard()
-    t.start() 
-
+    
     pygame_thread = PygameThread()
     pygame_thread.start()
 except:
     print("-----===== EXCEPTION threading exception =====-----")
 
+lib.run()
 

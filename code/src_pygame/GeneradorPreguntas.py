@@ -27,8 +27,6 @@ class GeneradorPreguntas(object):
 	def SetAlumno(self,alumno):
 
 		self.alumno=alumno
-		#self.interpal= Generador_pal("clase de prueba")
-		#self.interor= Generador_or("clase de prueba")
 
 		if self.preguntas is None:
 
@@ -67,8 +65,7 @@ class GeneradorPreguntas(object):
 		operaciones= filter(lambda x: x.nivelOperacion== niveloperacion,self.preguntas)
 
 		rand= random.randint(0, len(operaciones)-1)
-		print "random"+str(rand)
-		print "operaciones"+str(len(operaciones))
+
 		operacion= operaciones[rand]
 
 		operacion.TipoOperacion = tipo_operacion

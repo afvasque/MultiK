@@ -4,6 +4,7 @@ import usb.core
 import usb.util
 import time
 import logging
+import event
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -49,13 +50,11 @@ class KeyboardReader:
 	vowels_acute = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú']
 	vowels_diaeresis = ['ä', 'ë', 'ï', 'ö', 'ü', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü']
  
+	keypress = event.Event('Key sent')
 
 	def __init__(self, vendor_id, product_id, global_id, local_id, queue):
 		# Save the queue as an attribute.
 		self.queue = queue
-
-
-
 
 		# Find all keyboards with the given vendor and product ids.
 		keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
@@ -70,20 +69,11 @@ class KeyboardReader:
 		del keyboards[:]
 
 
-
-
-		# Detach kernel driver from the keyboard.
+		# Detach kernel driver from the OS.
 		self.detach_keyboard()
 
 		# Set configuration.
 		self.set_configuration()
-
-		# Read the input.
-		self.read_keyboard_input()
-
-
-
-
 
 
 	def detach_keyboard(self):
@@ -94,15 +84,11 @@ class KeyboardReader:
 				sys.exit("Could not detach kernel driver: %s" % str(e))
 
 
-
-
 	def set_configuration(self):
 		try:
 			self.keyboard.set_configuration() # This gives us an error (Errno 16: Resource busy), we don't know why ...
-			self.keyboard.reset()
 		except usb.core.USBError as e:
-			# # ... but we can ignore it and we get no problems.
-			# print "Error on setting configuration: " + str(e) + ". Continuing anyway."
+			print "Error on setting configuration: " + str(e) + ". Continuing anyway."
 			pass
 
 		# Define the endpoint.
@@ -156,12 +142,7 @@ class KeyboardReader:
 
 						logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), values['id'], values['time_pressed'], 'CHAR_DETECTED', values['char']))
 
-						try:
-							# put these values on the queue
-							self.queue.put_nowait(values)
-						except Queue.Full:
-							print "Queue full. Lost values: %s", str(values)
-							pass
+						self.keypress(earg=values) # Piuuu!
 
 						# reset diacritic symbols
 						diaeresis = False

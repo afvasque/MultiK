@@ -73,7 +73,7 @@ class KeyboardLibrary:
 					product_id = self.vendor_product_ids[vp][1]
 					break
 
-			k = keyboard_reader.KeyboardReader(vendor_id,product_id,global_id,local_id,queue)
+			k = keyboard_reader.KeyboardReader(vendor_id,product_id,global_id,local_id)
 			k.keypress += self.Keyboard_event
 			
 			thread.start_new_thread(self.start_keyboard, (k,))

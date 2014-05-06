@@ -52,9 +52,8 @@ class KeyboardReader:
  
 	keypress = event.Event('Key sent')
 
-	def __init__(self, vendor_id, product_id, global_id, local_id, queue):
-		# Save the queue as an attribute.
-		self.queue = queue
+	def __init__(self, vendor_id, product_id, global_id, local_id):
+
 
 		# Find all keyboards with the given vendor and product ids.
 		keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)

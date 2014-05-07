@@ -8,7 +8,7 @@ import Queue
 import keyboard_reader
 import event
 import time
-
+import thread
 
 
 class KeyboardLibrary:
@@ -17,6 +17,12 @@ class KeyboardLibrary:
 	vendor_product_ids = []
 	total_keyboards_by_vendor_product_ids = []
 	keypress = event.Event('A key has been pressed')
+
+	def Keyboard_event(self, sender, earg):
+		self.keypress(earg)
+
+	def start_keyboard(self, k):
+		k.read_keyboard_input()
 
 	def detect_all_keyboards(self, vendor_product_ids):
 		for i in range(len(vendor_product_ids)):
@@ -44,21 +50,10 @@ class KeyboardLibrary:
 	def __init__(self):
 		self.total_keyboards = 0
 		return
-
 	
 	def run(self, vendor_product_ids):
 		self.vendor_product_ids = vendor_product_ids
 
-
-
-		# Detect the keyboards
-		# (id values can be found using 'lsusb --vv' command in ubuntu 12.04 and other linux versions)
-		#self.detect_all_keyboards(self.vendor_product_ids)
-
-		# Create a queue (FIFO) for safely exchanging information
-		queue = multiprocessing.Queue(False)
-
-		# Create processes
 		print "Starting %i processes..." % self.total_keyboards
 		for global_id in range(self.total_keyboards):
 			local_id = -1
@@ -68,11 +63,6 @@ class KeyboardLibrary:
 			cumulative = 0
 			cumulative_prev = 0
 
-			############DEBUG
-			# print '---------:'
-			# str1 = ''.join(str(e) + ',' for e in self.total_keyboards_by_vendor_product_ids)
-			# print str1
-			# print ':---------'
 
 			for vp, val in enumerate(self.total_keyboards_by_vendor_product_ids):
 				cumulative_prev = cumulative
@@ -83,30 +73,9 @@ class KeyboardLibrary:
 					product_id = self.vendor_product_ids[vp][1]
 					break
 
-			############DEBUG
-			# print '++++++++:'
-			# print 'local_id = %i' % local_id
-			# print 'global_id = %i' % global_id
-			# print ':++++++++'
-
-			# The keyboard needs to be detected again.
-			p = multiprocessing.Process(target=keyboard_reader.KeyboardReader, args=(vendor_id,product_id,global_id,local_id,queue))
+			k = keyboard_reader.KeyboardReader(vendor_id,product_id,global_id,local_id)
+			k.keypress += self.Keyboard_event
 			
-			# Save the reference to the process just created.
-			self.keyboard_proc_array.append(p)
-
-			# Start it.
-			p.start()
-			print "%s" % str(p)
+			thread.start_new_thread(self.start_keyboard, (k,))
 
 
-		# Read the queue forever.
-		while(True):
-			try:
-				# Get the values for the event.
-				val = queue.get()
-				# Fire the event
-				self.keypress(val) # Piuuu!
-			except Queue.Empty as e:
-				print("-----===== EXCEPTION Empty queue =====-----")
-				pass

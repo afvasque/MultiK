@@ -20,15 +20,8 @@ from Pareamiento import *
 import audio_library
 
 
-
-
-
-
-
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 logging.info("[%f: [%s] ], " % (time.time(),'APP_START'))
-
-
 
 
 diccionario= []
@@ -84,7 +77,7 @@ def Keyboard_event(sender, earg):
                 i= alumno.Id
                 window.blit(diccionario[i].screen(),(diccionario[i].width *diccionario[i].pos_x,diccionario[i].height *diccionario[i].pos_y))
 
-    pygame.display.flip()
+    pygame.display.update()
 
 
 def TexttoSpeech(audifono, tts):
@@ -109,9 +102,9 @@ width = 800
 height = 600
 
 lib.keypress += Keyboard_event
-#lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 
-keyboardsNum= lib.total_keyboards #lib.get_total_keyboards()
+keyboardsNum = lib.get_total_keyboards()
 print "Total de teclados: "+str(keyboardsNum)
 
 
@@ -151,5 +144,5 @@ try:
 except:
     print("-----===== EXCEPTION threading exception =====-----")
 
-lib.run()
+lib.run([[0x0e8f,0x0022],[0x0e6a,0x6001]])
 

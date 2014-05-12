@@ -44,23 +44,27 @@ class InputDeviceDispatcher(file_dispatcher):
 		time_pressed = time.time()
 
 		for event in self.recv():
-			if event.value == 1:
-				path = self.device.fn
-				
-				# Deletes /dev/input/event before ID
-				device_id = path[(path.find("event")+5):]	
-				
-				keycode = ecodes.KEY[event.code]
-				result = self.get_key_to_screen(keycode)
-				
-				if "KEY_" in result:
-					result = self.get_punctuation_marks(event.code)
-				
-				if result != "":
-					print([device_id,result])
-					values = {"id": device_id, "char": result, "time_pressed": time_pressed}
-					logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
-					self.keypress(values)
+			try:
+				if event.value == 1:
+					path = self.device.fn
+					
+					# Deletes /dev/input/event before ID
+					device_id = path[(path.find("event")+5):]	
+					
+					keycode = ecodes.KEY[event.code]
+					result = self.get_key_to_screen(keycode)
+					
+					if "KEY_" in result:
+						result = self.get_punctuation_marks(event.code)
+					
+					if result != "":
+						print([device_id,result])
+						values = {"id": device_id, "char": result, "time_pressed": time_pressed}
+						logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
+						self.keypress(values)
+			except Exception as e:
+				print(self.device.fn)
+				print e
 
 	# Receives eventcode instead of keycode to avoid mapping mess. Eventcode is the same
 	# no matter the active keyboard layout
@@ -184,16 +188,15 @@ class KeyboardLibrary:
 		INPUT_EVENT_PATH = "/dev/input/"
 
 		# Create keyboard path
+		# Eliminamos teclado del sistema
+		print("ELIMINADO ", keyboard_events[0])
+		del keyboard_events[0]
 
 		for counter, ke in enumerate(keyboard_events):
 			self.keyboard_paths.append(INPUT_EVENT_PATH + ke)
 			self.keyboard_local_global_id[ke[ke.find("event")+5:]] = counter
 
-		# Eliminamos teclado del sistema
-
-		
-
-		self.total_keyboards = len(self.keyboard_paths)-1
+		self.total_keyboards = len(self.keyboard_paths)
 	
 	def run(self):
 
@@ -205,5 +208,9 @@ class KeyboardLibrary:
 		loop()
 
 	def Keyboard_Event(self,sender,eargs):
-		values = {"id": self.keyboard_local_global_id[eargs['id']], "char": eargs['char'], "time_pressed": eargs['time_pressed']}
-		self.keypress(values)
+		try:
+			values = {"id": self.keyboard_local_global_id[eargs['id']], "char": eargs['char'], "time_pressed": eargs['time_pressed']}
+			self.keypress(values)
+		except Exception as e:
+			print e
+			print eargs['id'], self.keyboard_local_global_id

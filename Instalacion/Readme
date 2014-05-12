@@ -10,7 +10,13 @@ Instalar voz femenina (carpeta en este directorio)
 Configurar la voz por defecto en "/etc/festival.scm":
 	- agregar (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
 sudo apt-get install sox
+
+Para nueva libreria de teclados:
+
+sudo apt-get install python-setuptools
+En la carpeta python-evdev:
+	- python setup.py install
 ----------
-Versión marzo 2014
+Versión mayo 2014
 Andrea
 

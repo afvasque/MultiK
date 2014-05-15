@@ -362,13 +362,13 @@ class ejercicio:
 					listview= self.Objects[0]
 					
 					if listview.answer() == self.Operacion_actual.respuesta:
-						logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , self.Operacion_actual.respuesta))
+						logging.info("[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , self.Operacion_actual.respuesta))
 						#self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
 						self.resp_correct=True
 						self.Operacion_actual.RespuestaCorrecta()
 					else:
 						# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
-						logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'WRONG_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , listview.answer() ,self.Operacion_actual.respuesta))
+						logging.info("[%f: [%s, %s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'WRONG_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , listview.answer() ,self.Operacion_actual.respuesta))
 						#self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 						self.resp_incorrect=True
 						self.Operacion_actual.RespuestaIncorrecta()
@@ -380,14 +380,14 @@ class ejercicio:
 						
 				if textctrl.Value.strip() == self.Operacion_actual.respuesta:
 					# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
-					logging.info("[%f: [%d, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
+					logging.info("[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
 					#self.TexttoSpeech(self.Operacion_actual.feedback_correcto.decode('utf8'))
 					self.resp_correct=True
 					self.Operacion_actual.RespuestaCorrecta()
 					textctrl.Value=""
 				else:
 					# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
-					logging.info("[%f: [%d, %s, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, 'WRONG_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , textctrl.Value ,self.Operacion_actual.respuesta))
+					logging.info("[%f: [%s, %s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'WRONG_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , textctrl.Value ,self.Operacion_actual.respuesta))
 					#self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 					self.resp_incorrect=True
 					self.Operacion_actual.RespuestaIncorrecta()
@@ -398,13 +398,13 @@ class ejercicio:
 			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 
 			if cambia_nivel == CambioNivel.Sube:
-				logging.info("[%f: [%d, %s, %d] ], " % (time.time(), self.numero_audifono, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
+				logging.info("[%f: [%s, %s, %d] ], " % (time.time(), self.Alumno_actual.nro_lista, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
 			self.CreateGrid(self.Operacion_actual)
 		
 		self.Objects[0].react(text)
 		self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 		# Tiempo respuesta desde decision de Pucca
-		logging.info("[%f: [%d, %f, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, time_pressed, 'COCOYOC', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
+		logging.info("[%f: [%s, %f, %s, %s, %s, %s] ], " % (time.time(), self.numero_audifono, time_pressed, 'COCOYOC', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
 
 
 
@@ -412,7 +412,7 @@ class ejercicio:
 	def RepetirPregunta(self):
 		#print "Repetir pregunta"
 		#print self.Operacion_actual.audio_pregunta
-		logging.info("[%f: [%d, %s, %s] ], " % (time.time(), self.numero_audifono, 'REPEAT_QUESTION',self.Operacion_actual.audio_pregunta))
+		logging.info("[%f: [%s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'REPEAT_QUESTION',self.Operacion_actual.audio_pregunta))
 		self.TexttoSpeech(self.Operacion_actual.audio_pregunta)            
 		
 	

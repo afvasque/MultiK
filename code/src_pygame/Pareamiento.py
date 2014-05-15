@@ -105,10 +105,11 @@ class Pareamiento:
 				if temp_numero in self.numero_alumno:
 					nombre_caps = self.numero_alumno[temp_numero]
 					Alumno.Nombre= self.numero_alumno[temp_numero]
-
+					# Identificamos al alumno asi para manejar persistencia y evitar choques de nombre
+					Alumno.nro_lista = temp_numero
 					self.nombre_ingresado=True
 
-					logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', nombre_caps))
+					logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), self.numero_audifono, id_teclado, 'PAREAMIENTO', temp_numero))
 				else:
 					self.set_nombre()
 

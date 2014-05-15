@@ -19,5 +19,5 @@ class Alumno:
         self.Nombre=""
         self.Apellido=""
         self.ready = False
-        #self.simbolo= simbolo
+        self.nro_lista= ""
         

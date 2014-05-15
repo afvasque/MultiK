@@ -67,6 +67,7 @@ class ejercicio:
 		
 		operacion= BasicOperacion()
 		operacion.TipoOperacion= TipoOperacion.primero
+		#TODO Leer nivel de inicio desde archivo
 		operacion.nivelOperacion= 1
 		operacion.feedback_correcto= "First"
 
@@ -198,10 +199,8 @@ class ejercicio:
 
 		sep=12 # caracteres para separar lineas
 		temp= len(operacion.pregunta)/float(sep)
-		print "temp"+str(temp)
-		temp= math.ceil(temp)
 
-		print "temp:"+str(temp)
+		temp= math.ceil(temp)
 
 		div_inicio=0
 		div_fin=0
@@ -377,7 +376,8 @@ class ejercicio:
 			else:
 
 				textctrl= self.Objects[0]
-						
+				isMagic = False
+
 				if textctrl.Value.strip() == self.Operacion_actual.respuesta:
 					# CORRECT_ANSWER, pregunta, audio_pregunta, respuesta
 					logging.info("[%f: [%s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'CORRECT_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta ,self.Operacion_actual.respuesta))
@@ -385,6 +385,13 @@ class ejercicio:
 					self.resp_correct=True
 					self.Operacion_actual.RespuestaCorrecta()
 					textctrl.Value=""
+				# Password de paso de nivel (para teclados perdidos)
+				# Espera recibir string 16612274lYY, donde YY es nivel a llegar
+				elif "166122740" in textctrl.Value.strip():
+					new_level = int(textctrl.Value.strip().split('l')[1])
+					logging.info("[%f: [%d, %s, %d] ], " % (time.time(), self.numero_audifono, 'MAGIC_LEVEL_UP', new_level))
+					self.Operacion_actual = self.reglas_main.GetSiguienteOperacionMagic(self.Alumno_actual, new_level)
+					isMagic = True
 				else:
 					# WRONG_ANSWER, pregunta, audio_pregunta, respuesta alumno, respuesta
 					logging.info("[%f: [%s, %s, %s, %s, %s, %s] ], " % (time.time(), self.Alumno_actual.nro_lista, 'WRONG_ANSWER', self.Operacion_actual.pregunta,self.Operacion_actual.audio_pregunta , textctrl.Value ,self.Operacion_actual.respuesta))
@@ -393,12 +400,19 @@ class ejercicio:
 					self.Operacion_actual.RespuestaIncorrecta()
 					textctrl.Value=""
 			
-			cambia_nivel= Reglas_Fijas.CambioNivel(self.Operacion_actual)
+			if not isMagic:
+				cambia_nivel= Reglas_Fijas.CambioNivel(self.Operacion_actual)
 
-			self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
+				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 
+<<<<<<< HEAD
 			if cambia_nivel == CambioNivel.Sube:
 				logging.info("[%f: [%s, %s, %d] ], " % (time.time(), self.Alumno_actual.nro_lista, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
+=======
+				if cambia_nivel == CambioNivel.Sube:
+					logging.info("[%f: [%d, %s, %d] ], " % (time.time(), self.numero_audifono, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
+			
+>>>>>>> 09cdb11132c104547c649f02b2e649624003e474
 			self.CreateGrid(self.Operacion_actual)
 		
 		self.Objects[0].react(text)

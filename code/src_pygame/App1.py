@@ -123,8 +123,8 @@ class ThreadKeyboard(threading.Thread):
 
 
 
-width = 800
-height = 600
+width = 1000
+height = 700
 
 lib.keypress += Keyboard_event
 lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
@@ -143,7 +143,7 @@ if line_number_x * line_number_y < keyboardsNum:
     line_number_y+=1
 
 
-window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
 
 
 for i in range(keyboardsNum):    
@@ -171,5 +171,4 @@ try:
     pygame_thread.start()
 except:
     print("-----===== EXCEPTION threading exception =====-----")
-
 

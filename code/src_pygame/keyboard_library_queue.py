@@ -1,112 +1,223 @@
 # coding=utf-8
 
 import sys
-import usb.core
-import usb.util
-import multiprocessing
-import Queue
-import keyboard_reader
 import event
 import time
+
+import time
+import logging
+
+# Evdev library: http://python-evdev.readthedocs.org/en/latest/tutorial.html
+from evdev import InputDevice, categorize, ecodes
+
+from select import select
+from threading import Thread
+from asyncore import file_dispatcher, loop
+import string
+
+import re
+from subprocess import check_output
+
+
+# Avoids while True for reading input
+class InputDeviceDispatcher(file_dispatcher):
+	
+	diaeresis = False
+	acute = False
+	is_leftshift = False
+
+	keypress = event.Event('A key has been pressed')
+
+	vowels = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']
+	vowels_acute = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú']
+	vowels_diaeresis = ['ä', 'ë', 'ï', 'ö', 'ü', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü']
+
+	def __init__(self, device):
+		self.device = device
+		file_dispatcher.__init__(self, device)
+
+	def recv(self, ign=None):
+		return self.device.read()
+
+	def handle_read(self):		
+		
+		time_pressed = time.time()
+
+		try:
+			for event in self.recv():
+
+				if event.type == ecodes.EV_KEY and event.value == 1:
+					print("EVENT VALUE: ", event.value)
+					print(categorize(event))
+					path = self.device.fn
+					
+					# Deletes /dev/input/event before ID
+					device_id = path[(path.find("event")+5):]	
+					
+					keycode = ecodes.KEY[event.code]
+					result = self.get_key_to_screen(keycode)
+					
+					if "KEY_" in result:
+						result = self.get_punctuation_marks(event.code)
+					
+					if result != "":
+						print([device_id,result])
+						values = {"id": device_id, "char": result, "time_pressed": time_pressed}
+						logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
+						self.keypress(values)
+		except Exception as e:
+			print(self.device.fn)
+			print e
+			pass
+
+	# Receives eventcode instead of keycode to avoid mapping mess. Eventcode is the same
+	# no matter the active keyboard layout
+	def get_punctuation_marks(self, eventcode):
+		if eventcode == 12:
+			if self.is_leftshift:
+				self.is_leftshift = False
+				return "?"
+		elif eventcode == 13:
+			if self.is_leftshift:
+				self.is_leftshift = False
+				return "¿"
+			else:
+				return "¡"
+		elif eventcode == 14:
+			return 'Back'
+		elif eventcode == 28:
+			return 'Enter'
+		elif eventcode == 103:
+			return '-^'
+		elif eventcode == 108:
+			return '-v'
+		elif eventcode == 105:
+			return '<-'
+		elif eventcode == 106:
+			return '->'
+		elif eventcode == 127:
+			return 'Pow'
+		elif eventcode == 39:
+			if self.is_leftshift:
+				self.is_leftshift = False
+				return 'Ñ'
+			else:
+				return 'ñ'
+		else:
+			return eventcode
+			
+
+	def get_key_to_screen(self, keycode):
+
+		# Deletes KEY_
+		key = keycode[keycode.find("KEY_")+4:] 
+		
+		# If is a letter
+		if key in string.ascii_letters:
+
+			if not self.is_leftshift:
+				key = key.lower()
+
+			if key in self.vowels:
+				vowel_pos = self.vowels.index(key)
+				if self.acute:
+					return self.vowels_acute[vowel_pos]
+				elif self.diaeresis:
+					return self.vowels_diaeresis[vowel_pos]
+
+			self.is_leftshift = False
+			self.acute = False
+
+			return key
+
+		# If key is a number
+		elif key in string.digits:
+			if key == "1" and self.is_leftshift:
+				self.is_leftshift = False
+				return "!"
+			return key
+
+		# Uppercase
+		elif keycode == "KEY_LEFTSHIFT":
+			self.is_leftshift = True
+			return ''
+		# Acute
+		elif keycode == "KEY_APOSTROPHE":
+			# Diaeresis
+			if self.is_leftshift:
+				self.acute = False
+				self.is_leftshift = False
+				self.diaeresis = True
+			else:
+				self.acute = True
+			return ''
+
+		elif keycode == "KEY_DOT":
+			if self.is_leftshift:
+				self.is_leftshift = False
+				return ':'
+			else:
+				return '.'
+		elif keycode == "KEY_COMMA":
+			if self.is_leftshift:
+				self.is_leftshift = False
+				return ';'
+			else:
+				return ','
+		else:
+			# Cannot handle this
+			return keycode
 
 
 
 class KeyboardLibrary:
+	
+	logging.basicConfig(filename='multik.log',level=logging.INFO)
 
-	keyboard_proc_array = []
-	vendor_product_ids = []
-	total_keyboards_by_vendor_product_ids = []
+	total_keyboards = 0
+
 	keypress = event.Event('A key has been pressed')
 
-	def detect_all_keyboards(self, vendor_product_ids):
-		for i in range(len(vendor_product_ids)):
-			vendor_id = vendor_product_ids[i][0]
-			product_id = vendor_product_ids[i][1]
+	keyboard_paths = []
 
-			# find our keyboards
-			print 'Detecting keyboards with vendor_id = ' + str(vendor_id) + ' and product_id = ' + str(product_id) + '...'
-			keyboards = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
-
-			print '\033[94m' + str(len(keyboards)) + ' keyboards of the specified type detected!' + '\033[0m'
-
-			self.total_keyboards_by_vendor_product_ids.append(len(keyboards))
-			self.total_keyboards = self.total_keyboards + len(keyboards)
-
-		if self.total_keyboards == 0:
-			print '\033[91m' + 'Make sure the keyboards are connected, or check that the vendor_id and product_id variables are correct.' + '\033[0m'
-			raw_input('Press [Enter] to exit.')
-			sys.exit()
-
-
-	def get_total_keyboards(self):
-		return self.total_keyboards
+	keyboard_local_global_id = {}
 
 	def __init__(self):
-		self.total_keyboards = 0
-		return
+		# Search eventXX that matches connected keyboards
+		output = "grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013'"
+		output_result = check_output(output, shell=True) # shell=True allows pipe usage
+		keyboard_events = re.findall(r'event[0-9]+', output_result, re.MULTILINE) # using regex select 'eventXX'
 
+		# Standard keyboard path
+		INPUT_EVENT_PATH = "/dev/input/"
+
+		# Create keyboard path
+		# Eliminamos teclado del sistema
+		#print("ELIMINADO ", keyboard_events[0])
+		#del keyboard_events[0]
+
+		for counter, ke in enumerate(keyboard_events):
+			self.keyboard_paths.append(INPUT_EVENT_PATH + ke)
+			self.keyboard_local_global_id[ke[ke.find("event")+5:]] = counter
+
+		self.total_keyboards = len(self.keyboard_paths)
 	
-	def run(self, vendor_product_ids):
-		self.vendor_product_ids = vendor_product_ids
+	def run(self):
 
+		for i in self.keyboard_paths:
+			# Automagically added to asyncore.loop map when creating this file_dispatcher
+			InputDeviceDispatcher(InputDevice(i)).keypress += self.Keyboard_Event
 
+		# Using asyncore
+		try:
+			loop()
+		except Exception as e:
+			print "Error en loop"
 
-		# Detect the keyboards
-		# (id values can be found using 'lsusb --vv' command in ubuntu 12.04 and other linux versions)
-		#self.detect_all_keyboards(self.vendor_product_ids)
-
-		# Create a queue (FIFO) for safely exchanging information
-		queue = multiprocessing.Queue(False)
-
-		# Create processes
-		print "Starting %i processes..." % self.total_keyboards
-		for global_id in range(self.total_keyboards):
-			local_id = -1
-			vendor_id = -1
-			product_id = -1
-
-			cumulative = 0
-			cumulative_prev = 0
-
-			############DEBUG
-			# print '---------:'
-			# str1 = ''.join(str(e) + ',' for e in self.total_keyboards_by_vendor_product_ids)
-			# print str1
-			# print ':---------'
-
-			for vp, val in enumerate(self.total_keyboards_by_vendor_product_ids):
-				cumulative_prev = cumulative
-				cumulative = cumulative + val
-				if (global_id < cumulative):
-					local_id = global_id - cumulative_prev
-					vendor_id = self.vendor_product_ids[vp][0]
-					product_id = self.vendor_product_ids[vp][1]
-					break
-
-			############DEBUG
-			# print '++++++++:'
-			# print 'local_id = %i' % local_id
-			# print 'global_id = %i' % global_id
-			# print ':++++++++'
-
-			# The keyboard needs to be detected again.
-			p = multiprocessing.Process(target=keyboard_reader.KeyboardReader, args=(vendor_id,product_id,global_id,local_id,queue))
-			
-			# Save the reference to the process just created.
-			self.keyboard_proc_array.append(p)
-
-			# Start it.
-			p.start()
-			print "%s" % str(p)
-
-
-		# Read the queue forever.
-		while(True):
-			try:
-				# Get the values for the event.
-				val = queue.get()
-				# Fire the event
-				self.keypress(val) # Piuuu!
-			except Queue.Empty as e:
-				print("-----===== EXCEPTION Empty queue =====-----")
-				pass
+	def Keyboard_Event(self,sender,eargs):
+		try:
+			values = {"id": self.keyboard_local_global_id[eargs['id']], "char": eargs['char'], "time_pressed": eargs['time_pressed']}
+			self.keypress(values)
+		except Exception as e:
+			print e
+			print ("Error ke: ", eargs['id'], self.keyboard_local_global_id)

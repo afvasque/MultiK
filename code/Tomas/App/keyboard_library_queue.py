@@ -43,9 +43,12 @@ class InputDeviceDispatcher(file_dispatcher):
 		
 		time_pressed = time.time()
 
-		for event in self.recv():
-			try:
-				if event.value == 1:
+		try:
+			for event in self.recv():
+
+				if event.type == ecodes.EV_KEY and event.value == 1:
+					print("EVENT VALUE: ", event.value)
+					print(categorize(event))
 					path = self.device.fn
 					
 					# Deletes /dev/input/event before ID
@@ -62,9 +65,10 @@ class InputDeviceDispatcher(file_dispatcher):
 						values = {"id": device_id, "char": result, "time_pressed": time_pressed}
 						logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
 						self.keypress(values)
-			except Exception as e:
-				print(self.device.fn)
-				print e
+		except Exception as e:
+			print(self.device.fn)
+			print e
+			pass
 
 	# Receives eventcode instead of keycode to avoid mapping mess. Eventcode is the same
 	# no matter the active keyboard layout
@@ -189,8 +193,8 @@ class KeyboardLibrary:
 
 		# Create keyboard path
 		# Eliminamos teclado del sistema
-		print("ELIMINADO ", keyboard_events[0])
-		del keyboard_events[0]
+		#print("ELIMINADO ", keyboard_events[0])
+		#del keyboard_events[0]
 
 		for counter, ke in enumerate(keyboard_events):
 			self.keyboard_paths.append(INPUT_EVENT_PATH + ke)
@@ -205,7 +209,10 @@ class KeyboardLibrary:
 			InputDeviceDispatcher(InputDevice(i)).keypress += self.Keyboard_Event
 
 		# Using asyncore
-		loop()
+		try:
+			loop()
+		except Exception as e:
+			print "Error en loop"
 
 	def Keyboard_Event(self,sender,eargs):
 		try:
@@ -213,4 +220,4 @@ class KeyboardLibrary:
 			self.keypress(values)
 		except Exception as e:
 			print e
-			print eargs['id'], self.keyboard_local_global_id
+			print ("Error ke: ", eargs['id'], self.keyboard_local_global_id)

@@ -27,7 +27,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 1;;;;;y;Presiona la letra y griega;
 1;;;;;z;Presiona la letra z;
 2;La tía de Sofía es muy bonita.;tía;Sofía;bonita;bonita;¿Cuál de las palabras tiene como inicial la letra b?;
-2;Las hojas de los árboles se caen en otoño.;hojas;árboles;otoño;árboles;¿Cuál de las palabras tiene como inicial la letra b?;
+2;Las hojas de los árboles se caen en otoño.;hojas;árboles;otoño;árboles;¿En cuál de estas palabras se encuentra la letra b?;
 2;La escoba de mi tía está muy sucia. ;escoba;tía;sucia;escoba;¿En cuál de estas palabras se encuentra la letra b?;
 2;En el sur de Chile hay lindos bosques. ;sur;Chile;bosques;bosques;¿Cuál de las palabras tiene como inicial la letra b?;
 2;Muchas botellas de plástico se reciclan.;botellas;plástico;reciclan;botellas;¿Cuál de las palabras tiene como inicial la letra b?;
@@ -70,7 +70,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;Mi papá se llama Gerardo.;papá;llama;Gerardo;Gerardo;¿En cuál de estas palabras se encuentra la letra G?;
 2;Mi abuelita tiene muchas gallinas.;abuelita;muchas;gallinas;gallinas;¿En cuál de estas palabras se encuentra la letra G?;
 2;Los leones tienen fuertes garras.;leones;fuertes;garras;garras;¿En cuál de estas palabras se encuentra la letra G?;
-2;Mi mamá dice que no debo comer muchas hamburguesas porque tienen grasa.;mamá;comer;hamburguesas;hamburguesas;¿En cuál de estas palabras se encuentra la letra G?;
+2;Debo comer hamburguesas moderadamente.;moderadamente;comer;hamburguesas;hamburguesas;¿En cuál de estas palabras se encuentra la letra G?;
 2;Me gustó mucho la película que fui a ver ayer.;gustó;película;ayer;gustó;¿En cuál de estas palabras se encuentra la letra G?;
 2;En mi estuche tengo lápices y goma.;estuche;lápices;goma;goma;¿En cuál de estas palabras se encuentra la letra G?;
 2;Siempre al llegar del colegio guardo mi mochila.;Siempre;colegio;mochila;colegio;¿En cuál de estas palabras se encuentra la letra G?;
@@ -84,7 +84,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;En el zoologico vi un hipopótamo. ;En;zoológico;hipopótamo;hipopótamo;¿En cuál de estas palabras se encuentra la letra H?;
 2;Los higos son frutos muy dulces y jugosos.;higos;frutos;jugosos;higos;¿En cuál de estas palabras se encuentra la letra H?;
 2;La gallina puso veinte huevos en el gallinero.;gallina;huevos;gallineros;huevos;¿En cuál de estas palabras se encuentra la letra H?;
-2;Mi mamá horneó un pastel de chocolate.;horneó;pastel;chocolate;horneó;¿En cuál de estas palabras se encuentra la letra H?;
+2;Mi mamá horneó un pastel de chocolate.;horneó;pastel;chocolate;horneó;¿Cuál de estas palabras comienza con la letra H?;
 2;Las jirafas tienen el cuello muy largo.;jirafas;cuello;largo;jirafas;¿En cuál de estas palabras se encuentra la letra J?;
 2;Andrés y su hermano José fueron al cine.;Andrés;José;cine;José;¿En cuál de estas palabras se encuentra la letra J?;
 2;Ayer encontré una jaiba en la playa.;Ayer;una;jaiba;jaiba;¿En cuál de estas palabras se encuentra la letra J?;
@@ -134,7 +134,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;A Josefina le regalaron una muñeca.;Josefina;regalaron;muñeca;muñeca;¿En cuál de estas palabras se encuentra la letra Ñ?;
 2;Las arañas tienen ocho patas.;Las;arañas;ocho;arañas;¿En cuál de estas palabras se encuentra la letra Ñ?;
 2;Elena se pintó las uñas de color naranjo.;Elena;uñas;naranjo;uñas;¿En cuál de estas palabras se encuentra la letra Ñ?;
-2;Aníbal fue de escursión a la montaña.;Aníbal;escursióm;montaña;montaña;¿En cuál de estas palabras se encuentra la letra Ñ?;
+2;Aníbal fue de excursión a la montaña.;Aníbal;excursión;montaña;montaña;¿En cuál de estas palabras se encuentra la letra Ñ?;
 2;Me gusta comer pan con manjar.;gusta;pan;manjar;pan;¿En cuál de estas palabras se encuentra la letra P?;
 2;Mi mamá tiene el pelo muy largo.;mamá;pelo;largo;pelo;¿En cuál de estas palabras se encuentra la letra P?;
 2;Me gusta la pelota de Mario.;gusta;pelota;Mario;pelota;¿En cuál de estas palabras se encuentra la letra P?;

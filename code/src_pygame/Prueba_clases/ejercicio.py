@@ -405,14 +405,9 @@ class ejercicio:
 
 				self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(self.Operacion_actual, self.Alumno_actual)
 
-<<<<<<< HEAD
 			if cambia_nivel == CambioNivel.Sube:
 				logging.info("[%f: [%s, %s, %d] ], " % (time.time(), self.Alumno_actual.nro_lista, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
-=======
-				if cambia_nivel == CambioNivel.Sube:
-					logging.info("[%f: [%d, %s, %d] ], " % (time.time(), self.numero_audifono, 'LEVEL_UP', self.Operacion_actual.nivelOperacion))
 			
->>>>>>> 09cdb11132c104547c649f02b2e649624003e474
 			self.CreateGrid(self.Operacion_actual)
 		
 		self.Objects[0].react(text)

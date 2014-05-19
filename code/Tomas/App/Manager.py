@@ -58,6 +58,8 @@ class Manager:
 	def advance(self):
 		if (self.correctas_current >= self.correctas_nivel and self.streak_current) or self.nivel == 0:
 			self.nivel+=1
+			if self.nivel == 1:
+				self.nivel = 2
 			self.correctas_current = 0
 			if self.nivel > self.nivel_max:
 				self.nivel = 1

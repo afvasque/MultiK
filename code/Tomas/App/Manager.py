@@ -26,7 +26,7 @@ class Manager:
 		
 		self.correctas_nivel = 10 #La cantidad de correctas que necesitan para pasar de nivel
 		self.correctas_streak = 5 #La cantidad de correctas seguidas que necesitan para pasar de nivel
-		self.nivel_max = 4
+		self.nivel_max = 7
 		
 		self.transformador = Transformador()
 		
@@ -69,7 +69,7 @@ class Manager:
 				self.nivel = 2
 			for i in range(len(self.alumnos)):
 				if self.alumnos[i].real:
-					logging.info(u"[%f: [%d, %s, %d] ], " % (time.time(), self.alumnos[i].numero_lista, "Pasa a nivel", self.nivel)
+					logging.info(u"[%f: [%d, %s, %d] ], " % (time.time(), self.alumnos[i].numero_lista, "level_up", self.nivel))
 			self.correctas_current = 0
 			if self.nivel > self.nivel_max:
 				self.nivel = 1

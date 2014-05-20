@@ -5,6 +5,10 @@ from Alumno import *
 from ejercicio import *
 from Transformador import *
 
+import time
+import logging
+import sys
+
 class Manager:
 	def __init__(self, alumnos, pos_x, pos_y, width, height):
 		self.alumnos = alumnos
@@ -26,6 +30,8 @@ class Manager:
 		
 		self.transformador = Transformador()
 		
+		logging.basicConfig(filename='multik.log',level=logging.INFO)
+		
 		return
 		
 	def correct(self):
@@ -33,11 +39,12 @@ class Manager:
 			return True
 		print "Nivel de comprobacion mayor a 0"
 		for i in range(len(self.alumnos)):
-			if (u"%s" % self.pregunta.respuestas[0]) != (u"%s" % self.ejercicio.inputs[i]):
-				print "Encontrado inconsistencia"
-				self.streak_current = 0
-				self.malas_current += 1
-				return False
+			if self.alumnos[i].real:
+				if (u"%s" % self.pregunta.respuestas[0]) != (u"%s" % self.ejercicio.inputs[i]):
+					print "Encontrado inconsistencia"
+					self.streak_current = 0
+					self.malas_current += 1
+					return False
 		self.streak_current += 1
 		self.correctas_current += 1
 		return True
@@ -60,6 +67,9 @@ class Manager:
 			self.nivel+=1
 			if self.nivel == 1:
 				self.nivel = 2
+			for i in range(len(self.alumnos)):
+				if self.alumnos[i].real:
+					logging.info(u"[%f: [%d, %s, %d] ], " % (time.time(), self.alumnos[i].numero_lista, "Pasa a nivel", self.nivel)
 			self.correctas_current = 0
 			if self.nivel > self.nivel_max:
 				self.nivel = 1

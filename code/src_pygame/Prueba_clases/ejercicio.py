@@ -68,7 +68,7 @@ class ejercicio:
 		operacion= BasicOperacion()
 		operacion.TipoOperacion= TipoOperacion.primero
 		#TODO Leer nivel de inicio desde archivo
-		operacion.nivelOperacion= 1
+		operacion.nivelOperacion= 2
 		operacion.feedback_correcto= "First"
 
 		self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(operacion, self.Alumno_actual)
@@ -348,7 +348,7 @@ class ejercicio:
 		text= str(earg['char']).decode('utf-8')
 		text= self.arreglar_texto(text)
 		time_pressed = earg['time_pressed']
-		
+		isMagic = False
 		if len(text)==0 or self.speaking==True:
 			return
 

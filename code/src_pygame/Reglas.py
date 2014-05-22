@@ -53,6 +53,8 @@ class Reglas:
 			#Cambio nivel
 			borrarCorrectas = True
 			siguiente_nivel+=1
+			if siguiente_nivel == 8:
+				siguiente_nivel = 11
 			cantidad_nivel = 1
 			op= self.AlterarFlujo(operacion, siguiente_nivel)
 			tipoActual = op.TipoOperacion

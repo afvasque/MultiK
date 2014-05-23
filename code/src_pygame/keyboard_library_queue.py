@@ -182,6 +182,10 @@ class KeyboardLibrary:
 
 	keyboard_local_global_id = {}
 
+	def ordenar(self, event_path):
+		print(event_path[5:])
+		return int(event_path[5:])
+
 	def __init__(self):
 		# Search eventXX that matches connected keyboards
 		output = "grep -E 'Handlers|EV=' /proc/bus/input/devices | grep -B1 'EV=120013'"
@@ -191,14 +195,18 @@ class KeyboardLibrary:
 		# Standard keyboard path
 		INPUT_EVENT_PATH = "/dev/input/"
 
-		# Create keyboard path
-		# Eliminamos teclado del sistema
-		#print("ELIMINADO ", keyboard_events[0])
-		#del keyboard_events[0]
+		sorted(keyboard_events, key=self.ordenar)
+		print(keyboard_events)
+		print("TECLADO A ELIMINAR: ", keyboard_events[0])
+		del keyboard_events[0]
 
 		for counter, ke in enumerate(keyboard_events):
 			self.keyboard_paths.append(INPUT_EVENT_PATH + ke)
 			self.keyboard_local_global_id[ke[ke.find("event")+5:]] = counter
+
+		# El teclado con id mas bajo es el teclado de Pucca
+		
+
 
 		self.total_keyboards = len(self.keyboard_paths)
 	

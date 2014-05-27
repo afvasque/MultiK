@@ -30,7 +30,6 @@ class GeneradorPreguntas(object):
 
 		if self.preguntas is None:
 
-			print "entro"
 			self.preguntas= list();
 
 
@@ -53,8 +52,7 @@ class GeneradorPreguntas(object):
 						operacion.audio_pregunta= row[6].decode('latin-1')
 						operacion.path_imagen= row[7].decode('latin-1')
 
-						self.preguntas.append(operacion)
-						print "agregada "+operacion.pregunta						
+						self.preguntas.append(operacion)					
 							 
 					rownum += 1
 
@@ -62,7 +60,8 @@ class GeneradorPreguntas(object):
 	
 	#TO-DO: que no se repitan al tiro las preguntas
 	def Getsiguiente(self, niveloperacion, tipo_operacion):
-		operaciones= filter(lambda x: x.nivelOperacion== niveloperacion,self.preguntas)
+		
+		operaciones= filter(lambda x: x.nivelOperacion == niveloperacion, self.preguntas)
 
 		rand= random.randint(0, len(operaciones)-1)
 

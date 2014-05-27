@@ -10,7 +10,8 @@ class Reglas:
 	
 	def __init__(self):
 		
-		lista = list()		
+		lista = list()
+		self.nivel_tipoOperacion = {}		
 		
 		with open('Ejercicios/TipoOperacionNivel.csv', 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
@@ -21,7 +22,7 @@ class Reglas:
 					header = row
 				else:
 					lista.append(TipoOperacionNivel(int(row[0]),TipoOperacionNivel.InttoTipoOperacion(int(row[1]))))
-
+					self.nivel_tipoOperacion[int(row[0])] = TipoOperacionNivel.InttoTipoOperacion(int(row[1]))
 					print "agregado nivel"+row[0]						 
 				rownum += 1
 		
@@ -34,10 +35,8 @@ class Reglas:
 	# la clase Reglas
 	def GetSiguienteOperacion(self, operacion, alumno):
 		
-		print "correcta:"+str(operacion.respuesta_correcta)	
 		if (not operacion.respuesta_correcta)  and (operacion.CantidadVecesIncorrectaSoloEsta <= 2) and (operacion.feedback_correcto != "First") :
-			return operacion
-		
+			return operacion		
 		
 		operacion.cantidadMaximaNivel= max(Reglas_Fijas.MaximoNivel, operacion.cantidadMaximaNivel)
 		
@@ -45,8 +44,8 @@ class Reglas:
 		cantidad_nivel = operacion.cantidadNivel
 		cantidad_maxima_nivel = operacion.cantidadMaximaNivel
 		borrarCorrectas = False
-		tipoActual = operacion.TipoOperacion;
-		
+		tipoActual = self.nivel_tipoOperacion[operacion.nivelOperacion]
+
 		cambia_nivel= Reglas_Fijas.CambioNivel(operacion)
 		
 		if cambia_nivel == CambioNivel.Sube:
@@ -68,9 +67,9 @@ class Reglas:
 		
 		generador= GeneradorPreguntas()
 		generador.SetAlumno(alumno)
-		
 
 		#Obtenemos el siguiente nivel a partir del nivel actual
+		print("Tipo ", type(siguiente_operacion), "Valor ", siguiente_operacion)
 		tipop = self.modulosNivel[0].GetSiguiente(siguiente_nivel)
 
 		siguiente_operacion = generador.Getsiguiente(siguiente_nivel, tipop)

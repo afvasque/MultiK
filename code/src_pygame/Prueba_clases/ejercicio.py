@@ -40,7 +40,6 @@ audio_lib.finished += print_event
 class ejercicio:
 
 	def __init__(self, pos_x, pos_y, width, height, numero_audifono, Alumno):
-		print "ejercicio"
 		self.pos_x = pos_x
 		self.pos_y = pos_y
 		self.whiteColor = pygame.Color(255,255,255)
@@ -67,8 +66,9 @@ class ejercicio:
 		
 		operacion= BasicOperacion()
 		operacion.TipoOperacion= TipoOperacion.primero
-		#TODO Leer nivel de inicio desde archivo
-		operacion.nivelOperacion= 2
+		
+		# Leemos desde persistencia desde donde debe partir el alumno
+		operacion.nivelOperacion= int(Alumno.nivel_inicial)
 		operacion.feedback_correcto= "First"
 
 		self.Operacion_actual= self.reglas_main.GetSiguienteOperacion(operacion, self.Alumno_actual)
@@ -79,9 +79,6 @@ class ejercicio:
 
 	def CreateGrid(self, operacion):
 		self.ResetLayout()
-
-		print "audio_pregunta"+operacion.audio_pregunta
-		
 
 		tipo_op= operacion.GetControlType()
 		print "Tipo:"+tipo_op

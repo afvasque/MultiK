@@ -198,7 +198,7 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 2;José y Arturo visitaron el zoológico.;Arturo;visitaron;zoológico;zoológico;¿En cuál de estas palabras se encuentra la letra Z?;
 2;La zanahoria tiene muchas vitaminas.;zanahoria;tiene;vitaminas;zanahoria;¿En cuál de estas palabras se encuentra la letra Z?;
 2;El collar de Cristina tiene zafiros y perlas.;collar;zafiros;perlas;zafiros;¿En cuál de estas palabras se encuentra la letra Z?;
-2;La zampoña es un instrumento musical típico del norte de Chile.;zampoña;instrumento;norte;zampoña;¿En cuál de estas palabras se encuentra la letra Z?;
+2;La zampoña es un instrumento del norte de Chile.;zampoña;instrumento;norte;zampoña;¿En cuál de estas palabras se encuentra la letra Z?;
 2;Aries y Acuario son dos signos del zodiaco.;Acuario;signos;zodiaco;zodiaco;¿En cuál de estas palabras se encuentra la letra Z?;
 2;El primo de Eduardo es zurdo.;primo;Eduardo;zurdo;zurdo;¿En cuál de estas palabras se encuentra la letra Z?;
 3;;amigo;Jaime;;amigo;¿En cuál de estas  dos palabras  se encuentra la A como sonido inicial?;
@@ -412,7 +412,6 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 4;Puedo ver el sol en el cielo.;sol;cielo;puedo;sol;¿Cuál de las siguientes palabras tiene una sílaba?;
 4;El mago hace magia con las cosas.;mago;cosas;las;las;¿Cuál de las siguientes palabras tiene una sílaba?;
 4;En el árbol hay ricas manzanas.;árbol;En;manzanas;En;¿Cuál de las siguientes palabras tiene una sílaba?;
-4;La casa de Luis está al lado de la escuela.;casa;Luis;La;La;¿Cuál de las siguientes palabras tiene una sílaba?;
 4;La foca juega con la pelota.;foca;con;pelota;foca;¿Cuál de las siguientes palabras tiene dos sílabas?;
 4;Camila y Felipe juegan con el dado.;Camila;dado;Felipe;dado;¿Cuál de las siguientes palabras tiene dos sílabas?;
 4;Los pájaros tienen lindos colores.;pájaros;lindos;colores;lindos;¿Cuál de las siguientes palabras tiene dos sílabas?;
@@ -576,10 +575,10 @@ Nivel;pregunta;alternativa 1;alternativa 2;alternativa 3;respuesta;audio pregunt
 7;Me gusta leer rimas y poemas.;;;;6;¿Cuántas palabras tiene la siguiente oración?;
 7;Tengo rosas y tulipanes en mi jardín.;;;;6;¿Cuántas palabras tiene la siguiente oración?;
 7;Los días sábados me levanto más tarde.;;;;7;¿Cuántas palabras tiene la siguiente oración?;
-7;Tomás es mi mejor amigo.;;;;7;¿Cuántas palabras tiene la siguiente oración?;
+7;Tomás es mi mejor amigo.;;;;5;¿Cuántas palabras tiene la siguiente oración?;
 7;Los ratones tienen cola larga.;;;;5;¿Cuántas palabras tiene la siguiente oración?;
 7;Me gustaría viajar en avión.;;;;5;¿Cuántas palabras tiene la siguiente oración?;
-7;Antonia vio un video muy interesante en la web.;;;;5;¿Cuántas palabras tiene la siguiente oración?;
+7;Antonia vio un video muy interesante en la web.;;;;9;¿Cuántas palabras tiene la siguiente oración?;
 7;Me gustan los duraznos.;;;;4;¿Cuántas palabras tiene la siguiente oración?;
 7;La zampoña es un instrumento musical.;;;;6;¿Cuántas palabras tiene la siguiente oración?;
 7;El primo de Eduardo es zurdo.;;;;6;¿Cuántas palabras tiene la siguiente oración?;

@@ -32,11 +32,7 @@ class BasicOperacion:
 
         return
     
-    def AgregarPuntajesNivel(self, listvieja, nuevoPuntaje):
-        
-        print "largo: "+str(len(self.puntajesNivel))
-
-        
+    def AgregarPuntajesNivel(self, listvieja, nuevoPuntaje):       
         self.puntajesNivel.append(nuevoPuntaje)
                 
     def RespuestaCorrecta(self):

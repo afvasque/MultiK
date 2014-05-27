@@ -9,6 +9,8 @@ from keyboard_library_queue import *
 import event
 import time
 import logging
+import csv
+import datetime
 
 import pygame
 from Prueba_clases.clases import *
@@ -33,11 +35,16 @@ Pareamientos= []
 Alumnos = []
 Audio= []
 audio_lib = audio_library.AudioLibrary()
+# Lee el archivo de persistencia y asocia el nro de alumno
+# con el nivel del cual debe comenzar
+alumnos_niveles = {}
 
 
-
-
-
+def leer_persistencia(nombre_archivo):
+    with open(nombre_archivo, 'rb') as csvfile:
+        lista_reader = csv.reader(csvfile)
+        for row in lista_reader:
+            alumnos_niveles[row[1]] = row[0]
 
 
 
@@ -53,11 +60,9 @@ def Keyboard_event(sender, earg):
 
     # Alumno se encuentra pareado
     if alumno.ready:
-        print "alumno listo"
 
         if text=="Pow": 
             diccionario[alumno.Id].RepetirPregunta()
-
         else:
 
             diccionario[alumno.Id].Keyboard_Pressed(sender,earg)
@@ -83,6 +88,11 @@ def Keyboard_event(sender, earg):
 
             if Pareamientos[alumno.Id].pareado == True and  Pareamientos[alumno.Id].nombre_ingresado == True:
                 alumno.ready= True
+                
+                #Obtener nivel inicial (persistencia)
+                if alumno.nro_lista in alumnos_niveles.keys():
+                    alumno.nivel_inicial = alumnos_niveles[alumno.nro_lista]
+
                 ej=ejercicio(Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].pos_y,Pareamientos[alumno.Id].width,Pareamientos[alumno.Id].height,Pareamientos[alumno.Id].numero_audifono, alumno)
                 diccionario[alumno.Id]=ej
                 i= alumno.Id
@@ -113,10 +123,16 @@ class PygameThread(threading.Thread):
 width = 1000
 height = 700
 
-#lib.detect_all_keyboards([[0x0e8f,0x0022],[0x0e6a,0x6001]])
+# Parametros para leer persistencia
+fecha_de_hoy = '2014-05-29'#str(datetime.date.today())
+# Mitad 1 o 2 del curso
+curso= "2"
+
 
 keyboardsNum= lib.total_keyboards
 print "Total de teclados: "+str(keyboardsNum)
+
+leer_persistencia('ListasCSV/'+fecha_de_hoy+"_3B_"+curso+".csv")
 
 
 line_number_x= int(math.sqrt(keyboardsNum))

@@ -288,7 +288,7 @@ class ejercicioTexto(ejercicio):
 			
 		self.top_limit = 0
 		if len(self.pregunta.preguntas) > 0:
-			self.top_limit = self.height / (len(self.teclados))
+			self.top_limit = self.height / 4
 			texto_pregunta = self.pregunta.preguntas[0]
 			myfont = pygame.font.SysFont("monospace", self.top_limit - 4)
 			label_pregunta = myfont.render(texto_pregunta, 1, self.blackColor)
@@ -297,7 +297,7 @@ class ejercicioTexto(ejercicio):
 				size_multiplier -= 10
 				myfont = pygame.font.SysFont("monospace", ((self.top_limit - 4) * size_multiplier) / 100)
 				label_pregunta = myfont.render(texto_pregunta, 1, self.blackColor)
-			self.canvas.blit(label_pregunta, (self.width / 2 - label_pregunta.get_width() / 2, self.height / 2 - label_pregunta.get_height() / 2))
+			self.canvas.blit(label_pregunta, (self.width / 2 - label_pregunta.get_width() / 2, self.top_limit / 2 - label_pregunta.get_height() / 2))
 		
 		self.textBoxs = []
 		

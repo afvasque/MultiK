@@ -5,7 +5,7 @@ alumno_nombre = {}
 #Curso va en mayusculas, ej: 3A
 def obtener_lista(curso):
 	print("Leyendo lista")
-	filepath = "ListasCSV/"+ curso + ".csv"
+	filepath = "archivos/ListasCSV/"+ curso + ".csv"
 	with open(filepath, 'rb') as csvfile:
 		lenguajereader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
 		

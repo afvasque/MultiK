@@ -1,0 +1,420 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".RegistraDatosActivity" >
+
+    <!--
+         The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc.
+    -->
+
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <!--
+         This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows.
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:text="Hablar sobre SOFTWARE"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+			<!-- Habla Sofware con Profesor Hombre -->
+            <Button
+                android:id="@+id/HSPH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+			<!-- Habla Sofware con observador hombre -->
+            <Button
+                android:id="@+id/HSOH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+		<!-- Habla Sofware con compañero hombre -->
+           <Button
+                android:id="@+id/HSCH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+			<!-- Habla Sofware profesor mujer -->
+            <Button
+                android:id="@+id/HSPM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/HSOM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+           <Button
+                android:id="@+id/HSCM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+        </TableRow>
+        
+        <!-- Sobre contenido curricular -->
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:text="Hablar sobre CONTENIDO"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+			<!-- Habla Conteido Profesor hombre -->
+            <Button
+                android:id="@+id/HCPH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/HCOH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+           <Button
+                android:id="@+id/HCCH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+
+            <Button
+                android:id="@+id/HCPM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/HCOM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+           <Button
+                android:id="@+id/HCCM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+        </TableRow>
+
+        <!--  SOBRE OTRO TEMA -->
+
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:text="Hablar sobre OTRO TEMA"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+			<!-- Habla sobre Otros profesor hombre -->
+            <Button
+                android:id="@+id/HOPH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/HOOH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+           <Button
+                android:id="@+id/HOCH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+
+            <Button
+                android:id="@+id/HOPM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con profesor"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/HOOM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con observador"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+           <Button
+                android:id="@+id/HOCM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Con compañeros"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+
+        </TableRow>
+        
+        <!-- MOLESTAR -->
+        
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"
+            android:text="Molestar/Distraer"
+            android:textColor="#000000"
+            android:textSize="30sp" />
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+			<!-- Molestar a Uno Hombre -->
+            <Button
+                android:id="@+id/M1H"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="A un compañero"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+			<!-- Molesta a Varios hombre -->
+            <Button
+                android:id="@+id/MVH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="A varios"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+            
+            <!-- DISTRACCION SIN DISRRUPCION -->
+			<Button
+                android:id="@+id/DSDH"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Sin disrupción"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button"
+                android:textSize="24sp" />
+            
+       </TableRow>
+       
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical" >
+
+            <Button
+                android:id="@+id/M1M"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="A un compañero"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+            
+            <Button
+                android:id="@+id/MVM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="A varios"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+            
+            <Button
+                android:id="@+id/DSDM"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="10dp"
+                android:text="Sin disrupción"
+                android:textColor="#FFF"
+                android:background="@drawable/custom_button_girl"
+                android:textSize="24sp" />
+        </TableRow>
+        
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal" >
+
+            <Chronometer
+                android:id="@+id/chronometer1"
+                android:layout_width="400dp"
+                android:layout_height="100dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Chronometer"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+        <TableRow
+            android:id="@+id/TableRow06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="35dp" >
+
+            <Button
+                android:id="@+id/boton_terminar"
+                android:layout_width="250dp"
+                android:layout_height="100dp"
+                android:text="@string/boton_terminar"
+                android:textColor="#000000"
+                android:textSize="30sp" />
+
+        </TableRow>
+
+    </LinearLayout>
+
+</FrameLayout>

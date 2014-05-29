@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import pygame
-from Prueba_clases.clases import *
-from Prueba_clases.ejercicio import *
+from clases import *
+import ejercicio
 import os
-import audio_library
+from librerias import audio_library
 from Reglas import *
 from socket import *
 import sys
@@ -142,7 +142,6 @@ class Pareamiento:
 			self.canvas.blit(self.Objects[0].screen(),(self.Objects[0].pos_x, self.Objects[0].pos_y ))
 
 	
-	#def set_mensaje
 
 	def set_nombre(self):
 		

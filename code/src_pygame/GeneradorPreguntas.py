@@ -11,12 +11,7 @@ class GeneradorPreguntas(object):
 	_instance = None
 	preguntas= None
 
-	#def __init__(self, alumno):
-	#	
-	#	self.alumno= alumno
-	#	self.interpal= Generador_pal("clase de prueba")
-	#	self.interor= Generador_or("clase de prueba")
-	#	return
+	path_ejercicios = "./archivos/Ejercicios/EjerciciosLenguaje.csv"
 
 	def __new__(cls, *args, **kwargs):
 			if not cls._instance:
@@ -33,7 +28,7 @@ class GeneradorPreguntas(object):
 			self.preguntas= list();
 
 
-			with open('Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
+			with open(self.path_ejercicios, 'rb') as csvfile:
 				lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
 				rownum=0
 				for row in lenguajereader:

@@ -8,7 +8,7 @@ class LectorCSV:
 		#Leer los ejercicios
 		self.preguntas = {}
 		nivel_anterior = -1
-		with open('Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
+		with open('archivos/Ejercicios/EjerciciosLenguaje.csv', 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
 			rownum=0
 			for row in lenguajereader:
@@ -30,7 +30,7 @@ class LectorCSV:
 				rownum += 1
 		#Leer los alumnos
 		self.alumnos = {}
-		filepath = "ListasCSV/"+ curso + ".csv"
+		filepath = "archivos/ListasCSV/"+ curso + ".csv"
 		with open(filepath, 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
 			for row in lenguajereader:

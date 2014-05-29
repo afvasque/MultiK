@@ -11,9 +11,10 @@ class Reglas:
 	def __init__(self):
 		
 		lista = list()
-		self.nivel_tipoOperacion = {}		
+		self.nivel_tipoOperacion = {}	
+		self.path_TipoOperacionNivel = './archivos/Ejercicios/TipoOperacionNivel.csv'	
 		
-		with open('Ejercicios/TipoOperacionNivel.csv', 'rb') as csvfile:
+		with open(self.path_TipoOperacionNivel, 'rb') as csvfile:
 			lenguajereader = csv.reader(csvfile, delimiter=';', quoting=csv.QUOTE_NONE)
 			rownum=0
 			for row in lenguajereader:
@@ -69,7 +70,6 @@ class Reglas:
 		generador.SetAlumno(alumno)
 
 		#Obtenemos el siguiente nivel a partir del nivel actual
-		print("Tipo ", type(siguiente_operacion), "Valor ", siguiente_operacion)
 		tipop = self.modulosNivel[0].GetSiguiente(siguiente_nivel)
 
 		siguiente_operacion = generador.Getsiguiente(siguiente_nivel, tipop)

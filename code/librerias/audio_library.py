@@ -159,9 +159,6 @@ class AudioLibrary:
                 
                 i = i + 1
 
-        print self.audio_mmap
-
-
 
     def read_queue(self, device_index, text_to_speech_queue):
         while True:

@@ -18,6 +18,8 @@ import string
 import re
 from subprocess import check_output
 
+# Saves lost keyboard_path
+lost_files = []
 
 # Avoids while True for reading input
 class InputDeviceDispatcher(file_dispatcher):
@@ -39,36 +41,38 @@ class InputDeviceDispatcher(file_dispatcher):
 	def recv(self, ign=None):
 		return self.device.read()
 
+	def handle_error(self):
+		print("Keyboard lost: ", self.device.fn)
+		try:
+			self.close()
+		except:
+			pass
+
 	def handle_read(self):		
 		
 		time_pressed = time.time()
 
-		try:
-			for event in self.recv():
+		for event in self.recv():
 
-				if event.type == ecodes.EV_KEY and event.value == 1:
-					print("EVENT VALUE: ", event.value)
-					print(categorize(event))
-					path = self.device.fn
-					
-					# Deletes /dev/input/event before ID
-					device_id = path[(path.find("event")+5):]	
-					
-					keycode = ecodes.KEY[event.code]
-					result = self.get_key_to_screen(keycode)
-					
-					if "KEY_" in result:
-						result = self.get_punctuation_marks(event.code)
-					
-					if result != "":
-						print([device_id,result])
-						values = {"id": device_id, "char": result, "time_pressed": time_pressed}
-						logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
-						self.keypress(values)
-		except Exception as e:
-			print(self.device.fn)
-			print e
-			pass
+			if event.type == ecodes.EV_KEY and event.value == 1:
+				print(categorize(event))
+				path = self.device.fn
+				
+				# Deletes /dev/input/event before ID
+				device_id = path[(path.find("event")+5):]	
+				
+				keycode = ecodes.KEY[event.code]
+				result = self.get_key_to_screen(keycode)
+				
+				if "KEY_" in result:
+					result = self.get_punctuation_marks(event.code)
+				
+				if result != "":
+					print([device_id,result])
+					values = {"id": device_id, "char": result, "time_pressed": time_pressed}
+					logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
+					self.keypress(values)
+
 
 	# Receives eventcode instead of keycode to avoid mapping mess. Eventcode is the same
 	# no matter the active keyboard layout
@@ -183,7 +187,6 @@ class KeyboardLibrary:
 	keyboard_local_global_id = {}
 
 	def ordenar(self, event_path):
-		print(event_path[5:])
 		return int(event_path[5:])
 
 	def __init__(self):
@@ -196,17 +199,14 @@ class KeyboardLibrary:
 		INPUT_EVENT_PATH = "/dev/input/"
 
 		sorted(keyboard_events, key=self.ordenar)
-		print(keyboard_events)
+		
+		# El teclado con id mas bajo es el teclado de Pucca
 		print("TECLADO A ELIMINAR: ", keyboard_events[0])
 		del keyboard_events[0]
 
 		for counter, ke in enumerate(keyboard_events):
 			self.keyboard_paths.append(INPUT_EVENT_PATH + ke)
 			self.keyboard_local_global_id[ke[ke.find("event")+5:]] = counter
-
-		# El teclado con id mas bajo es el teclado de Pucca
-		
-
 
 		self.total_keyboards = len(self.keyboard_paths)
 	

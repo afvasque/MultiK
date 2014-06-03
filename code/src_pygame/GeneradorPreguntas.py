@@ -1,5 +1,4 @@
-﻿from Generador import *
-from BasicOperacion import *
+﻿from BasicOperacion import *
 from TipoOperacionNivel import *
 from Alumno import *
 import random

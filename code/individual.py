@@ -44,7 +44,7 @@ def leer_persistencia(nombre_archivo):
     with open(nombre_archivo, 'rb') as csvfile:
         lista_reader = csv.reader(csvfile)
         for row in lista_reader:
-            alumnos_niveles[row[1]] = row[0]
+            alumnos_niveles[row[0]] = row[1]
 
 
 

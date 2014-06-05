@@ -93,6 +93,8 @@ class Manager:
 		if self.nivel == 0:
 			return "Busca tu grupo y nombre y presiona enter"
 		audio += self.pregunta.audios[0]
+		if '¿' in audio:
+			audio = audio.replace('¿','')
 		#if self.pregunta.individualCount == 3 and self.pregunta.orden:
 		#	for i in range(3):
 		#		audio += self.alumnos[i].name + " " + self.pregunta.audios[i] + "."

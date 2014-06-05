@@ -125,9 +125,9 @@ width = 1000
 height = 700
 
 # Parametros para leer persistencia
-fecha_de_hoy = '2014-05-29'#str(datetime.date.today())
+fecha_de_hoy = str(datetime.date.today())
 # Mitad 1 o 2 del curso
-curso= "2"
+curso= "1"
 
 
 keyboardsNum= lib.total_keyboards

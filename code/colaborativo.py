@@ -27,8 +27,8 @@ audio_lib = AudioLibrary()
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 #Setup inicial
-width = 800
-height = 600
+width = 1000
+height = 700
 
 lib = KeyboardLibrary()
 

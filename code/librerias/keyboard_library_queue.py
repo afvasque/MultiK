@@ -4,7 +4,7 @@ import sys
 from src_pygame.event import Event
 import time
 
-import time
+import os
 import logging
 
 # Evdev library: http://python-evdev.readthedocs.org/en/latest/tutorial.html
@@ -18,8 +18,8 @@ import string
 import re
 from subprocess import check_output
 
-# Saves lost keyboard_path
-lost_files = []
+# Saves lost keyboard_path. Value is True if keyboard is not yet recovered
+lost_files = {}
 
 # Avoids while True for reading input
 class InputDeviceDispatcher(file_dispatcher):
@@ -44,6 +44,8 @@ class InputDeviceDispatcher(file_dispatcher):
 	def handle_error(self):
 		print("Keyboard lost: ", self.device.fn)
 		try:
+			global lost_files
+			lost_files[self.device.fn] = True
 			self.close()
 		except:
 			pass
@@ -210,12 +212,32 @@ class KeyboardLibrary:
 
 		self.total_keyboards = len(self.keyboard_paths)
 	
+
+	def recover_keyboards(self):
+		print("Starting recovery")
+		while True:
+			global lost_files
+			for path in lost_files.keys():
+				print("Recovering ", path)
+				if os.path.exists(path):
+					InputDeviceDispatcher(InputDevice(path)).keypress += self.Keyboard_Event
+					lost_files[path] = False
+			for path in lost_files.keys():
+				if lost_files[path] == False:
+					del lost_files[path]
+			time.sleep(3)
+
+
 	def run(self):
 
 		for i in self.keyboard_paths:
 			# Automagically added to asyncore.loop map when creating this file_dispatcher
 			InputDeviceDispatcher(InputDevice(i)).keypress += self.Keyboard_Event
 
+		# Using threads for keyboard recovery
+		thread = Thread(target = self.recover_keyboards)
+   		thread.start()
+    	
 		# Using asyncore
 		try:
 			loop()

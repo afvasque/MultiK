@@ -94,7 +94,6 @@ def Keyboard_event(sender, earg):
                     alumno.nivel_inicial = alumnos_niveles[alumno.nro_lista]
 
                 ej=ejercicio.ejercicio(Pareamientos[alumno.Id].pos_x,Pareamientos[alumno.Id].pos_y,Pareamientos[alumno.Id].width,Pareamientos[alumno.Id].height,Pareamientos[alumno.Id].numero_audifono, alumno)
-                print("Post ejercico")
                 diccionario[alumno.Id]=ej
                 i= alumno.Id
                 window.blit(diccionario[i].screen(),(diccionario[i].width *diccionario[i].pos_x,diccionario[i].height *diccionario[i].pos_y))
@@ -125,7 +124,7 @@ width = 1000
 height = 700
 
 # Parametros para leer persistencia
-fecha_de_hoy = str(datetime.date.today())
+fecha_de_hoy = '2014-06-05' #str(datetime.date.today())
 # Mitad 1 o 2 del curso
 curso= "1"
 

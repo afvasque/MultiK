@@ -26,6 +26,7 @@ class BasicOperacion:
         self.audio_pregunta = ""
         self.feedback_correcto = ""
         self.feedback_error=""
+        self.feedback_error_custom = ""
         self.path_imagen = ""
         self.contenido = ""
         self.instrucciones_generales = ""
@@ -61,7 +62,7 @@ class BasicOperacion:
         
         if self.cantidadMaximaNivel < Reglas_Fijas.CantidadPreguntasNivelError:
             self.cantidadMaximaNivel= Reglas_Fijas.CantidadPreguntasNivelError
-            
+         
         self.cantidadNivel+=1
 
     def GetControlType(self):

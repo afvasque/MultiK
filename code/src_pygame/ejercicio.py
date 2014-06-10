@@ -119,8 +119,6 @@ class ejercicio:
 			textsize= self.height/8
 			myimage = pygame.image.load("archivos/Imagenes/"+operacion.path_imagen)
 
-			print "temp:"+str(temp)
-
 			self.new_width = ((self.height / (temp*2)) * myimage.get_width()) / myimage.get_height();
 
 			myimage= pygame.transform.scale(myimage, (self.new_width, self.height/(temp*2))) 
@@ -325,13 +323,16 @@ class ejercicio:
 				self.resp_correct=False
 			elif self.resp_incorrect:
 				text_to_speech_conc.append(self.Operacion_actual.feedback_error.decode('utf8')+". ")
-				self.resp_incorrect=False
+				
 
 			text_to_speech_conc.append(text_to_speech)
-
-			print "Reproduciendo en audifono #%s: \"%s\"" % (self.numero_audifono, text_to_speech)
-						
+			
 			audio_lib.play_concatenated(self.numero_audifono, text_to_speech_conc)
+
+			if self.resp_incorrect:
+				self.resp_incorrect=False
+				time.sleep(3)
+						
 
 			def EnableAudio():
 				self.speaking=False
@@ -370,7 +371,6 @@ class ejercicio:
 						#self.TexttoSpeech(self.Operacion_actual.feedback_error.decode('utf8'))
 						self.resp_incorrect=True
 						self.Operacion_actual.RespuestaIncorrecta()
-
 					
 			else:
 

@@ -4,6 +4,7 @@ from ModuloNivel import ModuloNivel
 from BasicOperacion import *
 from Reglas_Fijas import *
 from GeneradorPreguntas import *
+import time
 
 class Reglas:
 
@@ -37,6 +38,7 @@ class Reglas:
 	def GetSiguienteOperacion(self, operacion, alumno):
 		
 		if (not operacion.respuesta_correcta)  and (operacion.CantidadVecesIncorrectaSoloEsta <= 2) and (operacion.feedback_correcto != "First") :
+			operacion.feedback_error = "Inténtalo de nuevo"
 			return operacion		
 		
 		operacion.cantidadMaximaNivel= max(Reglas_Fijas.MaximoNivel, operacion.cantidadMaximaNivel)
@@ -72,7 +74,7 @@ class Reglas:
 		#Obtenemos el siguiente nivel a partir del nivel actual
 		tipop = self.modulosNivel[0].GetSiguiente(siguiente_nivel)
 
-		siguiente_operacion = generador.Getsiguiente(siguiente_nivel, tipop)
+		siguiente_operacion = generador.Getsiguiente(siguiente_nivel, tipop, operacion)
 
 		if borrarCorrectas:
 			siguiente_operacion.cambio_reciente_nivel= True
@@ -94,7 +96,6 @@ class Reglas:
 		
 		siguiente_operacion.vecesIncorrecta = operacion.vecesIncorrecta
 		
-
 		return siguiente_operacion
 		
 	

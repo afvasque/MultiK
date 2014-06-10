@@ -46,6 +46,9 @@ class GeneradorPreguntas(object):
 						operacion.audio_pregunta= row[6].decode('latin-1')
 						operacion.path_imagen= row[7].decode('latin-1')
 
+						if len(row) > 7:
+							operacion.feedback_error_custom = row[8].decode('latin-1')
+
 						self.preguntas.append(operacion)					
 							 
 					rownum += 1
@@ -53,7 +56,7 @@ class GeneradorPreguntas(object):
 		return
 	
 	#TO-DO: que no se repitan al tiro las preguntas
-	def Getsiguiente(self, niveloperacion, tipo_operacion):
+	def Getsiguiente(self, niveloperacion, tipo_operacion, operacion_actual):
 		
 		operaciones= filter(lambda x: x.nivelOperacion == niveloperacion, self.preguntas)
 
@@ -63,6 +66,8 @@ class GeneradorPreguntas(object):
 
 		operacion.TipoOperacion = tipo_operacion
 		operacion.feedback_correcto = "Bien, " + self.alumno.Nombre
-		operacion.feedback_error = "Inténtalo de nuevo"
-		print "op: "+operacion.audio_pregunta
+		if operacion_actual.feedback_error_custom == "":
+			operacion_actual.feedback_error_custom = "Pasemos a la siguiente pregunta..."
+		operacion.feedback_error = operacion_actual.feedback_error_custom #"Inténtalo de nuevo"
+
 		return operacion

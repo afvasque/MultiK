@@ -44,6 +44,10 @@ def leer_persistencia(nombre_archivo):
     with open(nombre_archivo, 'rb') as csvfile:
         lista_reader = csv.reader(csvfile)
         for row in lista_reader:
+            print(
+
+
+                    row)
             alumnos_niveles[row[0]] = row[1]
 
 
@@ -124,7 +128,7 @@ width = 1000
 height = 700
 
 # Parametros para leer persistencia
-fecha_de_hoy = '2014-06-05' #str(datetime.date.today())
+fecha_de_hoy = str(datetime.date.today())
 # Mitad 1 o 2 del curso
 curso= "1"
 

@@ -57,7 +57,7 @@ class ejercicio:
 
 	def correct(self):
 		return True
-		
+	
 	def memory_react(self, index, input):
 		self.input_memory[index] = self.input_memory[index] + input
 		text = self.input_memory[index]
@@ -252,6 +252,12 @@ class ejercicioAlternativas(ejercicio):
 			
 		self.inputs[index_teclado] = self.pregunta.alternativas[self.ys[index_teclado]]
 	
+	def unblock(self):
+		self.finished = False not in self.blocked
+		self.blocked = [not self.alumnos[0].real, not self.alumnos[1].real, not self.alumnos[2].real]
+		self.erase_rectangles()
+		self.draw_rectangles()
+
 class ejercicioTexto(ejercicio):	
 	def __init__(self, alumnos, pos_x, pos_y, width, height, preguntaC):
 		self.teclados = []
@@ -326,7 +332,13 @@ class ejercicioTexto(ejercicio):
 	def set_max_length(self, max_length):
 		for i in range(len(self.alumnos)):
 			self.textBoxs[i].max_length = max_length
-			
+		
+	def unblock(self):
+		for i in range(len(self.alumnos)):
+			if self.alumnos[i].real:
+				self.textBoxs[i].react("Enter")
+				self.blocked[i] = self.textBoxs[i].blocked
+				self.canvas.blit(self.textBoxs[i].screen(),(3, self.textBoxs[i].pos_y))
 	
 class ejercicio1(ejercicio):
 	def __init__(self, alumnos, pos_x, pos_y, width, height):

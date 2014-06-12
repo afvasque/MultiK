@@ -26,7 +26,7 @@ class Manager:
 		
 		self.correctas_nivel = 10 #La cantidad de correctas que necesitan para pasar de nivel
 		self.correctas_streak = 5 #La cantidad de correctas seguidas que necesitan para pasar de nivel
-		self.nivel_max = 7
+		self.nivel_max = 43
 		
 		self.transformador = Transformador()
 		
@@ -44,6 +44,7 @@ class Manager:
 					print "Encontrado inconsistencia"
 					self.streak_current = 0
 					self.malas_current += 1
+					self.ejercicio.unblock()
 					return False
 		self.streak_current += 1
 		self.correctas_current += 1
@@ -65,8 +66,10 @@ class Manager:
 	def advance(self):
 		if (self.correctas_current >= self.correctas_nivel and self.streak_current) or self.nivel == 0:
 			self.nivel+=1
-			if self.nivel == 1:
-				self.nivel = 2
+			if self.nivel < 4:
+				self.nivel = 4
+			if self.nivel >= 8 and self.nivel <= 10:
+				self.nivel = 11
 			for i in range(len(self.alumnos)):
 				if self.alumnos[i].real:
 					logging.info(u"[%f: [%d, %s, %d] ], " % (time.time(), self.alumnos[i].numero_lista, "level_up", self.nivel))

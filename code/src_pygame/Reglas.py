@@ -57,6 +57,12 @@ class Reglas:
 			siguiente_nivel+=1
 			if siguiente_nivel == 8:
 				siguiente_nivel = 11
+			if siguiente_nivel == 36:
+				siguiente_nivel = 37
+			if siguiente_nivel == 38:
+				siguiente_nivel = 39
+			if siguiente_nivel ==41:
+				siguiente_nivel = 42
 			cantidad_nivel = 1
 			op= self.AlterarFlujo(operacion, siguiente_nivel)
 			tipoActual = op.TipoOperacion

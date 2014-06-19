@@ -109,6 +109,8 @@ class InputDeviceDispatcher(file_dispatcher):
 				return 'Ñ'
 			else:
 				return 'ñ'
+		elif eventcode == 57:
+			return ' '
 		else:
 			return eventcode
 			

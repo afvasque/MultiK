@@ -44,10 +44,7 @@ def leer_persistencia(nombre_archivo):
     with open(nombre_archivo, 'rb') as csvfile:
         lista_reader = csv.reader(csvfile)
         for row in lista_reader:
-            print(
-
-
-                    row)
+            print(row)
             alumnos_niveles[row[0]] = row[1]
 
 
@@ -124,8 +121,8 @@ class PygameThread(threading.Thread):
 
 
 
-width = 1000
-height = 700
+width = 1280
+height = 800
 
 # Parametros para leer persistencia
 fecha_de_hoy = str(datetime.date.today())
@@ -149,7 +146,7 @@ if line_number_x * line_number_y < keyboardsNum:
     line_number_y+=1
 
 
-window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
 
 
 for i in range(keyboardsNum):    

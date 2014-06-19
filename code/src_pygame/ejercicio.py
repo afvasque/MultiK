@@ -331,7 +331,7 @@ class ejercicio:
 
 			if self.resp_incorrect:
 				self.resp_incorrect=False
-				time.sleep(3)
+				#time.sleep(3)
 						
 
 			def EnableAudio():

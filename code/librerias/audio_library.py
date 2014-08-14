@@ -221,7 +221,7 @@ class AudioLibrary:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
                 logging.exception("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
                 # close the audio card
-                dev.close()
+                #dev.close()
                 pass
 
             # release semaphore

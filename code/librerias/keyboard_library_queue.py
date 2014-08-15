@@ -57,7 +57,6 @@ class InputDeviceDispatcher(file_dispatcher):
 		for event in self.recv():
 
 			if event.type == ecodes.EV_KEY and event.value == 1:
-				print(categorize(event))
 				path = self.device.fn
 				
 				# Deletes /dev/input/event before ID
@@ -70,7 +69,6 @@ class InputDeviceDispatcher(file_dispatcher):
 					result = self.get_punctuation_marks(event.code)
 				
 				if result != "":
-					print([device_id,result])
 					values = {"id": device_id, "char": result, "time_pressed": time_pressed}
 					logging.info("[%f: [%d, %s, '%s'] ], " % (time_pressed, int(device_id), 'KEYPRESS', result))
 					self.keypress(values)

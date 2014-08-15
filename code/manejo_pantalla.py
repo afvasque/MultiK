@@ -1,7 +1,10 @@
 import pygame
 from threading import Thread
+import math
+
 import sys
-import math 
+sys.path.append('./src_pygame')
+import clases
 
 width = 1280
 height = 800
@@ -47,15 +50,22 @@ def screen(screen_id):
 
 def react(screen_id, input):
 	individual_screen[int(screen_id)]['Objects'][0].react(input)
+	individual_screen[int(screen_id)]['canvas'].blit(individual_screen[int(screen_id)]['Objects'][0].screen(),(individual_screen[int(screen_id)]['Objects'][0].pos_x, individual_screen[int(screen_id)]['Objects'][0].pos_y))
+
+	refresh_window(screen_id)
+	pygame.display.flip()
 
 def refresh_window(screen_id):
 	window.blit(screen(screen_id),(individual_screen[int(screen_id)]['width'] *individual_screen[int(screen_id)]['pos_x'],individual_screen[int(screen_id)]['height']*individual_screen[int(screen_id)]['pos_y']))
+	pygame.display.flip()
 
 def reset_layout(screen_id):
 	screen(screen_id).fill(whiteColor)
 	individual_screen[int(screen_id)]['Objects'] = []
 
 def write(screen_id, text, xtext, ytext):
+	reset_layout(screen_id)
+
 	size= int(1.5 * individual_screen[int(screen_id)]['width']/len(text))	
 	myfont = pygame.font.SysFont("monospace", size)
 	
@@ -63,20 +73,25 @@ def write(screen_id, text, xtext, ytext):
 
 	screen(screen_id).blit(label,(xtext, ytext))
 	refresh_window(screen_id)
-	pygame.display.flip()
+
+def get_value(screen_id):
+	return individual_screen[int(screen_id)]['Objects'][0].Value
 	
 
 def draw_textbox(screen_id, textbox_size):
 	textbox_x= int(individual_screen[int(screen_id)]['width']*0.05)
 	textbox_y= textbox_size+individual_screen[int(screen_id)]['height']*0.2
 
-	height_textbox= int(self.height-textbox_y)
+	height_textbox= int(individual_screen[int(screen_id)]['height']-textbox_y)
 
 	if height_textbox > int(individual_screen[int(screen_id)]['height']*0.3):
 		height_textbox= int(individual_screen[int(screen_id)]['height']*0.3)
 
-	individual_screen[int(screen_id)]['Objects'].append(Textbox(textbox_x,textbox_y,int(individual_screen[int(screen_id)]['width']*0.8),height_textbox))
+	individual_screen[int(screen_id)]['Objects'].append(clases.Textbox(textbox_x,textbox_y,int(individual_screen[int(screen_id)]['width']*0.8),height_textbox))
 	individual_screen[int(screen_id)]['canvas'].blit(individual_screen[int(screen_id)]['Objects'][0].screen(),(individual_screen[int(screen_id)]['Objects'][0].pos_x, individual_screen[int(screen_id)]['Objects'][0].pos_y))
+
+	refresh_window(screen_id)
+	pygame.display.flip()
 
 class PygameThread(Thread):    
     def run(self):

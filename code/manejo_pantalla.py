@@ -75,7 +75,13 @@ def write(screen_id, text, xtext, ytext):
 	refresh_window(screen_id)
 
 def get_value(screen_id):
-	return individual_screen[int(screen_id)]['Objects'][0].Value
+	try:
+		if len(individual_screen[int(screen_id)]['Objects']) == 0:
+			return ""
+		return individual_screen[int(screen_id)]['Objects'][0].Value
+	except Exception as e:
+		print("Error get value")
+		print e
 	
 
 def draw_textbox(screen_id, textbox_size):
@@ -109,6 +115,7 @@ class PygameThread(Thread):
 
 try:
     pygame_thread = PygameThread()
+    pygame_thread.daemon = True
     pygame_thread.start()
 except:
     print("-----===== EXCEPTION threading exception =====-----")

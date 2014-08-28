@@ -36,7 +36,8 @@ def Keyboard_event(sender, earg):
             en_juego = not en_pareamiento
         else:#elif en_juego:
             # Logica para cada jugador
-            manager.verificar_respuesta(id_sent)
+            text = manejo_pantalla.get_value(id_sent)
+            manager.verificar_respuesta(id_sent, text)
     elif text == "Pow":
         # Repetir ultima instruccion
         if en_pareamiento:

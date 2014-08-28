@@ -236,6 +236,7 @@ class KeyboardLibrary:
 
 		# Using threads for keyboard recovery
 		thread = Thread(target = self.recover_keyboards)
+   		thread.deamon = True
    		thread.start()
     	
 		# Using asyncore
@@ -249,5 +250,4 @@ class KeyboardLibrary:
 			values = {"id": self.keyboard_local_global_id[eargs['id']], "char": eargs['char'], "time_pressed": eargs['time_pressed']}
 			self.keypress(values)
 		except Exception as e:
-			print e
 			print ("Error ke: ", eargs['id'], self.keyboard_local_global_id)

@@ -41,13 +41,15 @@ class ManagerMicrocuentos:
 			self.instrucciones(j.id_teclado, "")
 
 	def esperar_cuento(self, id_teclado):
-		# Tomar aleatoriamente un cuento que no sea mio
-		i = id_teclado
-		while i == id_teclado or len(self.lista_cuentos[i]) == 0 :
+		# Tomar aleatoriamente un cuento diferente al cual recien aporte
+		ultimo = self.lista_jugadores[id_teclado].ultimo_ingresado
+		i = ultimo
+		while i == ultimo or len(self.lista_cuentos[i]) == 0 :
 			# Timer para bajar carga?
 			i = random.choice(list(self.lista_cuentos.keys()))
-		print("Actual: ", id_teclado, " nuevo: ", i)
+		print("Actual: ", id_teclado, " ultimo ingresado: ", i)
 		# Enviar la ultima frase
+		print(self.lista_cuentos[i][-1])
 		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[i][-1])
 		self.lista_jugadores[id_teclado].ultimo_ingresado = i
 		self.lista_jugadores[id_teclado].status = "WRITING"
@@ -62,6 +64,7 @@ class ManagerMicrocuentos:
 				self.lista_jugadores[id_teclado].status = "WRITING"
 			# Guardar oracion anterior
 			elif self.lista_jugadores[id_teclado].status == "WRITING":
+				print("Jugador ", id_teclado, " en WRITING ", "ultimo: ", self.lista_jugadores[id_teclado].ultimo_ingresado)
 				self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
 				self.lista_jugadores[id_teclado].status = "DONE"
 				# Mensaje de espera
@@ -69,6 +72,7 @@ class ManagerMicrocuentos:
 				manejo_pantalla.write(id_teclado, "Espera...", 0, 0)
 				self.instrucciones(id_teclado, "")
 			else:
+				print("Jugador ", id_teclado, " en THREAD")
 				t = threading.Thread(target=self.esperar_cuento, args = (id_teclado,))
 				t.daemon = True
 				t.start()

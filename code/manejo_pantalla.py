@@ -6,8 +6,8 @@ import sys
 sys.path.append('./src_pygame')
 import clases
 
-width = 1280
-height = 800
+width = 800
+height = 600
 whiteColor = pygame.Color(255,255,255)
 
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)

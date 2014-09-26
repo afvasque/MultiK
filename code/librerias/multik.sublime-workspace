@@ -1,0 +1,1073 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"buc",
+				"bucket_length"
+			],
+			[
+				"decia",
+				"Decimal"
+			],
+			[
+				"resul",
+				"results"
+			],
+			[
+				"grou",
+				"groups"
+			],
+			[
+				"gr",
+				"groupby"
+			],
+			[
+				"group",
+				"groupby"
+			],
+			[
+				"gro",
+				"groups"
+			],
+			[
+				"pro",
+				"procesos_audio"
+			],
+			[
+				"in",
+				"intervals"
+			],
+			[
+				"nueva",
+				"nueva_lista"
+			],
+			[
+				"list",
+				"lista_ordenada"
+			],
+			[
+				"pos",
+				"posicion_mayor"
+			],
+			[
+				"ordena",
+				"ordena_ingresos"
+			],
+			[
+				"lis",
+				"lista_ordenada"
+			],
+			[
+				"inte",
+				"integrantes"
+			],
+			[
+				"new",
+				"new_path"
+			],
+			[
+				"parent",
+				"parent_id"
+			],
+			[
+				"spe",
+				"species_details_dic"
+			],
+			[
+				"species_",
+				"species_list"
+			],
+			[
+				"spei",
+				"species_details"
+			],
+			[
+				"pare",
+				"parent_name"
+			],
+			[
+				"A",
+				"Ave"
+			],
+			[
+				"paren",
+				"parent_id"
+			],
+			[
+				"inv_",
+				"inv_classification_id"
+			],
+			[
+				"cla",
+				"classification_counter"
+			],
+			[
+				"class",
+				"classification_id"
+			],
+			[
+				"id",
+				"id_sent"
+			],
+			[
+				"mana",
+				"manager_microcuentos"
+			],
+			[
+				"ID",
+				"id_teclado"
+			],
+			[
+				"inv",
+				"inv_lists"
+			],
+			[
+				"texto",
+				"texto_decodificado"
+			],
+			[
+				"text",
+				"texto_decodificado"
+			],
+			[
+				"spec",
+				"species_details"
+			],
+			[
+				"no",
+				"no_repeat_path_lists"
+			],
+			[
+				"Spec",
+				"SpeciesDetails"
+			],
+			[
+				"Sepe",
+				"SpeciesDetails"
+			],
+			[
+				"pa",
+				"parent_id"
+			],
+			[
+				"path",
+				"path_lists"
+			],
+			[
+				"gen",
+				"genus_id"
+			],
+			[
+				"order",
+				"order_counter"
+			],
+			[
+				"ord",
+				"order_id"
+			],
+			[
+				"clas",
+				"class_id"
+			],
+			[
+				"speci",
+				"species_file"
+			],
+			[
+				"ma",
+				"manejo_pantalla"
+			],
+			[
+				"refre",
+				"refrescar_pantalla"
+			],
+			[
+				"u",
+				"ultimo"
+			],
+			[
+				"esper",
+				"esperar_cuento"
+			],
+			[
+				"lista",
+				"lista_jugadores"
+			],
+			[
+				"li",
+				"lista_jugadores"
+			],
+			[
+				"ulti",
+				"ultimo_ingresado"
+			],
+			[
+				"id_",
+				"id_teclado"
+			],
+			[
+				"lib",
+				"lib_teclados"
+			],
+			[
+				"keyb",
+				"num_keyboard"
+			],
+			[
+				"en_",
+				"en_pareamiento"
+			],
+			[
+				"nu",
+				"num_keyboard"
+			],
+			[
+				"num",
+				"num_phone"
+			],
+			[
+				"n",
+				"num_keyboard"
+			],
+			[
+				"pla",
+				"player_list"
+			],
+			[
+				"par",
+				"pareamientos"
+			],
+			[
+				"scre",
+				"screen_id"
+			],
+			[
+				"l",
+				"lib_teclados"
+			],
+			[
+				"re",
+				"refresh_window"
+			],
+			[
+				"Scr",
+				"screen_id"
+			],
+			[
+				"sc",
+				"screen_id"
+			],
+			[
+				"scr",
+				"screen_id"
+			],
+			[
+				"indi",
+				"individual_screen"
+			],
+			[
+				"acciones",
+				"acciones_por_periodos"
+			],
+			[
+				"obser",
+				"observaciones_totales"
+			],
+			[
+				"opera",
+				"operacion_actual"
+			],
+			[
+				"resp",
+				"resp_incorrect"
+			],
+			[
+				"oper",
+				"operacion"
+			],
+			[
+				"feedbac",
+				"feedback_error_custom"
+			],
+			[
+				"fee",
+				"feedback_error_custom"
+			],
+			[
+				"feed",
+				"feedback_error"
+			],
+			[
+				"ls",
+				"lost_files"
+			],
+			[
+				"Ke",
+				"Keyboard_Event"
+			],
+			[
+				"key",
+				"keypress"
+			],
+			[
+				"In",
+				"InputDevice"
+			],
+			[
+				"lost",
+				"lost_files"
+			],
+			[
+				"pt",
+				"ptje_len"
+			],
+			[
+				"Audi",
+				"AudioLibrary"
+			],
+			[
+				"audi",
+				"audio_mmap"
+			],
+			[
+				"audio",
+				"audio_library"
+			],
+			[
+				"siguien",
+				"siguiente_nivel"
+			],
+			[
+				"nive",
+				"nivelOperacion"
+			],
+			[
+				"ti",
+				"nivel_tipoOperacion"
+			],
+			[
+				"nivel",
+				"nivel_tipoOperacion"
+			],
+			[
+				"nro",
+				"nro_lista"
+			],
+			[
+				"alumn",
+				"alumnos_niveles"
+			],
+			[
+				"alu",
+				"alumnos_niveles"
+			],
+			[
+				"id_a",
+				"id_alumno"
+			],
+			[
+				"rando",
+				"randoms_por_nivel"
+			],
+			[
+				"al",
+				"Alumno_actual"
+			],
+			[
+				"get",
+				"GetSiguienteOperacion"
+			],
+			[
+				"event",
+				"eventcode"
+			],
+			[
+				"devi",
+				"device_id"
+			],
+			[
+				"vo",
+				"vowels_diaeresis"
+			],
+			[
+				"vowe",
+				"vowel_pos"
+			],
+			[
+				"le",
+				"is_leftshift"
+			],
+			[
+				"is",
+				"is_leftshift"
+			],
+			[
+				"Inpt",
+				"InputDeviceDispatcher"
+			],
+			[
+				"read",
+				"read_input"
+			],
+			[
+				"input",
+				"input_event"
+			],
+			[
+				"fals",
+				"False"
+			],
+			[
+				"ob",
+				"observacion"
+			],
+			[
+				"acc",
+				"acciones_por_periodos"
+			],
+			[
+				"ele",
+				"elemento"
+			],
+			[
+				"eleme",
+				"elemento_inicial_intervalo"
+			],
+			[
+				"en",
+				"en_mismo_intervalo"
+			],
+			[
+				"tup",
+				"tupla_nueva"
+			],
+			[
+				"tu",
+				"tupla_nueva"
+			],
+			[
+				"contr",
+				"contrasena_usuario"
+			],
+			[
+				"correc",
+				"correctasTotales"
+			],
+			[
+				"sigui",
+				"siguiente_operacion"
+			],
+			[
+				"cor",
+				"correctasTotales"
+			],
+			[
+				"se",
+				"correctas_seguidas"
+			],
+			[
+				"Ref",
+				"Reglas_Fijas"
+			],
+			[
+				"corre",
+				"correctas_seguidas"
+			],
+			[
+				"siguie",
+				"siguiente_nivel"
+			],
+			[
+				"Tipo",
+				"TipoOperacionNivel"
+			],
+			[
+				"nume",
+				"numero_alumno"
+			],
+			[
+				"repor",
+				"report_by_student"
+			],
+			[
+				"repot",
+				"report_list"
+			],
+			[
+				"reo",
+				"report_list"
+			],
+			[
+				"csv",
+				"csvfile"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "sound_card.py",
+			"settings":
+			{
+				"buffer_size": 978,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "audio_library.py",
+			"settings":
+			{
+				"buffer_size": 11420,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 139.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/andrea/MultiK",
+		"/home/andrea/MultiK/code",
+		"/home/andrea/MultiK/code/librerias"
+	],
+	"file_history":
+	[
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/instrucciones_hasta_audio.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/instruccion_hasta_audio.py",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/audio_deltas.py",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/deltas_largoProcAudios.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/audio4.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/audio3.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/audio2.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/Analisis",
+		"/home/andrea/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/3B_1.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/cocoyoc.py",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/cocoyoc.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/cocoyoc.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/porcentaje_instruccion_hasta_audio.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/3B_1_sinPareamiento.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/instruccion_hasta_audio.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/procesos_audio.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/procesos_teclados.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/keypress.py",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/teclados.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/procesos_teclados.html",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/visualizacion.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/log1.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/procesos_audio",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Parser log/procesos_audio",
+		"/home/andrea/Downloads/SightingManagerController.cs",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/audio.py",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/3B_1.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Parser log/log1.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Logs/2014-06-19/3B_1.log",
+		"/home/andrea/Documents/data-integration/3B_1.txt",
+		"/home/andrea/Documents/Dropbox/lector_liveandes.py",
+		"/home/andrea/MultiK/code/src_pygame/ejercicio.py",
+		"/home/andrea/MultiK/code/librerias/audio_library.py",
+		"/home/andrea/MultiK/code/src_pygame/multik.log",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Grulli/Logs/2014-06-19/3B_1.log",
+		"/home/andrea/Documents/Doctorado/Tesis Esteban/Microcuentos mini/multik.log",
+		"/home/andrea/Dropbox/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 8 - Listas/Script.txt",
+		"/home/andrea/Dropbox/Doctorado/Tesis Esteban/Microcuentos mini/multik.log",
+		"/home/andrea/Dropbox/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 8 - Listas/caracterizacion_socioeconomica.py",
+		"/home/andrea/Documents/Dropbox/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 8 - Listas/Script.txt",
+		"/home/andrea/Documents/Dropbox/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 8 - Listas/caracterizacion_socioeconomica.py",
+		"/home/andrea/Documents/Dropbox/Especies.csv",
+		"/home/andrea/Dropbox/to_azure_species_details.txt",
+		"/home/andrea/Dropbox/to_azure_species.txt",
+		"/home/andrea/Documents/Dropbox/lector_especies.py",
+		"/home/andrea/Documents/Dropbox/to_azure_species_details.txt",
+		"/home/andrea/Documents/Dropbox/to_azure_species.txt",
+		"/home/andrea/MultiK/code/manager_microcuentos.py",
+		"/home/andrea/MultiK/code/manejo_pantalla.py",
+		"/home/andrea/MultiK/code/microcuentos_1n.py",
+		"/home/andrea/Dropbox/lector_liveandes.py",
+		"/home/andrea/Documents/Dropbox/to_azure_speciesure_species_details.txt",
+		"/home/andrea/Documents/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 7 - funciones y strings/compresor_completo.py",
+		"/home/andrea/Documents/Cursos/IIC1103-7/Ejercicios y preguntas/Clase 7 - funciones y strings/compresor.py",
+		"/home/andrea/MultiK/code/librerias/keyboard_library_queue.py",
+		"/home/andrea/Dropbox/Especies.csv",
+		"/home/andrea/MultiK/code/pareamiento.py",
+		"/home/andrea/MultiK/code/player.py",
+		"/home/andrea/MultiK/code/colaborativo.py",
+		"/home/andrea/Blog/afvasque/_posts/2014-08-15-repitiendo.markdown",
+		"/home/andrea/Blog/afvasque/_posts/2014-08-18-pendrives.markdown",
+		"/home/andrea/Blog/afvasque/css/main.scss",
+		"/home/andrea/Blog/afvasque/_sass/_layout.scss",
+		"/home/andrea/Blog/afvasque/_layouts/default.html",
+		"/home/andrea/Blog/afvasque/index.html",
+		"/home/andrea/Blog/afvasque/_includes/sidebar.html",
+		"/home/andrea/Blog/afvasque/_site/css/main.css",
+		"/home/andrea/Blog/afvasque/_layouts/sidebar.html",
+		"/home/andrea/Blog/afvasque/_config.yml",
+		"/home/andrea/Blog/afvasque/_includes/footer.html",
+		"/home/andrea/MultiK/code/individual.py",
+		"/home/andrea/MultiK/code/src_pygame/Pareamiento.py",
+		"/run/user/1000/gvfs/ftp:host=afs.ing.puc.cl/public_html/blog/index.html",
+		"/home/andrea/MultiK/code/src_pygame/clases.py",
+		"/home/andrea/MultiK/code/src_pygame/Alumno.py",
+		"/home/andrea/MultiK/code/audio_library_testing.py",
+		"/home/andrea/MultiK/code/Microcuentos/microcuentos_1n.py",
+		"/home/andrea/MultiK/Microcuentos/microcuentos.py",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Esteban/prueba-2013-12-06/report_1386340198.html",
+		"/home/andrea/multik.log",
+		"/home/andrea/MultiK/Microcuentos/microcuentos_1n.py",
+		"/media/andrea/KINGSTON/Autogestión.lnk",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Esteban/prueba-2013-09-26/report_1380211484.html",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Esteban/prueba-2013-12-06/mem_1386340198.dat",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Esteban/prueba-2013-12-06/cpu_1386340198.dat",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/Consolidados/S5-mix.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/parser_observaciones.py",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/Consolidados/S1-mix.xml",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Grulli/Logs/2014-06-05/3B_1.log",
+		"/home/andrea/Documents/Dropbox/Doctorado/Tesis Esteban/prueba-2013-11-28/report_1385653308.html",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-17/3B_1.log",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-17/3B_1b.log",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-17/3B_1(limpio).log",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-17/limpio.txt",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-17/avance_alumnos_3B_1.csv",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-08/3D_2.log",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-08/3A_2.log",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/Logs/2014-04-03/3B_1.log",
+		"/home/andrea/Downloads/tacoroot.bin",
+		"/home/andrea/Documents/Doctorado/Tesis Grulli/generador_reportes/3B_1.log",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/observaciones_3B.csv",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/data.Tte Dagoberto Godoy.Curso3B.1400762147932.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/S5-2.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/S5-4.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/S5-3.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3B/S5-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3A/S7-3.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3A/S7-2.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3A/S7-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3A/S7-4.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/data.Tte Dagoberto Godoy.Curso3A.1400589289339.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/Consolidados/S8-mix.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S8-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S8-2.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S8-3.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S8-3b.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/Consolidados/S7-mix.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S7-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S7-2.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S7-3.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/Consolidados/S6-mix.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S6-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S6-3.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S6-2.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S5-mix.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S5-1.xml",
+		"/home/andrea/Dropbox/Doctorado/Tesis Grulli/Observaciones/3D/S5-2.xml"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 98.0,
+		"where_history":
+		[
+			"./audio3.txt",
+			"./teclados.txt",
+			"\"teclados.txt\"",
+			"teclados.txt",
+			"procesos_audio.html",
+			".",
+			"~/Documents/data-integration/3B_1.txt",
+			"/home/andrea/MultiK/code/src_pygame",
+			"/home/andrea/MultiK",
+			"",
+			"/home/andrea/Documents/Proyectos/IIC2154-2013-2-Grupo4-B-master/LiveAndes2.0/LiveAndesAzure",
+			"/home/andrea/MultiK/code/src_pygame",
+			"/home/andrea/MultiK/code/Tomas/App",
+			"/home/andrea/Documents/MultiK/code/Tomas/App",
+			"/home/andrea/Documents/MultiK/code/src_pygame",
+			"/home/andrea/Documents/MultiK/code",
+			"/home/andrea/Documents/MultiK/code/src_pygame",
+			"/home/andrea/Documents/MultiK/code/Tomas/App",
+			"/home/andrea/Documents/MultiK/code/src_pygame",
+			"/home/andrea/Documents/MultiK/code/Tomas/App",
+			"/home/andrea/Documents/MultiK/code/src_pygame",
+			"src_pygame/",
+			"web-iciis",
+			"src_pygame/",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			".000",
+			"],",
+			"'",
+			"['",
+			"'",
+			"[0.",
+			"lan",
+			"CHAR_ACTION_DETERMINATION",
+			"1403179744.028448",
+			"float",
+			"10",
+			"int",
+			"date",
+			"keypress",
+			"'",
+			")]",
+			"),",
+			"new Date(",
+			".",
+			"[",
+			"intervals",
+			": [",
+			"INFO:root:[",
+			": ",
+			"]",
+			"[",
+			"INFO:root:",
+			"cocoyoc",
+			"menor",
+			"mayor",
+			"Mayor",
+			"mayor",
+			"Mayor",
+			"mayor",
+			"species_details_id.Keys():",
+			"species_details_id.Keys()",
+			"Furipteridae",
+			"tropidu",
+			"inv_lists",
+			"class",
+			"(1",
+			"descodificado",
+			"vison",
+			"visón",
+			"neo",
+			"parent",
+			"Aves",
+			"values",
+			"keys",
+			"family",
+			"order",
+			"id_teclado",
+			":\n",
+			"pareamientos",
+			"%d",
+			"identificador",
+			"textctrl",
+			"print",
+			")\n",
+			"Pareamientos",
+			"keyboardsNum",
+			"self,",
+			"audio_",
+			"audio",
+			".",
+			"LEVel_UP",
+			"Bien, Jav",
+			"level",
+			"pareamien",
+			"pareamiento",
+			"LEVEL_UP",
+			" [",
+			"INFO:root:[1397735670.972599: [",
+			"text",
+			"09",
+			"45, level_UP",
+			"level_UP",
+			" [",
+			"OnStart",
+			"Role",
+			"webrole",
+			"onstart",
+			"azure",
+			"sleep",
+			"timer.sleep",
+			"Pasemos",
+			" [",
+			"textt",
+			"feedback_",
+			"feedback",
+			",x",
+			"3,x",
+			",x",
+			"PAREAMIENTO",
+			" [",
+			"[",
+			"¿",
+			"decode",
+			"print",
+			"fab",
+			"alborada",
+			"len",
+			"gene",
+			"path_imagen",
+			"Imagenes",
+			"Images",
+			";;;;;;;;",
+			";;;;;;;;;;;;;;;",
+			";;;;;;;;;;;;;;",
+			";;;;;;;;;;;;;",
+			";;;;;;;;;;;;",
+			";;;;;;;;;;;",
+			";;;;;;;;;;",
+			";;;;;;;;;",
+			";;;;;;;;",
+			",,,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,,",
+			",,,,,,,,,,,,,",
+			",,,,,,,,,,,,",
+			",,,,,,,,,,,",
+			",,,,,,,,,,",
+			",,,,,,,,,",
+			",,,,,,",
+			",,,,,",
+			",,,,",
+			"EjerciciosLenguaje",
+			"agregado nivel",
+			"int("
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"]",
+			",",
+			"",
+			", ",
+			"",
+			",",
+			"",
+			"Ave",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "sound_card.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 978,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								903,
+								903
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 29.0,
+						"translation.y": -0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "audio_library.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11420,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5173,
+								5173
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2647.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "multik.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"lector",
+				"src_pygame/lector_csv.py"
+			],
+			[
+				"parea",
+				"src_pygame/Pareamiento.py"
+			],
+			[
+				"keybi",
+				"~/Documents/MultiK/keyboard_library.py"
+			],
+			[
+				"menu",
+				"web-iciis/app/assets/stylesheets/foundation_icons_all/menu_iciis.css"
+			],
+			[
+				"mapp",
+				"web-iciis/app/assets/stylesheets/mapping.css.scss"
+			],
+			[
+				"app1",
+				"code/src_pygame/App1.py"
+			],
+			[
+				"keyboard",
+				"code/src_pygame/keyboard_library_queue.py"
+			],
+			[
+				"basicopera",
+				"code/src_pygame/BasicOperacion.py"
+			],
+			[
+				"pruebaclejerci",
+				"code/src_pygame/Prueba_clases/ejercicio.py"
+			],
+			[
+				"sessio",
+				"app/controllers/sessions_controller.rb"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"~/Dropbox/Doctorado/Tesis Esteban/Parser log/keypress.sublime-workspace"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 261.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

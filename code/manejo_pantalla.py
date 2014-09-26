@@ -6,6 +6,9 @@ import sys
 sys.path.append('./src_pygame')
 import clases
 
+import logging
+import time
+
 width = 800
 height = 600
 whiteColor = pygame.Color(255,255,255)
@@ -107,8 +110,11 @@ class PygameThread(Thread):
         while running:
             for ev in pygame.event.get():
                 if ev.type == pygame.MOUSEBUTTONUP:
-                    print("SALIR")
-                    running = False
+                	if e.button == 3:
+                		logging.info("[%f: [%s, %f, %s, %s, %s, %s] ], " % (time.time(), 'PROFESOR'))
+                	else:
+	                    print("SALIR")
+	                    running = False
             clock.tick(20)            
         pygame.quit()
         sys.exit()

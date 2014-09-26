@@ -3,6 +3,9 @@
 import manejo_pantalla
 import random
 import threading
+import logging
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 class Jugador:
 

@@ -6,6 +6,10 @@ import manejo_pantalla
 import pareamiento
 import player
 from manager_microcuentos import ManagerMicrocuentos
+import time
+import logging
+
+logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 # Creacion objetos librerias
 lib_teclados = KeyboardLibrary()
@@ -31,6 +35,7 @@ def Keyboard_event(sender, earg):
 
     if text =="Enter":
         if en_pareamiento:
+            # Pareamiento.parear recibe num teclado, num audifono
             en_pareamiento = pareamiento.parear(id_sent, manejo_pantalla.get_value(id_sent))
             manager.add_player(id_sent, pareamiento.pareamientos[id_sent])
             en_juego = not en_pareamiento
@@ -46,6 +51,9 @@ def Keyboard_event(sender, earg):
             manager.replay(id_sent)
     else:
         manejo_pantalla.react(id_sent, text)
+
+    # Tiempo respuesta desde decision de Pucca
+    logging.info("[%f: [%s, %f, %s, %s, %s, %s] ], " % (time.time(), id_sent, time_pressed, 'COCOYOC'))
 
 
 # Subscripcion a evento teclado

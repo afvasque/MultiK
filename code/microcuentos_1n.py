@@ -26,35 +26,37 @@ num_keyboards = lib_teclados.total_keyboards
 
 # Evento de teclado
 def Keyboard_event(sender, earg):
+    try:
+        global en_pareamiento
+        global en_juego
+        id_sent= int(earg['id'])
+        text= str(earg['char']).decode('utf-8')
+        time_pressed = earg['time_pressed']
 
-    global en_pareamiento
-    global en_juego
-    id_sent= int(earg['id'])
-    text= str(earg['char']).decode('utf-8')
-    time_pressed = earg['time_pressed']
-
-    if text =="Enter":
-        if en_pareamiento:
-            # Pareamiento.parear recibe num teclado, num audifono
-            en_pareamiento = pareamiento.parear(id_sent, manejo_pantalla.get_value(id_sent))
-            manager.add_player(id_sent, pareamiento.pareamientos[id_sent])
-            en_juego = not en_pareamiento
-        else:#elif en_juego:
-            # Logica para cada jugador
-            text = manejo_pantalla.get_value(id_sent)
-            manager.verificar_respuesta(id_sent, text)
-    elif text == "Pow":
-        # Repetir ultima instruccion
-        if en_pareamiento:
-            pareamiento.replay_pareamiento(lib_audio, int(id_sent))
+        if text =="Enter":
+            if en_pareamiento:
+                # Pareamiento.parear recibe num teclado, num audifono
+                en_pareamiento = pareamiento.parear(id_sent, manejo_pantalla.get_value(id_sent))
+                manager.add_player(id_sent, pareamiento.pareamientos[id_sent])
+                en_juego = not en_pareamiento
+            else:#elif en_juego:
+                # Logica para cada jugador
+                text = manejo_pantalla.get_value(id_sent)
+                manager.verificar_respuesta(id_sent, text)
+        elif text == "Pow":
+            # Repetir ultima instruccion
+            if en_pareamiento:
+                pareamiento.replay_pareamiento(lib_audio, int(id_sent))
+            else:
+                manager.replay(id_sent)
         else:
-            manager.replay(id_sent)
-    else:
-        manejo_pantalla.react(id_sent, text)
+            manejo_pantalla.react(id_sent, text)
 
-    # Tiempo respuesta desde decision de Pucca
-    logging.info("[%f: [%s, %f, %s, %s, %s, %s] ], " % (time.time(), id_sent, time_pressed, 'COCOYOC'))
+        # Tiempo respuesta desde decision de Pucca
+        logging.info("[%f: [%d, %f, %s] ], " % (time.time(), id_sent, time_pressed, 'COCOYOC'))
 
+    except Exception as e:
+        print e
 
 # Subscripcion a evento teclado
 lib_teclados.keypress += Keyboard_event

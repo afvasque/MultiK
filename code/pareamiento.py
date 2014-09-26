@@ -4,6 +4,7 @@ import manejo_pantalla
 from librerias.keyboard_library_queue import KeyboardLibrary
 from librerias import audio_library
 import time
+import logging
 
 pareamientos= {}
 players = 0
@@ -21,17 +22,21 @@ def parear(num_keyboard, num_phone):
 	global pareamientos
 	global players_id
 
-	pareamientos[num_keyboard] = int(num_phone)
-	manejo_pantalla.reset_layout(num_keyboard)
-	manejo_pantalla.write(num_keyboard, "Espera",0,0)
+	try:
+		pareamientos[num_keyboard] = int(num_phone)
+		manejo_pantalla.reset_layout(num_keyboard)
+		manejo_pantalla.write(num_keyboard, "Espera",0,0)
 
-	logging.info("[%f: [%d, %d, %s, %s] ], " % (time.time(), num_phone, num_keyboard, 'PAREAMIENTO'))
+		logging.info("[%f: [%d, %d, %s] ], " % (time.time(), int(num_phone), int(num_keyboard), 'PAREAMIENTO'))
 
 
-	if len(pareamientos) == players:
-		return False
-	else:
-		return True
+		if len(pareamientos) == players:
+			return False
+		else:
+			return True
+
+	except Exception as e:
+		print e
 
 def replay_pareamiento(lib_audio, id_sent):
 	global players

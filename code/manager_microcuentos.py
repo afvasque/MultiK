@@ -70,7 +70,7 @@ class ManagerMicrocuentos:
 				self.lista_jugadores[id_teclado].status = "WRITING"
 			# Guardar oracion anterior
 			elif self.lista_jugadores[id_teclado].status == "WRITING":
-				print("Jugador ", id_teclado, " en WRITING ", "ultimo: ", self.lista_jugadxores[id_teclado].ultimo_ingresado)
+				print("Jugador ", id_teclado, " en WRITING ", "ultimo: ", self.lista_jugadores[id_teclado].ultimo_ingresado)
 				self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
 				self.lista_jugadores[id_teclado].status = "DONE"
 				# Mensaje de espera
@@ -90,7 +90,7 @@ class ManagerMicrocuentos:
 			manejo_pantalla.draw_textbox(id_teclado,50)
 			
 		except Exception as e:
-			print type(e)
+			print e
 
 
 	def guardar_oracion(self, ultimo_ingresado, oracion):
@@ -101,5 +101,9 @@ class ManagerMicrocuentos:
 	# Se llama al hacer POW en una actividad
 	def replay(self, id_teclado):
 		ultimo = self.lista_jugadores[id_teclado].ultimo_ingresado
-		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[ultimo][-1])
+
+		if len(self.lista_cuentos[ultimo]) > 0:
+			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[ultimo][-1])
+		else:
+			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, "Escribe una frase para iniciar tu microcuento.")
 

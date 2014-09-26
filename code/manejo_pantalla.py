@@ -110,8 +110,8 @@ class PygameThread(Thread):
         while running:
             for ev in pygame.event.get():
                 if ev.type == pygame.MOUSEBUTTONUP:
-                	if e.button == 3:
-                		logging.info("[%f: [%s, %f, %s, %s, %s, %s] ], " % (time.time(), 'PROFESOR'))
+                	if ev.button == 3:
+                		logging.info("[%f: [%s] ], " % (time.time(), 'PROFESOR'))
                 	else:
 	                    print("SALIR")
 	                    running = False

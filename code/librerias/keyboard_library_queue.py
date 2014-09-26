@@ -250,4 +250,4 @@ class KeyboardLibrary:
 			values = {"id": self.keyboard_local_global_id[eargs['id']], "char": eargs['char'], "time_pressed": eargs['time_pressed']}
 			self.keypress(values)
 		except Exception as e:
-			print ("Error ke: ", eargs['id'], self.keyboard_local_global_id)
+			print e

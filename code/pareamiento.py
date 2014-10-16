@@ -29,6 +29,8 @@ def parear(num_keyboard, num_phone):
 
 		logging.info("[%f: [%d, %d, %s] ], " % (time.time(), int(num_phone), int(num_keyboard), 'PAREAMIENTO'))
 
+		print(len(pareamientos))
+		print(players)
 
 		if len(pareamientos) == players:
 			return False

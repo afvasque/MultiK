@@ -82,7 +82,6 @@ class ejercicio:
 		self.ResetLayout()
 
 		tipo_op= operacion.GetControlType()
-		print "Tipo:"+tipo_op
 
 		if tipo_op=="Texto":
 			self.SetLayoutText(operacion)
@@ -166,7 +165,7 @@ class ejercicio:
 
 		if len(operacion.path_imagen)>1:
 
-			myimage = pygame.image.load("Imagenes/"+operacion.path_imagen)
+			myimage = pygame.image.load("archivos/Imagenes/"+operacion.path_imagen)
 
 			self.new_width = ((self.height / 4) * myimage.get_width()) / myimage.get_height();
 			myimage= pygame.transform.scale(myimage, (self.new_width, self.height/(temp*4))) 

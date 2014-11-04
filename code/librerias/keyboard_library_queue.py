@@ -127,12 +127,19 @@ class InputDeviceDispatcher(file_dispatcher):
 			if key in self.vowels:
 				vowel_pos = self.vowels.index(key)
 				if self.acute:
+					self.is_leftshift = False
+					self.acute = False
+					self.diaeresis = False
 					return self.vowels_acute[vowel_pos]
 				elif self.diaeresis:
+					self.is_leftshift = False
+					self.acute = False
+					self.diaeresis = False
 					return self.vowels_diaeresis[vowel_pos]
 
 			self.is_leftshift = False
 			self.acute = False
+			self.diaeresis = False
 
 			return key
 

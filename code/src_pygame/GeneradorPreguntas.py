@@ -10,6 +10,9 @@ class GeneradorPreguntas(object):
 	_instance = None
 	preguntas= None
 
+	# Para que no se repitan las preguntas inmediatamente
+	preguntas_seleccionadas = []
+
 	path_ejercicios = "./archivos/Ejercicios/EjerciciosLenguaje.csv"
 
 	def __new__(cls, *args, **kwargs):
@@ -41,6 +44,7 @@ class GeneradorPreguntas(object):
 						for x in range(2,5):
 							if len(row[x])>0:
 								operacion.alternativas.append(row[x].decode('latin-1').strip())
+						random.shuffle(operacion.alternativas)
 
 						operacion.respuesta= row[5].decode('latin-1').strip()
 						operacion.audio_pregunta= row[6].decode('latin-1')
@@ -54,15 +58,19 @@ class GeneradorPreguntas(object):
 					rownum += 1
 
 		return
-	
-	#TO-DO: que no se repitan al tiro las preguntas
+
 	def Getsiguiente(self, niveloperacion, tipo_operacion, operacion_actual):
 		
 		operaciones= filter(lambda x: x.nivelOperacion == niveloperacion, self.preguntas)
 
-		rand= random.randint(0, len(operaciones)-1)
+		rand = random.randint(0, len(operaciones)-1)
+		operacion = operaciones[rand]
 
-		operacion= operaciones[rand]
+		while operacion in self.preguntas_seleccionadas:
+			rand= random.randint(0, len(operaciones)-1)
+			operacion = operaciones[rand]
+
+		self.preguntas_seleccionadas.append(operacion)
 
 		operacion.TipoOperacion = tipo_operacion
 		operacion.feedback_correcto = "Bien, " + self.alumno.Nombre

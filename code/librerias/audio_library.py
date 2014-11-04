@@ -75,7 +75,9 @@ class AudioLibrary:
             self.all_q.append(text_to_speech_queue)
 
 
-
+    def kill_process(self):
+        for p in self.all_p:
+            p.terminate()
 
     def get_total_usb_cards(self):
         return len(self.card_array)
@@ -139,7 +141,8 @@ class AudioLibrary:
             i = 0
             for line in reader:
                 text_to_speech = line[0].lower()
-                filename = line[1].decode('utf-8')
+                filename = line[1]
+
                 
                 filepath = "%s/%s" % (sound_dir_path, filename)
 
@@ -147,7 +150,9 @@ class AudioLibrary:
                 f = open(filepath, "r+b")
 
                 # memory-map the file, size 0 means whole file
-                self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+                tts_utf8 = text_to_speech.encode('utf-8')
+
+                self.audio_mmap[tts_utf8] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
                 
                 # update the total loaded size
                 total_bytes = total_bytes + len(self.audio_mmap[text_to_speech])
@@ -173,10 +178,14 @@ class AudioLibrary:
                 filename = "%s_%f" % (device_index, timestamp)
 
                 # check if tts is not generated already
-                if ( text_to_speech not in self.audio_mmap.keys() ):
+                tts_utf8 = text_to_speech.decode('utf-8')
+                tts_utf8 = tts_utf8.lower()
+
+                if ( tts_utf8 not in self.audio_mmap.keys() ):
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
                     # generate and mmap it
                     self.generate_and_mmap_file(text_to_speech, filename, device_index, time_received)
+
 
             # acquire semaphore
             semaphore_index = self.card_array[device_index].get_root_hub()
@@ -200,7 +209,9 @@ class AudioLibrary:
 
                 for text_to_speech in tts_concatenated:
                     # get the mmap of the generated file
-                    file_mmap = self.audio_mmap[text_to_speech]
+                    tts_utf8 = text_to_speech.encode('utf-8')
+                    tts_utf8 = tts_utf8.lower()
+                    file_mmap = self.audio_mmap[tts_utf8]
 
                     # play the wav file
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_START', text_to_speech))
@@ -236,11 +247,16 @@ class AudioLibrary:
     def generate_sound_file(self, text_to_speech, filename):
         # generate the wav file
         # text2wave default voice can be changed in /etc/festival.scm. Add at the end, e.g.: (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)
-        os.system("echo \"%s\" | text2wave -F 48000 -o archivos/sounds/%s.tmp" % (self.convert_intl_characters(text_to_speech), filename))
+
+        text_to_speech = text_to_speech.decode('utf-8')
+
+        os.system("echo '{}' | iconv -f utf-8 -t iso-8859-1 | text2wave -F 48000 -o {}.tmp".format(text_to_speech, filename))
         # convert to stereo, thus doubling the bitrate
-        os.system("sox archivos/sounds/%s.tmp -c 2 archivos/sounds/%s.wav" % (filename, filename))
+
+        os.system("sox {}.tmp -c 2 archivos/sounds/{}.wav".format(filename, filename))
         # remove the temporary file
-        os.remove("archivos/sounds/%s.tmp" % filename)
+
+        os.remove("%s.tmp" % filename)
 
     def generate_and_mmap_file(self, text_to_speech, filename, device_index, time_received):
         logging.info("[%f: [%d, %f, %s, '%s', '%s'] ], " % (time.time(), device_index, time_received, 'GENERATE_AND_MMAP_FILE_START', filename, text_to_speech))
@@ -253,8 +269,16 @@ class AudioLibrary:
 
         # open the generated audio file
         f = open(filepath, "r+b")
+
+        tts_utf8 = text_to_speech.encode('utf-8')
+        tts_utf8 = tts_utf8.lower()
+
+        print("Generado: ", tts_utf8)
+
+        self.audio_mmap[tts_utf8] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+
         # memory-map the file, size 0 means whole file
-        self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        #self.audio_mmap[text_to_speech] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
         logging.info("[%f: [%d, %f, %s, '%s', '%s'] ], " % (time.time(), device_index, time_received, 'GENERATE_AND_MMAP_FILE_COMPLETE', filename, text_to_speech))
 

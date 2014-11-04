@@ -21,8 +21,6 @@ import librerias.audio_library
 
 
 
-
-
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 logging.info("[%f: [%s] ], " % (time.time(),'APP_START'))
 
@@ -115,14 +113,15 @@ class PygameThread(threading.Thread):
                 if ev.type == pygame.MOUSEBUTTONUP:
                     print("SALIR")
                     running = False
-            clock.tick(20)            
+            clock.tick(20)   
+        audio_lib.kill_process()         
         pygame.quit()
         sys.exit()
 
 
 
-width = 1280
-height = 800
+width = 800
+height = 600
 
 # Parametros para leer persistencia
 fecha_de_hoy = str(datetime.date.today())
@@ -133,8 +132,7 @@ curso= "1"
 keyboardsNum= lib.total_keyboards
 print "Total de teclados: "+str(keyboardsNum)
 
-leer_persistencia('archivos/ListasCSV/'+fecha_de_hoy+"_3B_"+curso+".csv")
-
+leer_persistencia('archivos/ListasCSV/2014-06-12_3B_2.csv') #+fecha_de_hoy+"_3B_"+curso+".csv")
 
 line_number_x= int(math.sqrt(keyboardsNum))
 line_number_y= int(math.sqrt(keyboardsNum))
@@ -146,7 +144,7 @@ if line_number_x * line_number_y < keyboardsNum:
     line_number_y+=1
 
 
-window = pygame.display.set_mode((width,height), pygame.FULLSCREEN)
+window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 
 for i in range(keyboardsNum):    

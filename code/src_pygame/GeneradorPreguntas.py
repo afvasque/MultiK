@@ -66,11 +66,16 @@ class GeneradorPreguntas(object):
 		rand = random.randint(0, len(operaciones)-1)
 		operacion = operaciones[rand]
 
-		while operacion in self.preguntas_seleccionadas:
-			rand= random.randint(0, len(operaciones)-1)
-			operacion = operaciones[rand]
+
+		if len(self.preguntas_seleccionadas) < len(operaciones):
+			while operacion in self.preguntas_seleccionadas:
+				rand= random.randint(0, len(operaciones)-1)
+				operacion = operaciones[rand]
+		else:
+			self.preguntas_seleccionadas = []
 
 		self.preguntas_seleccionadas.append(operacion)
+
 
 		operacion.TipoOperacion = tipo_operacion
 		operacion.feedback_correcto = "Bien, " + self.alumno.Nombre

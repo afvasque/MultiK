@@ -1,10 +1,17 @@
 Instalar python (obvio!)
+
 Instalar libusb (carpeta en este directorio)
+
 Instalar pyusb (carpeta en este directorio)
+
 sudo apt-get intall python-pygame
+
 sudo apt-get install libasound2-dev
+
 sudo apt-get python-dev
+
 Instalar pyalsaaudio (carpeta en este directorio)
+
 sudo apt-get install text2wave
 Instalar voz femenina (carpeta en este directorio)
 Configurar la voz por defecto en "/etc/festival.scm":
@@ -16,6 +23,18 @@ Para nueva libreria de teclados:
 sudo apt-get install python-setuptools
 En la carpeta python-evdev:
 	- python setup.py install
+
+**************************
+Librerías para sopore tarjetas / dispositivos USB
+
+alsa-lib se instalo en /usr/lib
+ /usr/lib/alsa-lib/smixer
+
+Último evdev.so (para evitar pantalla negra al conectar muchos dispositivos)
+/usr/lib/xorg/modules/input
+
+Último alsa-utils para poder subir volumen de tarjetas via script
+apt-get build-dep alsa-utils 
 ----------
 Versión mayo 2014
 Andrea

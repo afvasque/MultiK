@@ -5,7 +5,7 @@ sudo apt-get intall python-pygame
 sudo apt-get install libasound2-dev
 sudo apt-get python-dev
 Instalar pyalsaaudio (carpeta en este directorio)
-sudo apt-get install text2wave
+sudo apt-get install festival
 Instalar voz femenina (carpeta en este directorio)
 Configurar la voz por defecto en "/etc/festival.scm":
 	- agregar (set! voice_default 'voice_JuntaDeAndalucia_es_sf_diphone)

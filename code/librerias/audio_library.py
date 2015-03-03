@@ -23,6 +23,7 @@ class AudioLibrary:
     root_hubs_set = set('') # set containing the addresses of the root usb hubs
     semaphore = {} # dictionary containing one semaphore for each root usb hub
     audio_mmap = {} # dictionary containing 'text_to_speech': corresponding_mmap
+    alsa_cards = {} # dictionary containing ALSA objects representing each card
 
     all_q = [] # array containing all queues
     all_p = [] # array containing all processes
@@ -40,6 +41,17 @@ class AudioLibrary:
         for card_name in self.get_usb_card_names():
             card = sound_card.SoundCard(card_name)
             self.card_array.append(card)
+            dev = alsaaudio.PCM(card="hw:CARD=%s" % (card_name))
+                
+            # set it up
+            # we hard code the values because of our sound card capabilities,
+            # audio files to be played have to match these.
+            dev.setchannels(2) # hard-coded 2 channels (stereo).
+            dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
+            dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
+            dev.setperiodsize(320)
+
+            self.alsa_cards[card_name] = dev
 
         # Populate the set containing the addresses of the root usb hubs
         self.root_hubs_set = self.get_usb_root_hub_addrs()
@@ -56,7 +68,7 @@ class AudioLibrary:
         print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
 
         # Load the cached sound files into memory
-        self.load_sound_files('archivos/Audio/audio_cache.csv','archivos/sounds')
+        # self.load_sound_files('archivos/Audio/audio_cache.csv','archivos/sounds')
 
 
         # Create a process and a queue for every card
@@ -97,7 +109,14 @@ class AudioLibrary:
         
         return hub_addrs
 
+    def close_alsa_cards(self):
+        for card in self.alsa_cards.values():
+            card.close()
 
+        self.kill_process()
+
+        for mmap_file in self.audio_mmap.values():
+            mmap_file.close()
 
     def play(self, id, text_to_speech):
         # Plays a single text as speech
@@ -142,7 +161,6 @@ class AudioLibrary:
             for line in reader:
                 text_to_speech = line[0].lower()
                 filename = line[1]
-
                 
                 filepath = "%s/%s" % (sound_dir_path, filename)
 
@@ -197,15 +215,16 @@ class AudioLibrary:
             try:
                 #open the audio card
                 print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
-                dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
+                dev = self.alsa_cards[self.card_array[device_index].get_name()]
+                # dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
                 
-                # set it up
-                # we hard code the values because of our sound card capabilities,
-                # audio files to be played have to match these.
-                dev.setchannels(2) # hard-coded 2 channels (stereo).
-                dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
-                dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
-                dev.setperiodsize(320)
+                # # set it up
+                # # we hard code the values because of our sound card capabilities,
+                # # audio files to be played have to match these.
+                # dev.setchannels(2) # hard-coded 2 channels (stereo).
+                # dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
+                # dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
+                # dev.setperiodsize(320)
 
                 for text_to_speech in tts_concatenated:
                     # get the mmap of the generated file
@@ -226,7 +245,7 @@ class AudioLibrary:
                     file_mmap.seek(0)
 
                 # close the audio card
-                dev.close()
+                #dev.close()
 
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))

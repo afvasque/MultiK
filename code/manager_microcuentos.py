@@ -4,6 +4,7 @@ import manejo_pantalla
 import random
 import threading
 import logging
+import time
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -46,16 +47,17 @@ class ManagerMicrocuentos:
 
 	def esperar_cuento(self, id_teclado):
 		# Tomar aleatoriamente un cuento diferente al cual recien aporte
+		# y diferente al mio propio
 		ultimo = self.lista_jugadores[id_teclado].ultimo_ingresado
 		i = ultimo
-		while i == ultimo or len(self.lista_cuentos[i]) == 0 :
+		while i == ultimo or i == id_teclado or len(self.lista_cuentos[i]) == 0 :
 			self.lista_jugadores[id_teclado].waiting_flag = True
 			# Timer para bajar carga?
 			i = random.choice(list(self.lista_cuentos.keys()))
-		print("Actual: ", id_teclado, " ultimo ingresado: ", i)
+
 		self.lista_jugadores[id_teclado].waiting_flag = False
+
 		# Enviar la ultima frase
-		print(self.lista_cuentos[i][-1])
 		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[i][-1])
 		self.lista_jugadores[id_teclado].ultimo_ingresado = i
 		self.lista_jugadores[id_teclado].status = "WRITING"
@@ -107,3 +109,18 @@ class ManagerMicrocuentos:
 		else:
 			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, "Escribe una frase para iniciar tu microcuento.")
 
+	def leer_cuento_final(self, id_teclado):
+		# Generar archivo de texto con el microcuento
+		logging.info("[%f: [%s] ], " % (time.time(), 'START MICROTALES TEXTFILES'))
+
+		filename = "microcuento_" + str(id_teclado)
+		with open(filename, 'wb') as f:
+			for piece in self.lista_cuentos[id_teclado]:
+				f.write(piece + "\n")
+		logging.info("[%f: [%s] ], " % (time.time(), 'END MICROTALES TEXTFILES'))
+
+		logging.info("[%f: [%s] ], " % (time.time(), 'START MICROTALES AUDIO'))
+		# Reproducir microcuento
+		for piece in self.lista_cuentos[id_teclado]:
+			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, piece)
+		logging.info("[%f: [%s] ], " % (time.time(), 'END MICROTALES AUDIO'))

@@ -9,18 +9,18 @@ import clases
 import logging
 import time
 
+
 width = 800
 height = 600
 whiteColor = pygame.Color(255,255,255)
-
 window = pygame.display.set_mode((width,height))#, pygame.FULLSCREEN)
 
 #Contiene id del jugador y los datos de su pantalla
 individual_screen = {}
 
+def start(num_screens):	
 
-def start(num_screens):
-
+	clock = pygame.time.Clock()
 	line_number_x= int(math.sqrt(num_screens))
 	line_number_y= int(math.sqrt(num_screens))
 
@@ -47,6 +47,15 @@ def start(num_screens):
 	
 	pygame.font.init()
 	pygame.display.flip()
+
+	pygame_thread = PygameThread()
+	pygame_thread.daemon = True
+	pygame_thread.start()
+
+	return pygame_thread
+
+
+
 
 def screen(screen_id):
 	return individual_screen[int(screen_id)]['canvas'] 
@@ -102,26 +111,24 @@ def draw_textbox(screen_id, textbox_size):
 	refresh_window(screen_id)
 	pygame.display.flip()
 
+
 class PygameThread(Thread):    
     def run(self):
         clock = pygame.time.Clock()
-        print("RUNNING")
         running = True
+        
         while running:
             for ev in pygame.event.get():
                 if ev.type == pygame.MOUSEBUTTONUP:
+                	# Click derecho marca evento en el log
                 	if ev.button == 3:
                 		logging.info("[%f: [%s] ], " % (time.time(), 'PROFESOR'))
                 	else:
-	                    print("SALIR")
 	                    running = False
-            clock.tick(20)            
+            clock.tick(20)
+                   
+       	print("SALIENDO")
         pygame.quit()
-        sys.exit()
+        sys.exit(0)
 
-try:
-    pygame_thread = PygameThread()
-    pygame_thread.daemon = True
-    pygame_thread.start()
-except:
-    print("-----===== EXCEPTION threading exception =====-----")
+

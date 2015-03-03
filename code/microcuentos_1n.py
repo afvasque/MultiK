@@ -8,6 +8,8 @@ import player
 from manager_microcuentos import ManagerMicrocuentos
 import time
 import logging
+import threading
+
 
 logging.basicConfig(filename='multik.log',level=logging.INFO)
 
@@ -39,7 +41,7 @@ def Keyboard_event(sender, earg):
                 en_pareamiento = pareamiento.parear(id_sent, manejo_pantalla.get_value(id_sent))
                 manager.add_player(id_sent, pareamiento.pareamientos[id_sent])
                 en_juego = not en_pareamiento
-            else:#elif en_juego:
+            else:
                 # Logica para cada jugador
                 text = manejo_pantalla.get_value(id_sent)
                 manager.verificar_respuesta(id_sent, text)
@@ -61,21 +63,29 @@ def Keyboard_event(sender, earg):
 # Subscripcion a evento teclado
 lib_teclados.keypress += Keyboard_event
 
-manejo_pantalla.start(num_keyboards)
-
+pygame_thread = manejo_pantalla.start(num_keyboards)
 
 print "Total de teclados: "+str(lib_teclados.total_keyboards)
-
 
 # Pareamiento
 en_pareamiento = True
 pareamiento.start(num_keyboards, lib_audio)
 
-# Proceso teclados
-lib_teclados.run()
+#Proceso teclados
+keyboards_thread = threading.Thread(target=lib_teclados.run, args=())
+keyboards_thread.daemon = True
+keyboards_thread.start()
 
 
+while pygame_thread.isAlive():
+    pass
 
+print("---=== SALIENDO ===---")
 
+#Generando microcuentos
+for i in range(0,num_keyboards):
+    manager.leer_cuento_final(i)
 
-    
+#Cerrando recursos
+lib_audio.close_alsa_cards()
+lib_teclados.close_keyboards()

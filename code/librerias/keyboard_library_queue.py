@@ -50,6 +50,9 @@ class InputDeviceDispatcher(file_dispatcher):
 		except:
 			pass
 
+	def handle_close(self):
+		self.close()
+
 	def handle_read(self):		
 		
 		time_pressed = time.time()
@@ -195,6 +198,8 @@ class KeyboardLibrary:
 
 	keyboard_local_global_id = {}
 
+	keyboard_dispatchers = [] # Array containing InputDeviceDispatcher objets
+
 	def ordenar(self, event_path):
 		return int(event_path[5:])
 
@@ -234,12 +239,18 @@ class KeyboardLibrary:
 					del lost_files[path]
 			time.sleep(3)
 
+	def close_keyboards(self):
+		for idd in self.keyboard_dispatchers:
+			idd.close()
+
+
 
 	def run(self):
 
 		for i in self.keyboard_paths:
 			# Automagically added to asyncore.loop map when creating this file_dispatcher
-			InputDeviceDispatcher(InputDevice(i)).keypress += self.Keyboard_Event
+			self.keyboard_dispatchers.append(InputDeviceDispatcher(InputDevice(i)))
+			self.keyboard_dispatchers[-1].keypress += self.Keyboard_Event
 
 		# Using threads for keyboard recovery
 		thread = Thread(target = self.recover_keyboards)

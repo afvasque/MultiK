@@ -242,8 +242,7 @@ class KeyboardLibrary:
 	def close_keyboards(self):
 		for idd in self.keyboard_dispatchers:
 			idd.close()
-
-
+		sys.exit(0)
 
 	def run(self):
 

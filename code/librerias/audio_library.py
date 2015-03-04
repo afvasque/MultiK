@@ -118,6 +118,8 @@ class AudioLibrary:
         for mmap_file in self.audio_mmap.values():
             mmap_file.close()
 
+        sys.exit(0)
+
     def play(self, id, text_to_speech):
         # Plays a single text as speech
 
@@ -216,15 +218,6 @@ class AudioLibrary:
                 #open the audio card
                 print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
                 dev = self.alsa_cards[self.card_array[device_index].get_name()]
-                # dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
-                
-                # # set it up
-                # # we hard code the values because of our sound card capabilities,
-                # # audio files to be played have to match these.
-                # dev.setchannels(2) # hard-coded 2 channels (stereo).
-                # dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
-                # dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
-                # dev.setperiodsize(320)
 
                 for text_to_speech in tts_concatenated:
                     # get the mmap of the generated file

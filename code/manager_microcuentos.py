@@ -50,9 +50,10 @@ class ManagerMicrocuentos:
 		# y diferente al mio propio
 		ultimo = self.lista_jugadores[id_teclado].ultimo_ingresado
 		i = ultimo
-		while i == ultimo or i == id_teclado or len(self.lista_cuentos[i]) == 0 :
-			self.lista_jugadores[id_teclado].waiting_flag = True
-			# Timer para bajar carga?
+
+		self.lista_jugadores[id_teclado].waiting_flag = True
+
+		while (i == ultimo or i == id_teclado or len(self.lista_cuentos[i]) == 0):
 			i = random.choice(list(self.lista_cuentos.keys()))
 
 		self.lista_jugadores[id_teclado].waiting_flag = False
@@ -71,8 +72,7 @@ class ManagerMicrocuentos:
 				self.lista_jugadores[id_teclado].ultimo_ingresado = id_teclado
 				self.lista_jugadores[id_teclado].status = "WRITING"
 			# Guardar oracion anterior
-			elif self.lista_jugadores[id_teclado].status == "WRITING":
-				print("Jugador ", id_teclado, " en WRITING ", "ultimo: ", self.lista_jugadores[id_teclado].ultimo_ingresado)
+			elif self.lista_jugadores[id_teclado].status == "WRITING":	
 				self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
 				self.lista_jugadores[id_teclado].status = "DONE"
 				# Mensaje de espera
@@ -82,13 +82,14 @@ class ManagerMicrocuentos:
 				else:
 					manejo_pantalla.reset_layout(id_teclado)
 				self.instrucciones(id_teclado, "")
+				
 			else:
-				print("Jugador ", id_teclado, " en THREAD")
+				self.lista_jugadores[id_teclado].waiting_flag = True
 				t = threading.Thread(target=self.esperar_cuento, args = (id_teclado,))
 				t.daemon = True
 				t.start()
-				
-			# Pedir oracion nueva
+
+			# Pedir oracion nueva	
 			manejo_pantalla.draw_textbox(id_teclado,50)
 			
 		except Exception as e:
@@ -123,4 +124,5 @@ class ManagerMicrocuentos:
 		# Reproducir microcuento
 		for piece in self.lista_cuentos[id_teclado]:
 			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, piece)
+			time.sleep(2)
 		logging.info("[%f: [%s] ], " % (time.time(), 'END MICROTALES AUDIO'))

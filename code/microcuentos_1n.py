@@ -22,6 +22,8 @@ manager = ManagerMicrocuentos(lib_audio, lib_teclados)
 # Variables para mantener el estado actual del juego
 en_pareamiento = False
 en_juego = False
+salido_de_pareamiento = 0
+
 
 num_keyboards = lib_teclados.total_keyboards
 
@@ -31,6 +33,7 @@ def Keyboard_event(sender, earg):
     try:
         global en_pareamiento
         global en_juego
+        global salido_de_pareamiento
         id_sent= int(earg['id'])
         text= str(earg['char']).decode('utf-8')
         time_pressed = earg['time_pressed']
@@ -44,7 +47,11 @@ def Keyboard_event(sender, earg):
             else:
                 # Logica para cada jugador
                 text = manejo_pantalla.get_value(id_sent)
-                manager.verificar_respuesta(id_sent, text)
+                if text != "" or salido_de_pareamiento == 0:
+                    manager.verificar_respuesta(id_sent, text)
+                    salido_de_pareamiento = 1
+                else:
+                    lib_audio.play(pareamiento.pareamientos[id_sent], "¡No olvides escribir.!")
         elif text == "Pow":
             # Repetir ultima instruccion
             if en_pareamiento:
@@ -69,6 +76,7 @@ print "Total de teclados: "+str(lib_teclados.total_keyboards)
 
 # Pareamiento
 en_pareamiento = True
+
 pareamiento.start(num_keyboards, lib_audio)
 
 #Proceso teclados

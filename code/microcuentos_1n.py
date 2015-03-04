@@ -91,8 +91,7 @@ while pygame_thread.isAlive():
 print("---=== SALIENDO ===---")
 
 #Generando microcuentos
-for i in range(0,num_keyboards):
-    manager.leer_cuento_final(i)
+manager.leer_cuento_final()
 
 #Cerrando recursos
 lib_audio.close_alsa_cards()

@@ -29,9 +29,6 @@ def parear(num_keyboard, num_phone):
 
 		logging.info("[%f: [%d, %d, %s] ], " % (time.time(), int(num_phone), int(num_keyboard), 'PAREAMIENTO'))
 
-		print(len(pareamientos))
-		print(players)
-
 		if len(pareamientos) == players:
 			return False
 		else:
@@ -45,9 +42,7 @@ def replay_pareamiento(lib_audio, id_sent):
 	global pareamientos
 
 	if id_sent not in pareamientos.keys():
-		print(pareamientos.values())
 		lista_pendiente = [x for x in range(players) if x not in pareamientos.values()]
-		print(lista_pendiente)
 		for i in lista_pendiente:
 			frase = u"Escribe el número..."
 			lib_audio.play(i, frase + str(i))

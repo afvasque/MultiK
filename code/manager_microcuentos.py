@@ -110,19 +110,37 @@ class ManagerMicrocuentos:
 		else:
 			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, "Escribe una frase para iniciar tu microcuento.")
 
-	def leer_cuento_final(self, id_teclado):
-		# Generar archivo de texto con el microcuento
-		logging.info("[%f: [%s] ], " % (time.time(), 'START MICROTALES TEXTFILES'))
-
-		filename = "microcuento_" + str(id_teclado)
-		with open(filename, 'wb') as f:
-			for piece in self.lista_cuentos[id_teclado]:
-				f.write(piece + "\n")
-		logging.info("[%f: [%s] ], " % (time.time(), 'END MICROTALES TEXTFILES'))
-
-		logging.info("[%f: [%s] ], " % (time.time(), 'START MICROTALES AUDIO'))
-		# Reproducir microcuento
+	
+	def audio_cuento_final(self, id_teclado, id_audifono):
 		for piece in self.lista_cuentos[id_teclado]:
 			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, piece)
+			# Explicar esto en paper
 			time.sleep(2)
-		logging.info("[%f: [%s] ], " % (time.time(), 'END MICROTALES AUDIO'))
+		logging.info("[%f: [%s, %s, %s] ], " % (time.time(), 'END MICROTALES AUDIO', id_teclado, id_audifono))
+
+
+	def leer_cuento_final(self):
+		# Generar archivo de texto con el microcuento
+		for jugador in self.lista_jugadores.values():
+			logging.info("[%f: [%s, %s, %s] ], " % (time.time(), 'START MICROTALES TEXTFILES', jugador.id_teclado, jugador.id_audifono))
+			filename = "microcuento_" + str(jugador.id_teclado)
+			with open(filename, 'wb') as f:
+				for piece in self.lista_cuentos[jugador.id_teclado]:
+					f.write(piece + "\n")
+			logging.info("[%f: [%s, %s, %s] ], " % (time.time(), 'END MICROTALES TEXTFILES', jugador.id_teclado, jugador.id_audifono))
+
+		
+		
+		# Reproducir microcuento
+		for jugador in self.lista_jugadores.values():
+			logging.info("[%f: [%s, %s, %s] ], " % (time.time(), 'START MICROTALES AUDIO', jugador.id_teclado, jugador.id_audifono))
+			t = threading.Thread(target=self.audio_cuento_final, args=(jugador.id_teclado,jugador.id_audifono))
+			t.start()
+			# Explicar esto en paper
+			time.sleep(2)
+
+		# Explicar esto en paper -> si no lo pongo, sale exception bad file descriptor
+		time.sleep(2)
+
+			
+		

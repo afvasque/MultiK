@@ -38,6 +38,9 @@ def Keyboard_event(sender, earg):
         text= str(earg['char']).decode('utf-8')
         time_pressed = earg['time_pressed']
 
+        # Action to take is being determined. Log as event.
+        logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), id_sent, time_pressed, 'CHAR_ACTION_DETERMINATION', text))
+
         if text =="Enter":
             if en_pareamiento:
                 # Pareamiento.parear recibe num teclado, num audifono

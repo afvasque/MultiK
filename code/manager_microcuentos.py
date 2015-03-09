@@ -112,6 +112,10 @@ class ManagerMicrocuentos:
 
 	
 	def audio_cuento_final(self, id_teclado, id_audifono):
+		bienvenida = "Microcuento. Jugador " + str(id_teclado) + "."
+		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, bienvenida)
+		# Explicar esto en paper
+		time.sleep(2)
 		for piece in self.lista_cuentos[id_teclado]:
 			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, piece)
 			# Explicar esto en paper

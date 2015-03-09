@@ -51,8 +51,6 @@ class ManagerMicrocuentos:
 		ultimo = self.lista_jugadores[id_teclado].ultimo_ingresado
 		i = ultimo
 
-		self.lista_jugadores[id_teclado].waiting_flag = True
-
 		while (i == ultimo or i == id_teclado or len(self.lista_cuentos[i]) == 0):
 			i = random.choice(list(self.lista_cuentos.keys()))
 
@@ -62,35 +60,40 @@ class ManagerMicrocuentos:
 		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[i][-1])
 		self.lista_jugadores[id_teclado].ultimo_ingresado = i
 		self.lista_jugadores[id_teclado].status = "WRITING"
+		self.instrucciones(id_teclado, "")
 
 	def instrucciones(self, id_teclado, text):
 		try:
 			# Si no hay nada, es primer turno -> escribir primera frase 
 			if self.lista_jugadores[id_teclado].status == "START":
 				manejo_pantalla.reset_layout(id_teclado)
+				manejo_pantalla.draw_textbox(id_teclado,50)
+
 				self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, "Escribe una frase para iniciar tu micro cuento.")
 				self.lista_jugadores[id_teclado].ultimo_ingresado = id_teclado
 				self.lista_jugadores[id_teclado].status = "WRITING"
+				self.lista_jugadores[id_teclado].waiting_flag = True
 			# Guardar oracion anterior
-			elif self.lista_jugadores[id_teclado].status == "WRITING":	
-				self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
-				self.lista_jugadores[id_teclado].status = "DONE"
+			elif self.lista_jugadores[id_teclado].status == "WRITING":				
+				
 				# Mensaje de espera
 				if self.lista_jugadores[id_teclado].waiting_flag:
+					self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
 					manejo_pantalla.reset_layout(id_teclado)
 					manejo_pantalla.write(id_teclado, "Esperar", 0, 0)
+					self.lista_jugadores[id_teclado].status = "DONE"
+					self.instrucciones(id_teclado, "")
 				else:
 					manejo_pantalla.reset_layout(id_teclado)
-				self.instrucciones(id_teclado, "")
+					manejo_pantalla.draw_textbox(id_teclado,50)
+					self.lista_jugadores[id_teclado].waiting_flag = True				
 				
 			else:
-				self.lista_jugadores[id_teclado].waiting_flag = True
 				t = threading.Thread(target=self.esperar_cuento, args = (id_teclado,))
 				t.daemon = True
 				t.start()
 
-			# Pedir oracion nueva	
-			manejo_pantalla.draw_textbox(id_teclado,50)
+			
 			
 		except Exception as e:
 			print e

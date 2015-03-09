@@ -201,7 +201,7 @@ class AudioLibrary:
                 tts_utf8 = text_to_speech.decode('utf-8')
                 tts_utf8 = tts_utf8.lower()
 
-                if ( tts_utf8 not in self.audio_mmap.keys() ):
+                if ( tts_utf8 not in self.audio_mmap ):
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
                     # generate and mmap it
                     self.generate_and_mmap_file(text_to_speech, filename, device_index, time_received)
@@ -249,6 +249,7 @@ class AudioLibrary:
 
             # release semaphore
             self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
+            logging.info("[%f: [%d, %f, %s, %s] ], " % (time.time(), device_index, time_received, 'SEMAPHORE_RELEASED', semaphore_index))
 
             # fire 'finished' event
             values = queued_item

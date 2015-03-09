@@ -60,7 +60,7 @@ class ManagerMicrocuentos:
 		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, self.lista_cuentos[i][-1])
 		self.lista_jugadores[id_teclado].ultimo_ingresado = i
 		self.lista_jugadores[id_teclado].status = "WRITING"
-		self.instrucciones(id_teclado, "")
+
 
 	def instrucciones(self, id_teclado, text):
 		try:
@@ -72,28 +72,22 @@ class ManagerMicrocuentos:
 				self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, "Escribe una frase para iniciar tu micro cuento.")
 				self.lista_jugadores[id_teclado].ultimo_ingresado = id_teclado
 				self.lista_jugadores[id_teclado].status = "WRITING"
-				self.lista_jugadores[id_teclado].waiting_flag = True
+				
 			# Guardar oracion anterior
 			elif self.lista_jugadores[id_teclado].status == "WRITING":				
 				
 				# Mensaje de espera
-				if self.lista_jugadores[id_teclado].waiting_flag:
+				if not self.lista_jugadores[id_teclado].waiting_flag:
+					self.lista_jugadores[id_teclado].waiting_flag = True
 					self.guardar_oracion(self.lista_jugadores[id_teclado].ultimo_ingresado, text)
 					manejo_pantalla.reset_layout(id_teclado)
-					manejo_pantalla.write(id_teclado, "Esperar", 0, 0)
-					self.lista_jugadores[id_teclado].status = "DONE"
 					self.instrucciones(id_teclado, "")
 				else:
+					t = threading.Thread(target=self.esperar_cuento, args = (id_teclado,))
+					t.daemon = True
+					t.start()
 					manejo_pantalla.reset_layout(id_teclado)
-					manejo_pantalla.draw_textbox(id_teclado,50)
-					self.lista_jugadores[id_teclado].waiting_flag = True				
-				
-			else:
-				t = threading.Thread(target=self.esperar_cuento, args = (id_teclado,))
-				t.daemon = True
-				t.start()
-
-			
+					manejo_pantalla.draw_textbox(id_teclado,50)						
 			
 		except Exception as e:
 			print e

@@ -62,7 +62,10 @@ def Keyboard_event(sender, earg):
             else:
                 manager.replay(id_sent)
         else:
-            manejo_pantalla.react(id_sent, text)
+            if not en_pareamiento and manager.lista_jugadores[id_sent].waiting_flag:
+                pass
+            else:
+                manejo_pantalla.react(id_sent, text)
 
         # Tiempo respuesta desde decision de Pucca
         logging.info("[%f: [%d, %f, %s] ], " % (time.time(), id_sent, time_pressed, 'COCOYOC'))

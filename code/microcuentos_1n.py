@@ -15,6 +15,7 @@ logging.basicConfig(filename='multik.log',level=logging.INFO)
 
 # Creacion objetos librerias
 lib_teclados = KeyboardLibrary()
+time.sleep(1)
 lib_audio = audio_library.AudioLibrary()
 manager = ManagerMicrocuentos(lib_audio, lib_teclados)
 

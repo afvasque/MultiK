@@ -23,7 +23,6 @@ class AudioLibrary:
     root_hubs_set = set('') # set containing the addresses of the root usb hubs
     semaphore = {} # dictionary containing one semaphore for each root usb hub
     audio_mmap = {} # dictionary containing 'text_to_speech': corresponding_mmap
-    alsa_cards = {} # dictionary containing ALSA objects representing each card
 
     all_q = [] # array containing all queues
     all_p = [] # array containing all processes
@@ -41,17 +40,6 @@ class AudioLibrary:
         for card_name in self.get_usb_card_names():
             card = sound_card.SoundCard(card_name)
             self.card_array.append(card)
-            dev = alsaaudio.PCM(card="hw:CARD=%s" % (card_name))
-                
-            # set it up
-            # we hard code the values because of our sound card capabilities,
-            # audio files to be played have to match these.
-            dev.setchannels(2) # hard-coded 2 channels (stereo).
-            dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
-            dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
-            dev.setperiodsize(320)
-
-            self.alsa_cards[card_name] = dev
 
         # Populate the set containing the addresses of the root usb hubs
         self.root_hubs_set = self.get_usb_root_hub_addrs()
@@ -61,14 +49,14 @@ class AudioLibrary:
             # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
             # since our bitrate is 1.54Mbit/s,
             # 12 / 1.54 = 7.7922 gives us that the limit is 7
-            self.semaphore[hub] = multiprocessing.Semaphore(7)
+            self.semaphore[hub] = multiprocessing.Semaphore(2)
 
         # Print some info to console
         print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
         print "\033[94mAssuming %d USB sound card(s) in total.\033[0m" % len(self.card_array)
 
         # Load the cached sound files into memory
-        # self.load_sound_files('archivos/Audio/audio_cache.csv','archivos/sounds')
+        self.load_sound_files('archivos/Audio/audio_cache.csv','archivos/sounds')
 
 
         # Create a process and a queue for every card
@@ -109,16 +97,7 @@ class AudioLibrary:
         
         return hub_addrs
 
-    def close_alsa_cards(self):
-        for card in self.alsa_cards.values():
-            card.close()
 
-        self.kill_process()
-
-        for mmap_file in self.audio_mmap.values():
-            mmap_file.close()
-
-        sys.exit(0)
 
     def play(self, id, text_to_speech):
         # Plays a single text as speech
@@ -163,6 +142,7 @@ class AudioLibrary:
             for line in reader:
                 text_to_speech = line[0].lower()
                 filename = line[1]
+
                 
                 filepath = "%s/%s" % (sound_dir_path, filename)
 
@@ -184,7 +164,6 @@ class AudioLibrary:
                 
                 i = i + 1
 
-
     def read_queue(self, device_index, text_to_speech_queue):
         while True:
             # Get a queued text for turning into speech
@@ -201,7 +180,7 @@ class AudioLibrary:
                 tts_utf8 = text_to_speech.decode('utf-8')
                 tts_utf8 = tts_utf8.lower()
 
-                if ( tts_utf8 not in self.audio_mmap ):
+                if ( tts_utf8 not in self.audio_mmap.keys() ):
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_MMAP_NOT_FOUND', text_to_speech))
                     # generate and mmap it
                     self.generate_and_mmap_file(text_to_speech, filename, device_index, time_received)
@@ -216,8 +195,17 @@ class AudioLibrary:
             # write audios to the sound card
             try:
                 #open the audio card
-                print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
-                dev = self.alsa_cards[self.card_array[device_index].get_name()]
+                #print "Opening card \"%s\" (device_index = %d)..." % (self.card_array[device_index].get_name(), device_index)
+                dev = alsaaudio.PCM(card="hw:CARD=%s" % ( self.card_array[device_index].get_name() ))
+                
+                # set it up
+                # we hard code the values because of our sound card capabilities,
+                # audio files to be played have to match these.
+                dev.setchannels(2) # hard-coded 2 channels (stereo).
+                dev.setrate(44100)  # hard-coded sample rate 48000 Hz.
+                dev.setformat(alsaaudio.PCM_FORMAT_S16_LE) # sample encoding: 16-bit Signed Integer PCM
+                period_size = 320#512
+                dev.setperiodsize(period_size)
 
                 for text_to_speech in tts_concatenated:
                     # get the mmap of the generated file
@@ -228,33 +216,35 @@ class AudioLibrary:
                     # play the wav file
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_START', text_to_speech))
                     # read and write
-                    data = file_mmap.read(320)
+                    data = file_mmap.read(2*period_size)
+
                     while data:
                         dev.write(data)
-                        data = file_mmap.read(320)
+                        data = file_mmap.read(2*period_size)
+
                     logging.info("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_COMPLETE', text_to_speech))
                     
                     # rewind the audio
                     file_mmap.seek(0)
 
                 # close the audio card
-                #dev.close()
+                if dev is not None:
+                    dev.close()
+
+                 # release semaphore
+                self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
+
+                # fire 'finished' event
+                values = queued_item
+                values['id'] = device_index
+                self.finished(values)
 
             except alsaaudio.ALSAAudioError as e:
                 print "Exception in card \"%s\" (device_index = %d): %s" % (self.card_array[device_index].get_name(), device_index, str(e))
                 logging.exception("[%f: [%d, %f, %s, '%s'] ], " % (time.time(), device_index, time_received, 'AUDIO_PLAY_EXCEPTION', text_to_speech))
-                # close the audio card
-                #dev.close()
                 pass
 
-            # release semaphore
-            self.semaphore[ self.card_array[device_index].get_root_hub() ].release()
-            logging.info("[%f: [%d, %f, %s, %s] ], " % (time.time(), device_index, time_received, 'SEMAPHORE_RELEASED', semaphore_index))
-
-            # fire 'finished' event
-            values = queued_item
-            values['id'] = device_index
-            self.finished(values)
+           
 
 
     def generate_sound_file(self, text_to_speech, filename):
@@ -285,8 +275,6 @@ class AudioLibrary:
 
         tts_utf8 = text_to_speech.encode('utf-8')
         tts_utf8 = tts_utf8.lower()
-
-        print("Generado: ", tts_utf8)
 
         self.audio_mmap[tts_utf8] = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 

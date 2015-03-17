@@ -18,11 +18,13 @@ class Metrics:
 		# Define output filenames
 		self.cpu_data_fn = 'cpu_%d.dat' % self.start_time
 		self.mem_data_fn = 'mem_%d.dat' % self.start_time
+		self.pid_data_fn = 'pid_%d.dat' % self.start_time
 		self.html_fn = 'report_%d.html' % self.start_time
 
 		# Open output file for data
 		self.cpu_data_file = open(self.cpu_data_fn, 'w')
 		self.mem_data_file = open(self.mem_data_fn, 'w')
+		self.pid_data_file = open(self.pid_data_fn, 'w')
 
 		# Capture and write data to files
 		try:
@@ -30,11 +32,13 @@ class Metrics:
 				timestamp_millis = time.time()
 				cpu_p = psutil.cpu_percent(interval=float(options.interval), percpu=False) #used cpu
 				mem_p = psutil.virtual_memory().percent #memory in use
+				pid_p = len(psutil.get_pid_list())
 
 
-				print "USED_CPU=%d \t USED_MEM=%d" % (cpu_p, mem_p)
+				print "USED_CPU=%d \t USED_MEM=%d \t PIDs=%d" % (cpu_p, mem_p, pid_p)
 				self.cpu_data_file.write("[%f, %d], " % (timestamp_millis, cpu_p))
 				self.mem_data_file.write("[%f, %d], " % (timestamp_millis, mem_p))
+				self.pid_data_file.write("[%f, %d], " % (timestamp_millis, pid_p))
 
 		# Close data files and generate html file.
 		except(KeyboardInterrupt):
@@ -44,6 +48,7 @@ class Metrics:
 			# Close the data files
 			self.cpu_data_file.close()
 			self.mem_data_file.close()
+			self.pid_data_file.close()
 
 			# Current directory (used for relative paths)
 			cdir = os.path.dirname(__file__)
@@ -52,6 +57,7 @@ class Metrics:
 			template_file = open(os.path.join(cdir,'metrics_template.html.jinja2'), 'r')
 			cpu_data = open(self.cpu_data_fn, 'r')
 			mem_data = open(self.mem_data_fn, 'r')
+			pid_data = open(self.pid_data_fn, 'r')
 
 			# Create a new file for saving the report
 			html_file = open(self.html_fn, 'w')
@@ -61,6 +67,7 @@ class Metrics:
 			report = template.render(
 						cpu_data=cpu_data.read(),
 						mem_data=mem_data.read(),
+						pd_data=pid_data.read(),
 						start_time=datetime.datetime.fromtimestamp(self.start_time).strftime('%Y-%m-%d %H:%M:%S'),
 						end_time=datetime.datetime.fromtimestamp(self.end_time).strftime('%Y-%m-%d %H:%M:%S'),
 						total_users=options.total_users,
@@ -75,6 +82,7 @@ class Metrics:
 			template_file.close()
 			cpu_data.close()
 			mem_data.close()
+			pid_data.close()
 			html_file.close()
 
 			# Show created file in the default viewer

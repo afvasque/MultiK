@@ -49,7 +49,8 @@ class AudioLibrary:
             # semaphore with limit of 7 because of the hub bandwidth limit of 12Mbit/s
             # since our bitrate is 1.54Mbit/s,
             # 12 / 1.54 = 7.7922 gives us that the limit is 7
-            self.semaphore[hub] = multiprocessing.Semaphore(2)
+            # NO ES VERDAD. MAXIMO ES 2 (POR QUE?)
+            self.semaphore[hub] = multiprocessing.Semaphore(1)
 
         # Print some info to console
         print "\033[94mAssuming %d USB root hub(s) in total.\033[0m" % len(self.root_hubs_set)
@@ -82,7 +83,13 @@ class AudioLibrary:
     def get_total_usb_cards(self):
         return len(self.card_array)
 
+    def close_alsa_cards(self):
+        self.kill_process()
 
+        for mmap_file in self.audio_mmap.values():
+            mmap_file.close()
+
+        sys.exit(0)
 
     def get_total_usb_root_hubs(self):
         return len(self.root_hubs_set)

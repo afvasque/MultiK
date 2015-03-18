@@ -112,11 +112,13 @@ class ManagerMicrocuentos:
 		bienvenida = "Microcuento. Jugador " + str(id_teclado) + "."
 		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, bienvenida)
 		# Explicar esto en paper
-		time.sleep(2)
+		#time.sleep(1)
+		result = ""
 		for piece in self.lista_cuentos[id_teclado]:
-			self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, piece)
+			result += piece + ". "
+		self.lib_audio.play(self.lista_jugadores[id_teclado].id_audifono, result)
 			# Explicar esto en paper
-			time.sleep(2)
+			#time.sleep(1)
 		logging.info("[%f: [%s, %s, %s] ], " % (time.time(), 'END MICROTALES AUDIO', id_teclado, id_audifono))
 
 
@@ -138,10 +140,10 @@ class ManagerMicrocuentos:
 			t = threading.Thread(target=self.audio_cuento_final, args=(jugador.id_teclado,jugador.id_audifono))
 			t.start()
 			# Explicar esto en paper
-			time.sleep(2)
+			#time.sleep(1)
 
 		# Explicar esto en paper -> si no lo pongo, sale exception bad file descriptor
-		time.sleep(2)
+		#time.sleep(1)
 
 			
 		
